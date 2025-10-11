@@ -10,6 +10,7 @@ import { freebiePoints } from "./freebiePoints";
 import { actionMenu } from "./actionMenu";
 import { about } from "./about";
 import { instruction } from "./instruction";
+import { register } from "./register";
 import { library } from "./library";
 
 type TranslationInfo = typeof ruTranslation;
@@ -21,6 +22,7 @@ export const enTranslation: TranslationInfo = {
   actionMenu,
   instruction,
   library,
+  register,
   buttons: {
     "hide-panel": "Hide panel",
     "show-panel": "Show panel",

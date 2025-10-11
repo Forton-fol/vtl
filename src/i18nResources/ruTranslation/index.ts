@@ -8,6 +8,7 @@ import { freebiePoints } from "./freebiePoints";
 import { actionMenu } from "./actionMenu";
 import { about } from "./about";
 import { instruction } from "./instruction";
+import { register } from "./register";
 import { library } from "./library";
 
 export const ruTranslation = {
@@ -16,6 +17,7 @@ export const ruTranslation = {
   freebiePoints,
   actionMenu,
   instruction,
+  register,
   library,
   buttons: {
     "hide-panel": "Спрятать панель",

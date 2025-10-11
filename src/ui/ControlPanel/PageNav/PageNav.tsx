@@ -45,6 +45,13 @@ export function PageNav(props: PageNavProps): JSX.Element {
       >
         {t("about.header")}
       </Nav.Link>
+      <Nav.Link
+        as={NavLink}
+        to="/register"
+        className="tw-px-5 tw-py-3 tw-text-gray-900"
+      >
+        {t("register.header")}
+      </Nav.Link>
     </Nav>
   );
 }

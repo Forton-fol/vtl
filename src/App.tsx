@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { ErrorNotification } from "./uiLib/ErrorNotification";
 import { CharSheetPage } from "./ui/CharSheetPage";
 import { CharacterLibraryPage } from "./ui/CharLibraryPage/CharacterLibraryPage";
+import { RegisterPage } from "./ui/RegisterPage/RegisterPage";
 import { AboutPage } from "./ui/AboutPage";
 import { ControlPanel } from "./ui/ControlPanel";
 import { InstructionPage } from "./ui/InstructionPage";
@@ -60,6 +61,7 @@ function App(): JSX.Element {
             <Routes>
               <Route path="/charsheet" element={<CharSheetPage />} />
               <Route path="/library" element={<CharacterLibraryPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="/instruction" element={<InstructionPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/" element={<CharSheetPage />} />
