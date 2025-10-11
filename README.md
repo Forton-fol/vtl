@@ -62,6 +62,47 @@ You can publish this app so others can open it in a browser. Two simple options:
 	1. Create a new site on Netlify and connect your Git repository, or upload the `dist/static` folder after running `npm run build`.
 	2. Build command: `npm run build`. Publish directory: `dist/static`.
 
+	Note: this repository includes `netlify.toml` with recommended settings (build command and publish directory). Netlify will pick it up automatically when you connect the repo.
+
+	If you use Netlify UI manually:
+	- Build command: `npm run build`
+	- Publish directory: `dist/static`
+	- (Optional) If you want local dev with Netlify CLI, install `netlify-cli` and run `netlify dev`.
+
+	Supabase + Netlify Functions (server-backed accounts)
+
+	1. Create a free project on Supabase (https://app.supabase.com).
+	2. Open SQL editor and run the following to create tables:
+
+	```sql
+	create table public.users (
+		id uuid primary key default gen_random_uuid(),
+		username text unique not null,
+		password_hash text not null,
+		created_at timestamptz default now()
+	);
+
+	create table public.characters (
+		id uuid primary key default gen_random_uuid(),
+		user_id uuid references public.users(id) on delete cascade,
+		name text,
+		preset text,
+		data jsonb not null,
+		created_at timestamptz default now()
+	);
+
+	create index on public.characters(user_id);
+	```
+
+	3. In your Netlify site settings add environment variables:
+		 - SUPABASE_URL = your supabase project url (example: https://xxxx.supabase.co)
+		 - SUPABASE_SERVICE_ROLE_KEY = service_role key (from Supabase Settings → API)
+		 - NETLIFY_JWT_SECRET = random secret string used for signing JWT
+
+	4. Push this repository to GitHub and connect to Netlify (or deploy from GitHub); Netlify Functions are in `netlify/functions/` and will be deployed automatically.
+
+	Note: using `SUPABASE_SERVICE_ROLE_KEY` in serverless functions provides write access to your DB; keep it secret and only in Netlify env variables.
+
 Support for shared links
 
 This app supports loading a shared character via URL parameters. Example forms:

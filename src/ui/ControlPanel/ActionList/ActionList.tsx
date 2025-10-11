@@ -11,6 +11,7 @@ import { DownloadDatabaseButton } from "./DownloadDatabaseButton";
 import { CreateDatabaseButton } from "./CreateDatabaseButton";
 import { LangButton } from "./LangButton";
 import { FullscreenButton } from "./FullscreenButton";
+import { AuthSection } from "../AuthSection/AuthSection";
 
 interface ActionListProps {
   className?: string;
@@ -37,6 +38,9 @@ export function ActionList(props: ActionListProps): JSX.Element {
         className="ActionListItem"
         {...charSheetStorageService}
       />
+      <div className="ActionListItem">
+        <AuthSection />
+      </div>
       {globalThis.GLOBAL_DEFAULT_LANG === "ru" && (
         <>
           <LangButton className="ActionListItem" lang="ru" />

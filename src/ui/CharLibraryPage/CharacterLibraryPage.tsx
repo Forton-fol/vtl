@@ -3,6 +3,8 @@ import Button from "react-bootstrap/cjs/Button";
 import ListGroup from "react-bootstrap/cjs/ListGroup";
 import { useTranslation } from "react-i18next";
 import { listLibrary, saveToLibrary, removeFromLibrary } from "../../lib/libraryStorage";
+import { getToken } from "../../api/auth";
+import { listCharacters, saveCharacter, deleteCharacter } from "../../api/characters";
 import { useCharSheetStorage } from "../../charSheets/root/services/storageAdapter";
 
 export function CharacterLibraryPage(): JSX.Element {
@@ -10,26 +12,50 @@ export function CharacterLibraryPage(): JSX.Element {
   const { setCharSheet, charSheet } = useCharSheetStorage();
 
   const [entries, setEntries] = useState(() => listLibrary());
+  const [serverMode, setServerMode] = useState<boolean>(() => !!getToken());
 
   useEffect(() => {
-    setEntries(listLibrary());
+    if (serverMode) {
+      listCharacters().then((res) => {
+        if (res && res.characters) {
+          setEntries(res.characters.map((c: any) => ({ id: c.id, name: c.name, preset: c.preset, createdAt: c.created_at, raw: c.data })));
+        }
+      }).catch(() => setEntries([]));
+    } else {
+      setEntries(listLibrary());
+    }
   }, []);
 
   function onSaveCurrent() {
-    const entry = saveToLibrary(charSheet);
-    setEntries((prev) => [entry, ...prev]);
+    if (serverMode) {
+      saveCharacter({ name: charSheet.profile.name, preset: charSheet.preset, data: charSheet }).then((res) => {
+        if (res && res.character) {
+          setEntries((prev) => [{ id: res.character.id, name: res.character.name, preset: res.character.preset, createdAt: res.character.created_at, raw: res.character.data }, ...prev]);
+        }
+      });
+    } else {
+      const entry = saveToLibrary(charSheet);
+      setEntries((prev) => [entry, ...prev]);
+    }
   }
 
   function onLoad(id: string) {
-    const e = listLibrary().find((el) => el.id === id);
-    if (e) {
-      setCharSheet(e.raw);
+    if (serverMode) {
+      const e = entries.find((el) => el.id === id);
+      if (e) setCharSheet(e.raw);
+    } else {
+      const e = listLibrary().find((el) => el.id === id);
+      if (e) setCharSheet(e.raw);
     }
   }
 
   function onDelete(id: string) {
-    removeFromLibrary(id);
-    setEntries(listLibrary());
+    if (serverMode) {
+      deleteCharacter(id).then(() => setEntries((prev) => prev.filter((p) => p.id !== id)));
+    } else {
+      removeFromLibrary(id);
+      setEntries(listLibrary());
+    }
   }
 
   return (
