@@ -1,0 +1,8 @@
+.PageNav a.active {
+  color: #fff;
+  background-color: #337ab7;
+}
+
+.PageNav a {
+  border-bottom: 1px solid gray;
+}
