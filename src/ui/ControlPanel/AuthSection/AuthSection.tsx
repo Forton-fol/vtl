@@ -19,7 +19,7 @@ export function AuthSection(): JSX.Element {
     }
   }, []);
 
-  async function doRegister(e) {
+  async function doRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const res = await register(username, password);
     if (res && res.user) {
@@ -32,7 +32,7 @@ export function AuthSection(): JSX.Element {
     }
   }
 
-  async function doLogin(e) {
+  async function doLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const res = await login(username, password);
     if (res && res.token) {

@@ -66,4 +66,6 @@ export interface CharSheet {
 
   // mta
   spheres: Spheres;
+  // custom dot attachments: disciplineIndex -> dotIndex -> { kind: 'link'|'text', content }
+  customDotData?: Record<string, Record<string, { kind: "link" | "text"; content: string }>>;
 }

@@ -6,23 +6,23 @@
 export const disciplinesSource = `Animalism
   Анимализм
     [widespread-discipline]
-Assamite Sorcery
-  Чародейство Ассамитов
-    [bloodline-discipline]
+Alchemy (Thin-Blood Alchemy)
+  Алхимия тонкокровых
+    [widespread-discipline]
 Auspex
   Ясновидение
     [widespread-discipline]
 Bardo (Children of Osiris)
-  Бардо (Дети Осириса)
+  Бардо
     [bloodline-discipline]
 Celerity
   Стремительность
     [widespread-discipline]
 Chimerstry
-  Фантасмагория
+  Химерия
     [widespread-discipline]
 Daimonion (Baali)
-  Демонион (Баали)
+  Демонизм
     [bloodline-discipline]
 Dementation
   Помешательство
@@ -34,70 +34,70 @@ Fortitude
   Стойкость
     [widespread-discipline]
 Flight (Gargoyles)
-  Полёт (Горгульи)
+  Полёт Горгулий
     [bloodline-discipline]
 Koldunic Sorcery (Tzimisce)
-  Колдовство (Цимисхи)
+  Колдовство
     [bloodline-discipline]
 Melpominee (Daughters of Cacophony)
-  Мельпомения (Дочери Какофонии)
+  Мельпомения
     [bloodline-discipline]
 Mytherceria (Kiasyd)
-  Мистификация (Киасиды)
+  Мистерия
     [bloodline-discipline]
 Necromancy
   Некромантия
     [widespread-discipline]
 Obeah (Salubri)
-  Обеа (Салюбри)
+  Обеа
     [bloodline-discipline]
 Obfuscate
-  Сокрытие
+  Затемнение
     [widespread-discipline]
 Obtenebration
-  Затмение
+  Власть над Тенью
     [widespread-discipline]
 Ogham (Lhiannan)
-  Огам (Лианнан)
+  Огам
     [bloodline-discipline]
 Potence
-  Мощь
+  Могущество
     [widespread-discipline]
 Presence
-  Величие
+  Присутствие
     [widespread-discipline]
 Protean
-  Метаморфозы
+  Превращение
     [widespread-discipline]
 Quietus
-  Упокоение
+  Смертоносность
     [widespread-discipline]
 Sanguinus (Blood Brothers)
-  Сангвинус (Кровные Братья)
+  Сангвинус
     [bloodline-discipline]
 Serpentis
   Серпентис
     [widespread-discipline]
 Spiritus (Ahrimanes)
-  Спиритус (Ангра-Майнью)
+  Шаманство
     [bloodline-discipline]
 Temporis (True Brujah)
-  Темпорис (Истинные Бруха)
+  Темпорис
     [bloodline-discipline]
 Thanatosis (Samedi)
-  Танатозис (Самеди)
+  Танатозис
     [bloodline-discipline]
 Thaumaturgy
   Тауматургия
     [widespread-discipline]
 Valeren (Salubri)
-  Валерен (Салюбри)
+  Валерен
     [bloodline-discipline]
 Vicissitude
-  Преображение
+  Изменчивость
     [widespread-discipline]
 Visceratika (Gargoyles)
-  Висцератика (Горгульи)
+  Висцератика
     [bloodline-discipline]`;
 
 // Format:

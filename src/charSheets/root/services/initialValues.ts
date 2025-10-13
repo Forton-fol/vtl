@@ -115,4 +115,5 @@ export const initialCharSheet: CharSheet = {
   realms: initialRealms,
 
   numinaAndOtherTraits: initialNuminaAndOtherTraits,
+  customDotData: {},
 };

@@ -3,7 +3,8 @@ import { PresetName, Limits, CharSheet, ErrorDescription } from "../domain";
 export interface CombinedRootService
   extends PresetService,
     LimitService,
-    CharSheetStorageService {}
+    CharSheetStorageService,
+    CustomDotService {}
 
 export interface PresetService {
   preset: PresetName;
@@ -17,6 +18,10 @@ export interface LimitService {
 export interface CharSheetStorageService {
   setCharSheet(charSheet: CharSheet): void;
   charSheet: CharSheet;
+}
+
+export interface CustomDotService {
+  setCustomDot(sectionKey: string, itemIndex: number | string, dotIndex: number | string, payload: { kind: "link" | "text"; content: string }): void;
 }
 
 export interface ErrorDescriptionService {

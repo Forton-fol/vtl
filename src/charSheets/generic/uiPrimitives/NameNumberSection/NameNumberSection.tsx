@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 
 import { RangeInput2 } from "../RangeInput2";
 import wikiMap from "../../../../ui/Wiki/wikiMap";
+import CustomDotEditor from "../../../../ui/Wiki/CustomDotEditor";
+import { useStore } from "../../../../charSheets/root/services/store";
 import { SelectButton } from "../SelectButton";
 import { RemoveEntityButton } from "../RemoveEntityButton";
 import { AddEntityButton } from "../AddEntityButton";
@@ -78,8 +80,11 @@ export function NameNumberSection(props: NameNumberSectionProps): JSX.Element {
 
       // fallback: sanitize name to a page-like string
       const fallback = name.replace(/\s+/g, "_");
-      const pageToOpen = encodeURIComponent(page || fallback);
-      const url = `${base}${pageToOpen}`;
+      const candidate = page || fallback;
+      // If candidate already looks like a full URL, use it directly.
+      const url = /^https?:\/\//i.test(candidate)
+        ? candidate
+        : `${base}${encodeURIComponent(candidate)}`;
 
       // Open a centered popup window. If popup blocked, fallback to new tab.
       const w = 900;
@@ -93,6 +98,47 @@ export function NameNumberSection(props: NameNumberSectionProps): JSX.Element {
         window.location.href = url;
       }
     }
+
+  const { charSheet } = useStore();
+  const [editorState, setEditorState] = React.useState<{
+    show: boolean;
+    section?: string;
+    itemIndex?: number;
+    dotIndex?: number;
+  }>({ show: false });
+
+  function openCustomOrWiki(name: string, valueIndex: number, event: React.MouseEvent<HTMLInputElement, MouseEvent>) {
+    // for dots 6..10 (values >=6) allow custom attachments
+    if (valueIndex >= 6) {
+      const sec = sectionItemName;
+      const item = String(event.currentTarget.dataset["data-context"] || event.currentTarget.getAttribute("data-context") || event.currentTarget.dataset["context"] || "0");
+      // the RangeInput2 passes dataContext prop via data-attribute 'data-index' only, but we also have dataContext prop on RangeInput2 mapping; here NameNumberSection passes dataContext=index
+      const itemIndex = (event.currentTarget && (event.currentTarget as any).dataset && (event.currentTarget as any).dataset["context"]) ? Number((event.currentTarget as any).dataset["context"]) : undefined;
+      // try to read stored custom dot
+      const stored = (charSheet as any).customDotData?.[sec]?.[String(itemIndex ?? 0)]?.[String(valueIndex)];
+      if (stored) {
+        if (stored.kind === "link") {
+          const url = /^https?:\/\//i.test(stored.content) ? stored.content : `https://${stored.content}`;
+          const w = 900;
+          const h = 700;
+          const left = window.screenX + (window.innerWidth - w) / 2;
+          const top = window.screenY + (window.innerHeight - h) / 2;
+          const features = `toolbar=0,location=0,status=0,menubar=0,width=${w},height=${h},left=${left},top=${top}`;
+          const popup = window.open(url, '_blank', features);
+          if (!popup) window.location.href = url;
+          return;
+        }
+        // text: open editor to view/edit
+        setEditorState({ show: true, section: sec, itemIndex: itemIndex ?? 0, dotIndex: valueIndex });
+        return;
+      }
+      // no stored custom: open editor to create one
+      setEditorState({ show: true, section: sec, itemIndex: itemIndex ?? 0, dotIndex: valueIndex });
+      return;
+    }
+    // fallback to wiki behavior for values <6
+    openWikiFor(name, valueIndex, event);
+  }
 
   return (
     <div className={classnames("NameNumberSection", className)}>
@@ -138,11 +184,18 @@ export function NameNumberSection(props: NameNumberSectionProps): JSX.Element {
             value={value}
             dataContext={index}
             onClick={setValue}
-            onContext={(v, ctx, ev) => openWikiFor(name, v, ev)}
+            onContext={(v, ctx, ev) => openCustomOrWiki(name, v, ev)}
             className="tw-flex-grow tw-mt-2 print:tw-mt-1"
           />
         </div>
       ))}
+      <CustomDotEditor
+        show={!!editorState.show}
+        onHide={() => setEditorState({ show: false })}
+        sectionKey={editorState.section || sectionItemName}
+        itemIndex={editorState.itemIndex ?? 0}
+        dotIndex={editorState.dotIndex ?? 6}
+      />
       <div className="tw-text-center tw-mt-4 print:tw-hidden">
         <AddEntityButton title={addItemMsg} onClick={addItem} />
       </div>

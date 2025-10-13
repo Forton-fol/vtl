@@ -2,31 +2,65 @@
 // <en>
 //   <ru>
 
-export const backgroundsSource = `Allies
+export const backgroundsSource = `Arsenal
+  Арсенал
+Allies
   Союзники
-Alternate Identity
-  Альтер эго
-Black Hand Membership
-  Членство в Чёрной Руке (Шабаш)
-Contacts
-  Информаторы
-Domain
-  Домен
+Connections
+  Связи
 Fame
   Слава
-Generation
-  Поколение
-Herd
-  Стадо
 Influence
   Влияние
 Mentor
   Ментор
 Resources
-  Богатство
-Retainers
-  Подручные
-Rituals
-  Обряды (Шабаш)
+  Ресурсы
+Servants
+  Слуги
+Alternate Identity
+  Альтернативная личность
+Wraiths / Ghost Slaves
+  Призрачные рабы
+Armed Forces
+  Вооруженные силы
+Mystery / Enigma
+  Загадочность
+Information Network
+  Информационная сеть
+Occult Library
+  Оккультная библиотека
+Retainers / Household Staff
+  Прислуга
 Status
-  Статус`;
+  Статус
+Sabbat Status
+  Статус в Шабаше
+Status among Anarchs
+  Статус у Анархов
+Status among Setites
+  Статус среди Сетитов
+Sabbat Rites
+  Таинства Шабаша
+Common Haven
+  Общее убежище
+Pack Respect
+  Уважение стаи
+Anarch Information Exchange
+  Информационный обмен Анархов
+Age
+  Возраст
+Titles
+  Титулы
+Prestige in Clan
+  Престиж в клане
+Domain
+  Домен
+Manor
+  Поместье
+Black Hand Membership
+  Членство в Черной Руке
+Generation
+  Поколение
+Herd
+  Стадо`;
