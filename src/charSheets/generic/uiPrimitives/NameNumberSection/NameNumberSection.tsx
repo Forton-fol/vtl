@@ -4,6 +4,7 @@ import { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 
 import { RangeInput2 } from "../RangeInput2";
+import wikiMap from "../../../../ui/Wiki/wikiMap";
 import { SelectButton } from "../SelectButton";
 import { RemoveEntityButton } from "../RemoveEntityButton";
 import { AddEntityButton } from "../AddEntityButton";
@@ -61,24 +62,37 @@ export function NameNumberSection(props: NameNumberSectionProps): JSX.Element {
   );
 
   function openWikiFor(name: string, valueIndex: number, event: React.MouseEvent<HTMLInputElement, MouseEvent>) {
-    if (!name) return;
-    // Map common discipline names to fandom pages
-    const base = "https://wod.fandom.com/ru/wiki/";
-    const map: Record<string, string> = {
-      Анимализм: "Анимализм",
-      Анимализм_ru: "Анимализм",
-      Метаморфозы: "Метаморфозы",
-      // add more mappings as needed
-    };
-    const key = name in map ? name : name.replace(/\s+/g, '_');
-    const page = encodeURIComponent(map[name] || key);
-    const url = `${base}${page}`;
-    const w = 700;
-    const h = 600;
-    const left = window.screenX + (window.innerWidth - w) / 2;
-    const top = window.screenY + (window.innerHeight - h) / 2;
-    window.open(url, '_blank', `toolbar=0,location=0,status=0,menubar=0,width=${w},height=${h},left=${left},top=${top}`);
-  }
+      if (!name) return;
+      const base = "https://wod.fandom.com/ru/wiki/";
+
+      // try exact match in the map
+      const entry = wikiMap[name];
+      let page: string | undefined;
+
+      if (Array.isArray(entry)) {
+        // pick by index, fallback to last entry
+        page = entry[valueIndex] ?? entry[entry.length - 1];
+      } else if (typeof entry === "string") {
+        page = entry;
+      }
+
+      // fallback: sanitize name to a page-like string
+      const fallback = name.replace(/\s+/g, "_");
+      const pageToOpen = encodeURIComponent(page || fallback);
+      const url = `${base}${pageToOpen}`;
+
+      // Open a centered popup window. If popup blocked, fallback to new tab.
+      const w = 900;
+      const h = 700;
+      const left = window.screenX + (window.innerWidth - w) / 2;
+      const top = window.screenY + (window.innerHeight - h) / 2;
+      const features = `toolbar=0,location=0,status=0,menubar=0,width=${w},height=${h},left=${left},top=${top}`;
+      const popup = window.open(url, '_blank', features);
+      if (!popup) {
+        // fallback: open in same tab if popups blocked
+        window.location.href = url;
+      }
+    }
 
   return (
     <div className={classnames("NameNumberSection", className)}>
