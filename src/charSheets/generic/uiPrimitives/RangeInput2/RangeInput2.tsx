@@ -9,6 +9,7 @@ interface RangeInput2Props<DataContext> {
   value: number;
   dataContext: DataContext;
   onClick(value: number, dataContext: DataContext): void;
+  onContext?: (value: number, dataContext: DataContext, event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
   name: string;
   className?: string;
   splitEvery?: number;
@@ -38,6 +39,16 @@ export const RangeInput2 = memo(function RangeInput2<DataContext>(
       onClick(indexNum === value ? indexNum - 1 : indexNum, dataContext);
     },
     [value, onClick, dataContext]
+  );
+
+  const onContextWrapper = useCallback(
+    function (event: React.MouseEvent<HTMLInputElement, MouseEvent>) {
+      event.preventDefault();
+      const { index } = event.currentTarget.dataset;
+      const indexNum = Number(index);
+      if (props.onContext) props.onContext(indexNum, dataContext, event);
+    },
+    [dataContext, props]
   );
 
   const style = useMemo(() => {
@@ -77,6 +88,7 @@ export const RangeInput2 = memo(function RangeInput2<DataContext>(
               name={name}
               title={String(index)}
               onClick={onClickWrapper}
+              onContextMenu={onContextWrapper}
               data-index={index}
               data-variant={variant}
               checked={index === value}

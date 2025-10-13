@@ -60,6 +60,26 @@ export function NameNumberSection(props: NameNumberSectionProps): JSX.Element {
     [setItemValue]
   );
 
+  function openWikiFor(name: string, valueIndex: number, event: React.MouseEvent<HTMLInputElement, MouseEvent>) {
+    if (!name) return;
+    // Map common discipline names to fandom pages
+    const base = "https://wod.fandom.com/ru/wiki/";
+    const map: Record<string, string> = {
+      Анимализм: "Анимализм",
+      Анимализм_ru: "Анимализм",
+      Метаморфозы: "Метаморфозы",
+      // add more mappings as needed
+    };
+    const key = name in map ? name : name.replace(/\s+/g, '_');
+    const page = encodeURIComponent(map[name] || key);
+    const url = `${base}${page}`;
+    const w = 700;
+    const h = 600;
+    const left = window.screenX + (window.innerWidth - w) / 2;
+    const top = window.screenY + (window.innerHeight - h) / 2;
+    window.open(url, '_blank', `toolbar=0,location=0,status=0,menubar=0,width=${w},height=${h},left=${left},top=${top}`);
+  }
+
   return (
     <div className={classnames("NameNumberSection", className)}>
       {items.map(({ name, value }, index) => (
@@ -104,6 +124,7 @@ export function NameNumberSection(props: NameNumberSectionProps): JSX.Element {
             value={value}
             dataContext={index}
             onClick={setValue}
+            onContext={(v, ctx, ev) => openWikiFor(name, v, ev)}
             className="tw-flex-grow tw-mt-2 print:tw-mt-1"
           />
         </div>
