@@ -26,6 +26,8 @@ export const enTranslation: TranslationInfo = {
   buttons: {
     "hide-panel": "Hide panel",
     "show-panel": "Show panel",
+    "export-pdf": "Export PDF",
+    "generating-pdf": "Generating PDF...",
   },
   errors: {
     "error-on-file-loading": "Error on file loading",

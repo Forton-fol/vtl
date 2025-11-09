@@ -33,6 +33,7 @@ export type Backgrounds = NameStringArray;
 export type OtherTraits = NameStringArray;
 
 export interface Health {
+  bruise: number;
   bruised: number;
   hurt: number;
   injured: number;
@@ -40,6 +41,7 @@ export interface Health {
   mauled: number;
   crippled: number;
   incapacitated: number;
+  bruiseBoxes?: number[]; // массив для хранения состояния каждого квадратика синяка (0-3)
 }
 
 export type Merits = string[];

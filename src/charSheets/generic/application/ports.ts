@@ -97,6 +97,12 @@ export interface HealthService {
   setHealth(healthName: keyof Health, value: number): void;
   healthChimerical: Health;
   setHealthChimerical(healthName: keyof Health, value: number): void;
+  addBruiseBox(): void;
+  removeBruiseBox(): void;
+  setBruiseBox(index: number, value: number): void;
+  addChimericalBruiseBox(): void;
+  removeChimericalBruiseBox(): void;
+  setChimericalBruiseBox(index: number, value: number): void;
 }
 
 export interface StatusService {

@@ -66,3 +66,50 @@ body {
 }
 /* style={{backgroundColor: '#337ab7'}} */
 /* style={{backgroundColor: '#007bff'}} */
+
+@media print {
+  @page {
+    size: auto;
+    margin: 10mm;
+  }
+}
+
+/* Скрываем элементы интерфейса при экспорте в PDF */
+.pdf-export-mode .nav,
+.pdf-export-mode nav,
+.pdf-export-mode .navbar,
+.pdf-export-mode .navigation,
+.pdf-export-mode [role="navigation"],
+.pdf-export-mode h1,
+.pdf-export-mode .PresetSelect,
+.pdf-export-mode .bruise-buttons,
+.pdf-export-mode button[title*="добавить"],
+.pdf-export-mode button[title*="удалить"],
+.pdf-export-mode button[title*="add"],
+.pdf-export-mode button[title*="remove"] {
+  display: none !important;
+}
+
+/* Убираем границы и отступы при экспорте в PDF */
+.pdf-export-mode .CharSheetBody {
+  border: none !important;
+  border-image: none !important;
+  padding: 0.5rem !important;
+  min-width: auto !important;
+  min-height: auto !important;
+  width: 100% !important;
+}
+
+/* Делаем квадраты пустыми в PDF */
+.pdf-export-mode .HealthInput .health-input-checkbox,
+.pdf-export-mode .HealthInput .health-input-checkbox[data-damage-type="no-damage"],
+.pdf-export-mode .HealthInput .health-input-checkbox[data-damage-type="bashing-damage"],
+.pdf-export-mode .HealthInput .health-input-checkbox[data-damage-type="lethal-damage"],
+.pdf-export-mode .HealthInput .health-input-checkbox[data-damage-type="aggravated-damage"] {
+  background-image: none !important;
+  border: 2px solid #1C1B17 !important;
+  background-color: white !important;
+  border-radius: 0 !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+}

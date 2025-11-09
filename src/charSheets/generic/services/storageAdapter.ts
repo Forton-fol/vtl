@@ -52,7 +52,18 @@ export function useBackgrounds(): BackgroundsService {
 }
 export function useHealth(): HealthService {
   return R.pick(
-    ["health", "setHealth", "healthChimerical", "setHealthChimerical"],
+    [
+      "health",
+      "setHealth",
+      "healthChimerical",
+      "setHealthChimerical",
+      "addBruiseBox",
+      "removeBruiseBox",
+      "setBruiseBox",
+      "addChimericalBruiseBox",
+      "removeChimericalBruiseBox",
+      "setChimericalBruiseBox",
+    ],
     useStore()
   );
 }

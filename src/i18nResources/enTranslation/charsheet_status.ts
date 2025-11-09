@@ -24,6 +24,7 @@ export const status = {
   faith: "Faith",
 
   // health
+  bruise: "Bruise",
   bruised: "Bruised",
   hurt: "Hurt",
   injured: "Injured",

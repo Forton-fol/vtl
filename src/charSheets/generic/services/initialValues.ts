@@ -92,6 +92,7 @@ export const initialAbilitiesExtension: AbilitiesExtension = {
 };
 
 export const initialHealth: Health = {
+  bruise: 0,
   bruised: 0,
   hurt: 0,
   injured: 0,
@@ -99,6 +100,7 @@ export const initialHealth: Health = {
   mauled: 0,
   crippled: 0,
   incapacitated: 0,
+  bruiseBoxes: [0, 0, 0], // 3 начальных квадратика для синяков
 };
 
 // advantages

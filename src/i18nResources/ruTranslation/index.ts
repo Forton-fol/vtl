@@ -22,6 +22,8 @@ export const ruTranslation = {
   buttons: {
     "hide-panel": "Спрятать панель",
     "show-panel": "Показать панель",
+    "export-pdf": "Скачать PDF",
+    "generating-pdf": "Генерация PDF...",
   },
   errors: {
     "error-on-file-loading": "Ошибка при загрузке листа персонажа",

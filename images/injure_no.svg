@@ -7,15 +7,12 @@ viewBox="0 0 205 205"
  <defs>
   <style type="text/css">
    <![CDATA[
-    .fil0 {fill:none}
-    .fil1 {fill:#1C1B17}
-    .fil2 {fill:#FEFEFE}
+    .fil0 {fill:none;stroke:#1C1B17;stroke-width:6}
    ]]>
   </style>
  </defs>
  <g id="Слой_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <polygon class="fil1" points="174,31 31,31 31,174 174,174 "/>
-  <polygon class="fil2" points="150,55 55,55 55,150 150,150 "/>
+  <rect class="fil0" x="31" y="31" width="143" height="143"/>
  </g>
 </svg>

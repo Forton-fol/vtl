@@ -153,6 +153,7 @@ export const realmsSchema: JSONSchemaType<Realms> = {
 export const healthSchema: JSONSchemaType<Health> = {
   type: "object",
   properties: {
+    bruise: { type: "number" },
     bruised: { type: "number" },
     hurt: { type: "number" },
     injured: { type: "number" },
@@ -160,8 +161,14 @@ export const healthSchema: JSONSchemaType<Health> = {
     mauled: { type: "number" },
     crippled: { type: "number" },
     incapacitated: { type: "number" },
+    bruiseBoxes: { 
+      type: "array",
+      items: { type: "number" },
+      nullable: true
+    },
   },
   required: [
+    "bruise",
     "bruised",
     "hurt",
     "injured",

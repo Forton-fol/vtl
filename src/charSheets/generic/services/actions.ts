@@ -139,6 +139,78 @@ export const genericActions: ServiceToActions<CombinedGenericService> = {
     );
   },
 
+  addBruiseBox(state: CharSheet): CharSheet {
+    const boxes = state.health.bruiseBoxes || [];
+    const chimericalBoxes = state.healthChimerical.bruiseBoxes || [];
+    let newState = mutateObj(
+      state,
+      "health",
+      mutateObj(state.health, "bruiseBoxes", [...boxes, 0])
+    );
+    // Синхронизируем химерическое здоровье
+    newState = mutateObj(
+      newState,
+      "healthChimerical",
+      mutateObj(newState.healthChimerical, "bruiseBoxes", [...chimericalBoxes, 0])
+    );
+    return newState;
+  },
+  removeBruiseBox(state: CharSheet): CharSheet {
+    const boxes = state.health.bruiseBoxes || [];
+    const chimericalBoxes = state.healthChimerical.bruiseBoxes || [];
+    if (boxes.length === 0) return state;
+    let newState = mutateObj(
+      state,
+      "health",
+      mutateObj(state.health, "bruiseBoxes", boxes.slice(0, -1))
+    );
+    // Синхронизируем химерическое здоровье
+    newState = mutateObj(
+      newState,
+      "healthChimerical",
+      mutateObj(newState.healthChimerical, "bruiseBoxes", chimericalBoxes.slice(0, -1))
+    );
+    return newState;
+  },
+  setBruiseBox(state: CharSheet, [index, value]: [number, number]): CharSheet {
+    const boxes = state.health.bruiseBoxes || [];
+    const newBoxes = [...boxes];
+    newBoxes[index] = applyRange(0, 3, value);
+    return mutateObj(
+      state,
+      "health",
+      mutateObj(state.health, "bruiseBoxes", newBoxes)
+    );
+  },
+
+  addChimericalBruiseBox(state: CharSheet): CharSheet {
+    const boxes = state.healthChimerical.bruiseBoxes || [];
+    return mutateObj(
+      state,
+      "healthChimerical",
+      mutateObj(state.healthChimerical, "bruiseBoxes", [...boxes, 0])
+    );
+  },
+  removeChimericalBruiseBox(state: CharSheet): CharSheet {
+    const boxes = state.healthChimerical.bruiseBoxes || [];
+    if (boxes.length === 0) return state;
+    return mutateObj(
+      state,
+      "healthChimerical",
+      mutateObj(state.healthChimerical, "bruiseBoxes", boxes.slice(0, -1))
+    );
+  },
+  setChimericalBruiseBox(state: CharSheet, [index, value]: [number, number]): CharSheet {
+    const boxes = state.healthChimerical.bruiseBoxes || [];
+    const newBoxes = [...boxes];
+    newBoxes[index] = applyRange(0, 3, value);
+    return mutateObj(
+      state,
+      "healthChimerical",
+      mutateObj(state.healthChimerical, "bruiseBoxes", newBoxes)
+    );
+  },
+
   setState<T extends keyof State>(
     state: CharSheet,
     [stateName, value]: [T, State[T]]

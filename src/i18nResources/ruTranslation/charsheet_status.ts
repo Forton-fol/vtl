@@ -28,6 +28,7 @@ export const status = {
   faith: "Вера",
 
   // health
+  bruise: "Синяк",
   bruised: "Помят",
   hurt: "Легко ранен",
   injured: "Ранен",

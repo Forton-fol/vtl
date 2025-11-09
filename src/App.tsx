@@ -23,7 +23,6 @@ import { CharSheetPage } from "./ui/CharSheetPage";
 import { CharacterLibraryPage } from "./ui/CharLibraryPage/CharacterLibraryPage";
 import { AboutPage } from "./ui/AboutPage";
 import { ControlPanel } from "./ui/ControlPanel";
-import { InstructionPage } from "./ui/InstructionPage";
 import { CURRENT_VERSION } from "./constants";
 import { useInternalPresetProps } from "./charSheets";
 import { useSettings } from "./charSheets/misc/services/storageAdapter";
@@ -60,8 +59,6 @@ function App(): JSX.Element {
             <Routes>
               <Route path="/charsheet" element={<CharSheetPage />} />
               <Route path="/library" element={<CharacterLibraryPage />} />
-              <Route path="/instruction" element={<InstructionPage />} />
-              <Route path="/about" element={<AboutPage />} />
               <Route path="/" element={<CharSheetPage />} />
             </Routes>
           </div>

@@ -26,13 +26,6 @@ export function PageNav(props: PageNavProps): JSX.Element {
       </Nav.Link>
       <Nav.Link
         as={NavLink}
-        to="/instruction"
-        className="tw-px-5 tw-py-3 tw-text-gray-900"
-      >
-        {t("instruction.header")}
-      </Nav.Link>
-      <Nav.Link
-        as={NavLink}
         to="/library"
         className="tw-px-5 tw-py-3 tw-text-gray-900"
       >
@@ -40,10 +33,10 @@ export function PageNav(props: PageNavProps): JSX.Element {
       </Nav.Link>
       <Nav.Link
         as={NavLink}
-        to="/about"
+        to="/instruction"
         className="tw-px-5 tw-py-3 tw-text-gray-900"
       >
-        {t("about.header")}
+        {t("instruction.header")}
       </Nav.Link>
     </Nav>
   );

@@ -9,6 +9,7 @@ import {
 import { UploadDatabaseButton } from "./UploadDatabaseButton";
 import { DownloadDatabaseButton } from "./DownloadDatabaseButton";
 import { CreateDatabaseButton } from "./CreateDatabaseButton";
+import { ExportPdfButton } from "./ExportPdfButton";
 import { LangButton } from "./LangButton";
 import { FullscreenButton } from "./FullscreenButton";
 import { AuthSection } from "../AuthSection/AuthSection";
@@ -38,6 +39,7 @@ export function ActionList(props: ActionListProps): JSX.Element {
         className="ActionListItem"
         {...charSheetStorageService}
       />
+      <ExportPdfButton className="ActionListItem" />
       <div className="ActionListItem">
         <AuthSection />
       </div>

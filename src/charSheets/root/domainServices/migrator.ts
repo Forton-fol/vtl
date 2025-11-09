@@ -187,5 +187,16 @@ export function migrate(charSheetSrc: any): unknown {
       time: 0,
     };
   }
+  if (charSheet.Version === "0.7.0") {
+    charSheet.Version = "0.7.1";
+    // Добавляем поле bruise в health
+    if (!charSheet.Charsheet.health.hasOwnProperty('bruise')) {
+      charSheet.Charsheet.health.bruise = 0;
+    }
+    // Добавляем поле bruise в healthChimerical (если существует)
+    if (charSheet.Charsheet.healthChimerical && !charSheet.Charsheet.healthChimerical.hasOwnProperty('bruise')) {
+      charSheet.Charsheet.healthChimerical.bruise = 0;
+    }
+  }
   return charSheet;
 }
