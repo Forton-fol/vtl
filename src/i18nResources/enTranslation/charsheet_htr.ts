@@ -11,6 +11,7 @@ export const charsheet_htr = {
     remove: "Remove edge",
     namePlaceholder: "Edge name",
     selectCreed: "Select creed",
+    selectName: "Select edge",
     triggerPlaceholder: "Trigger",
   },
   status: {

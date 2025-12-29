@@ -102,6 +102,7 @@ export const edgeCreedOptionsRu = [
   "Рвение",
   "Защита",
   "Суд",
+  "Мщение",
 ];
 
 export const edgeCreedOptionsEn = [
@@ -114,7 +115,35 @@ export const edgeCreedOptionsEn = [
   "Zeal",
   "Defense",
   "Judgment",
+  "Vengeance",
 ];
+
+// Названия Граней по кредо (Edge Names by Creed)
+export const edgeNamesRu: Record<string, string[]> = {
+  "Милосердие": ["Невинность", "Укрытие", "Озарение", "Противостояние", "Вспышка"],
+  "Невинность": ["Невинность", "Укрытие", "Озарение", "Противостояние", "Вспышка"],
+  "Мученичество": ["Нужда", "Свидетельствование", "Опустошение", "Пожертвование", "Возврат"],
+  "Спасение": ["Уверение", "Умиротворение", "Успокаивание", "Отстранение"],
+  "Прозрение": ["Провидение", "Выявление", "Погружение", "Восстание", "Ожидание"],
+  "Провидение": ["Провидение", "Выявление", "Погружение", "Восстание", "Ожидание"],
+  "Рвение": ["Защита", "Ограждение", "Обеление", "Защита", "Ожог"],
+  "Защита": ["Защита", "Ограждение", "Обеление", "Защита", "Ожог"],
+  "Суд": ["Распознание", "Время", "Баланс", "Пронзание", "Раскрытие"],
+  "Мщение": ["Рассечение", "След", "Чад", "Всплеск"],
+};
+
+export const edgeNamesEn: Record<string, string[]> = {
+  "Mercy": ["Innocence", "Shelter", "Illumination", "Resistance", "Flare"],
+  "Innocence": ["Innocence", "Shelter", "Illumination", "Resistance", "Flare"],
+  "Martyrdom": ["Demand", "Witness", "Ravage", "Donate", "Return"],
+  "Redemption": ["Convinced", "Calm", "Placate", "Sequester"],
+  "Vision": ["Foresee", "Pinpoint", "Delve", "Restore", "Suspend"],
+  "Providence": ["Foresee", "Pinpoint", "Delve", "Restore", "Suspend"],
+  "Zeal": ["Ward", "Rejuvenate", "Cleanse", "Brand", "Champion"],
+  "Defense": ["Ward", "Rejuvenate", "Cleanse", "Brand", "Champion"],
+  "Judgment": ["Discern", "Burden", "Balance", "Pierce", "Expose"],
+  "Vengeance": ["Cleave", "Trail", "Smolder", "Surge"],
+};
 
 // Дополнение (Backgrounds)
 export const backgroundOptionsRu = [

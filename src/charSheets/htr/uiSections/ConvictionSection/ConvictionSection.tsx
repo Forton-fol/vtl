@@ -39,37 +39,17 @@ export function ConvictionSection(props: ConvictionSectionProps): JSX.Element {
 
   return (
     <div className={classnames("ConvictionSection", className)}>
-      <div className="tw-space-y-4">
-        {/* Убеждённость (Conviction) - постоянная */}
-        <div className="tw-flex tw-items-center tw-gap-4">
-          <span className="tw-w-32 tw-font-medium">
-            {t("charsheet.htr.conviction.rating", "Убеждённость")}
-          </span>
-          <RangeInput2
-            max={10}
-            value={conviction}
-            dataContext={null}
-            onClick={onConvictionChange}
-            name="conviction-rating"
-          />
-        </div>
-
-        {/* Убеждённость - временный пул (до 100) */}
-        <div className="tw-flex tw-items-center tw-gap-4">
-          <span className="tw-w-32 tw-font-medium">
-            {t("charsheet.htr.conviction.pool", "Пул")}
-          </span>
-          <Form.Control
-            type="number"
-            size="sm"
-            min={0}
-            max={100}
-            value={convictionPool}
-            onChange={onConvictionPoolChange}
-            className="tw-w-20"
-          />
-          <span className="tw-text-sm tw-text-gray-500">/ 100</span>
-        </div>
+      <div className="tw-flex tw-items-center tw-gap-4">
+        <span className="tw-w-32 tw-font-medium">
+          {t("charsheet.htr.conviction.rating", "Убеждённость")}
+        </span>
+        <RangeInput2
+          max={10}
+          value={conviction}
+          dataContext={null}
+          onClick={onConvictionChange}
+          name="conviction-rating"
+        />
       </div>
     </div>
   );

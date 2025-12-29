@@ -5,7 +5,12 @@ import classnames from "classnames";
 
 import { RangeInput2 } from "../../../generic/uiPrimitives/RangeInput2";
 import { EdgesService } from "../../application/ports";
-import { edgeCreedOptionsRu, edgeCreedOptionsEn } from "../../dropdownContent/resources/optionsSources";
+import { 
+  edgeCreedOptionsRu, 
+  edgeCreedOptionsEn,
+  edgeNamesRu,
+  edgeNamesEn,
+} from "../../dropdownContent/resources/optionsSources";
 
 import "./EdgesSection.css";
 
@@ -26,10 +31,17 @@ export function EdgesSection(props: EdgesSectionProps): JSX.Element {
     setEdgeTrigger,
   } = props;
 
-  const creedOptions = i18n.language === "ru" ? edgeCreedOptionsRu : edgeCreedOptionsEn;
+  const isRu = i18n.language === "ru";
+  const creedOptions = isRu ? edgeCreedOptionsRu : edgeCreedOptionsEn;
+  const edgeNames = isRu ? edgeNamesRu : edgeNamesEn;
+
+  const getEdgeNameOptions = (creed: string): string[] => {
+    if (!creed) return [];
+    return edgeNames[creed] || [];
+  };
 
   const onNameChange = useCallback(
-    (index: number) => (e: ChangeEvent<HTMLInputElement>) => {
+    (index: number) => (e: ChangeEvent<HTMLSelectElement>) => {
       setEdgeName(index, e.target.value);
     },
     [setEdgeName]
@@ -72,13 +84,19 @@ export function EdgesSection(props: EdgesSectionProps): JSX.Element {
           {edges.map((edge, index) => (
             <tr key={index} className="tw-border-b tw-border-gray-200">
               <td className="tw-py-1 tw-pr-2">
-                <Form.Control
-                  type="text"
+                <Form.Select
                   size="sm"
                   value={edge.name}
                   onChange={onNameChange(index)}
-                  placeholder={t("charsheet.htr.edges.namePlaceholder", "Название грани")}
-                />
+                  disabled={!edge.creed}
+                >
+                  <option value="">{t("charsheet.htr.edges.selectName", "Выберите грань")}</option>
+                  {getEdgeNameOptions(edge.creed).map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </Form.Select>
               </td>
               <td className="tw-py-1 tw-pr-2">
                 <Form.Select

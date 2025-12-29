@@ -63,99 +63,51 @@ export function VirtuesSection(props: VirtuesSectionProps): JSX.Element {
 
   return (
     <div className={classnames("VirtuesSection", className)}>
-      <div className="tw-space-y-3">
+      <div className="tw-flex tw-gap-8">
         {/* Милосердие (Mercy) */}
-        <div className="tw-flex tw-items-center tw-gap-4">
-          <span className="tw-w-28 tw-font-medium">
+        <div className="tw-flex tw-flex-col tw-items-center">
+          <span className="tw-font-medium tw-mb-2">
             {t("charsheet.htr.virtues.mercy", "Милосердие")}
           </span>
-          <div className="tw-flex tw-items-center tw-gap-2">
-            <span className="tw-text-xs tw-text-gray-500">
-              {t("charsheet.htr.virtues.base", "Базовое")}
-            </span>
+          <div className="VirtuesSection__column">
             <RangeInput2
-              max={5}
+              max={10}
               value={mercyBase}
               dataContext={null}
               onClick={onMercyBaseChange}
               name="mercy-base"
             />
           </div>
-          <div className="tw-flex tw-items-center tw-gap-2">
-            <span className="tw-text-xs tw-text-gray-500">
-              {t("charsheet.htr.virtues.temp", "Временное")}
-            </span>
-            <RangeInput2
-              max={5}
-              value={mercyTemp}
-              dataContext={null}
-              onClick={onMercyTempChange}
-              name="mercy-temp"
-              variant="square"
-            />
-          </div>
         </div>
 
         {/* Прозрение (Vision) */}
-        <div className="tw-flex tw-items-center tw-gap-4">
-          <span className="tw-w-28 tw-font-medium">
+        <div className="tw-flex tw-flex-col tw-items-center">
+          <span className="tw-font-medium tw-mb-2">
             {t("charsheet.htr.virtues.vision", "Прозрение")}
           </span>
-          <div className="tw-flex tw-items-center tw-gap-2">
-            <span className="tw-text-xs tw-text-gray-500">
-              {t("charsheet.htr.virtues.base", "Базовое")}
-            </span>
+          <div className="VirtuesSection__column">
             <RangeInput2
-              max={5}
+              max={10}
               value={visionBase}
               dataContext={null}
               onClick={onVisionBaseChange}
               name="vision-base"
             />
           </div>
-          <div className="tw-flex tw-items-center tw-gap-2">
-            <span className="tw-text-xs tw-text-gray-500">
-              {t("charsheet.htr.virtues.temp", "Временное")}
-            </span>
-            <RangeInput2
-              max={5}
-              value={visionTemp}
-              dataContext={null}
-              onClick={onVisionTempChange}
-              name="vision-temp"
-              variant="square"
-            />
-          </div>
         </div>
 
         {/* Рвение (Zeal) */}
-        <div className="tw-flex tw-items-center tw-gap-4">
-          <span className="tw-w-28 tw-font-medium">
+        <div className="tw-flex tw-flex-col tw-items-center">
+          <span className="tw-font-medium tw-mb-2">
             {t("charsheet.htr.virtues.zeal", "Рвение")}
           </span>
-          <div className="tw-flex tw-items-center tw-gap-2">
-            <span className="tw-text-xs tw-text-gray-500">
-              {t("charsheet.htr.virtues.base", "Базовое")}
-            </span>
+          <div className="VirtuesSection__column">
             <RangeInput2
-              max={5}
+              max={10}
               value={zealBase}
               dataContext={null}
               onClick={onZealBaseChange}
               name="zeal-base"
-            />
-          </div>
-          <div className="tw-flex tw-items-center tw-gap-2">
-            <span className="tw-text-xs tw-text-gray-500">
-              {t("charsheet.htr.virtues.temp", "Временное")}
-            </span>
-            <RangeInput2
-              max={5}
-              value={zealTemp}
-              dataContext={null}
-              onClick={onZealTempChange}
-              name="zeal-temp"
-              variant="square"
             />
           </div>
         </div>

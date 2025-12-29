@@ -1,3 +1,9 @@
 .VirtuesSection {
   /* Add custom styles if needed */
 }
+
+.VirtuesSection__column .RangeInput2 > div {
+  display: inline-grid !important;
+  grid-template-columns: 1rem !important;
+  grid-template-rows: repeat(10, 1.25rem) !important;
+}

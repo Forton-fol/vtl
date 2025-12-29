@@ -57,7 +57,7 @@ export function CharSheet(props: CharSheetProps): JSX.Element {
         <SectionHeader className="tw-mb-3">
           {t("charsheet.advantages.header")}
         </SectionHeader>
-        <AdvantagesSection className="tw-mb-3" {...edgesService} />
+        <AdvantagesSection className="tw-mb-3" {...edgesService} {...virtuesService} />
 
         <SectionHeader className="tw-mb-3">
           {t("charsheet.status.header")}

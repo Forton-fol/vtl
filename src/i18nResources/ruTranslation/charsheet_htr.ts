@@ -11,6 +11,7 @@ export const charsheet_htr = {
     remove: "Удалить грань",
     namePlaceholder: "Название грани",
     selectCreed: "Выберите кредо",
+    selectName: "Выберите грань",
     triggerPlaceholder: "Триггер",
   },
   status: {
