@@ -69,14 +69,26 @@ export function VirtuesSection(props: VirtuesSectionProps): JSX.Element {
           <span className="tw-font-medium tw-mb-2">
             {t("charsheet.htr.virtues.mercy", "Милосердие")}
           </span>
-          <div className="VirtuesSection__column">
-            <RangeInput2
-              max={10}
-              value={mercyBase}
-              dataContext={null}
-              onClick={onMercyBaseChange}
-              name="mercy-base"
-            />
+          <div className="tw-flex tw-gap-1">
+            <div className="VirtuesSection__column">
+              <RangeInput2
+                max={10}
+                value={mercyBase}
+                dataContext={null}
+                onClick={onMercyBaseChange}
+                name="mercy-base"
+              />
+            </div>
+            <div className="VirtuesSection__column">
+              <RangeInput2
+                max={10}
+                value={mercyTemp}
+                dataContext={null}
+                onClick={onMercyTempChange}
+                name="mercy-temp"
+                variant="square"
+              />
+            </div>
           </div>
         </div>
 
@@ -85,14 +97,26 @@ export function VirtuesSection(props: VirtuesSectionProps): JSX.Element {
           <span className="tw-font-medium tw-mb-2">
             {t("charsheet.htr.virtues.vision", "Прозрение")}
           </span>
-          <div className="VirtuesSection__column">
-            <RangeInput2
-              max={10}
-              value={visionBase}
-              dataContext={null}
-              onClick={onVisionBaseChange}
-              name="vision-base"
-            />
+          <div className="tw-flex tw-gap-1">
+            <div className="VirtuesSection__column">
+              <RangeInput2
+                max={10}
+                value={visionBase}
+                dataContext={null}
+                onClick={onVisionBaseChange}
+                name="vision-base"
+              />
+            </div>
+            <div className="VirtuesSection__column">
+              <RangeInput2
+                max={10}
+                value={visionTemp}
+                dataContext={null}
+                onClick={onVisionTempChange}
+                name="vision-temp"
+                variant="square"
+              />
+            </div>
           </div>
         </div>
 
@@ -101,14 +125,26 @@ export function VirtuesSection(props: VirtuesSectionProps): JSX.Element {
           <span className="tw-font-medium tw-mb-2">
             {t("charsheet.htr.virtues.zeal", "Рвение")}
           </span>
-          <div className="VirtuesSection__column">
-            <RangeInput2
-              max={10}
-              value={zealBase}
-              dataContext={null}
-              onClick={onZealBaseChange}
-              name="zeal-base"
-            />
+          <div className="tw-flex tw-gap-1">
+            <div className="VirtuesSection__column">
+              <RangeInput2
+                max={10}
+                value={zealBase}
+                dataContext={null}
+                onClick={onZealBaseChange}
+                name="zeal-base"
+              />
+            </div>
+            <div className="VirtuesSection__column">
+              <RangeInput2
+                max={10}
+                value={zealTemp}
+                dataContext={null}
+                onClick={onZealTempChange}
+                name="zeal-temp"
+                variant="square"
+              />
+            </div>
           </div>
         </div>
       </div>

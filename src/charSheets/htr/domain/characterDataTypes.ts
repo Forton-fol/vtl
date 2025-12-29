@@ -28,8 +28,9 @@ export interface HTRState extends CommonState {
 
 // Грани (Edges)
 export interface Edge {
-  name: string;
-  creed: string;
+  edge: string;   // Грань (Милосердие/Прозрение/Рвение)
+  creed: string;  // Кредо (зависит от грани)
+  name: string;   // Название способности
   level: number;
   trigger: string;
 }

@@ -66,4 +66,8 @@ export const initialHTRAbilities: HTRAbilities = {
   cunning: 0,
   security: 0,
   fencing: 0,
+  demolitions: 0,
+  bureaucracy: 0,
+  linguistics: 0,
+  research: 0,
 };

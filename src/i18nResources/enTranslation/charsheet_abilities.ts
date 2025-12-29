@@ -67,4 +67,6 @@ export const abilities = {
   intuition: "Intuition",
   cunning: "Cunning",
   fencing: "Fencing",
+  demolitions: "Demolitions",
+  bureaucracy: "Bureaucracy",
 };

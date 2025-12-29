@@ -10,4 +10,10 @@ export interface HTRAbilities extends CommonAbilities {
   // Навыки (дополнительные)
   security: number; // Безопасность
   fencing: number; // Фехтование
+  demolitions: number; // Взрывчатка
+
+  // Знания (дополнительные)
+  bureaucracy: number; // Бюрократия
+  linguistics: number; // Лингвистика
+  research: number; // Поиск
 }

@@ -9,6 +9,7 @@ export function useEdges(): EdgesService {
       "edges",
       "addEdge",
       "removeEdge",
+      "setEdgeEdge",
       "setEdgeName",
       "setEdgeCreed",
       "setEdgeLevel",

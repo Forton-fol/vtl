@@ -55,28 +55,31 @@ export const archetypeOptionsEn = [
   "Trickster",
 ];
 
-// Кредо (Creed)
-export const creedOptionsRu = [
-  "Защита",
-  "Мученичество",
-  "Мщение",
-  "Невинность",
+// Грани (Edges) - основные категории
+export const edgeOptionsRu = [
+  "Милосердие",
   "Прозрение",
-  "Спасение",
-  "Интуиция",
-  "Суд",
+  "Рвение",
 ];
 
-export const creedOptionsEn = [
-  "Defense",
-  "Martyrdom",
-  "Vengeance",
-  "Innocence",
+export const edgeOptionsEn = [
+  "Mercy",
   "Vision",
-  "Redemption",
-  "Intuition",
-  "Judgment",
+  "Zeal",
 ];
+
+// Кредо по Граням (Creeds by Edge)
+export const creedByEdgeRu: Record<string, string[]> = {
+  "Милосердие": ["Невинность", "Мученичество", "Спасение"],
+  "Прозрение": ["Провидчество"],
+  "Рвение": ["Защита", "Суд", "Мщение"],
+};
+
+export const creedByEdgeEn: Record<string, string[]> = {
+  "Mercy": ["Innocence", "Martyrdom", "Redemption"],
+  "Vision": ["Providence"],
+  "Zeal": ["Defense", "Judgment", "Vengeance"],
+};
 
 // Начальные добродетели (Starting Virtues)
 export const startingVirtueOptionsRu = [
@@ -91,58 +94,25 @@ export const startingVirtueOptionsEn = [
   "Zeal",
 ];
 
-// Кредо для Граней (Edge Creeds)
-export const edgeCreedOptionsRu = [
-  "Милосердие",
-  "Невинность",
-  "Мученичество",
-  "Спасение",
-  "Прозрение",
-  "Провидение",
-  "Рвение",
-  "Защита",
-  "Суд",
-  "Мщение",
-];
-
-export const edgeCreedOptionsEn = [
-  "Mercy",
-  "Innocence",
-  "Martyrdom",
-  "Redemption",
-  "Vision",
-  "Providence",
-  "Zeal",
-  "Defense",
-  "Judgment",
-  "Vengeance",
-];
-
-// Названия Граней по кредо (Edge Names by Creed)
-export const edgeNamesRu: Record<string, string[]> = {
-  "Милосердие": ["Невинность", "Укрытие", "Озарение", "Противостояние", "Вспышка"],
-  "Невинность": ["Невинность", "Укрытие", "Озарение", "Противостояние", "Вспышка"],
+// Названия способностей Граней по Кредо (Edge Power Names by Creed)
+export const edgePowerNamesRu: Record<string, string[]> = {
+  "Невинность": ["Укрытие", "Озарение", "Призыв", "Засада", "Вспышка"],
   "Мученичество": ["Нужда", "Свидетельствование", "Опустошение", "Пожертвование", "Возврат"],
-  "Спасение": ["Уверение", "Умиротворение", "Успокаивание", "Отстранение"],
-  "Прозрение": ["Провидение", "Выявление", "Погружение", "Восстание", "Ожидание"],
-  "Провидение": ["Провидение", "Выявление", "Погружение", "Восстание", "Ожидание"],
-  "Рвение": ["Защита", "Ограждение", "Обеление", "Защита", "Ожог"],
-  "Защита": ["Защита", "Ограждение", "Обеление", "Защита", "Ожог"],
-  "Суд": ["Распознание", "Время", "Баланс", "Пронзание", "Раскрытие"],
-  "Мщение": ["Рассечение", "След", "Чад", "Всплеск"],
+  "Спасение": ["Уверение", "Умиротворение", "Успокаивание", "Отстранение", "Связь"],
+  "Провидчество": ["Провидение", "Выявление", "Погружение", "Восстание", "Ожидание"],
+  "Защита": ["Защита", "Ограждение", "Обеление", "Клеймо", "Чемпион"],
+  "Суд": ["Распознание", "Бремя", "Баланс", "Пронзание", "Раскрытие"],
+  "Мщение": ["Рассечение", "След", "Чад", "Всплеск", "Истребление"],
 };
 
-export const edgeNamesEn: Record<string, string[]> = {
-  "Mercy": ["Innocence", "Shelter", "Illumination", "Resistance", "Flare"],
-  "Innocence": ["Innocence", "Shelter", "Illumination", "Resistance", "Flare"],
+export const edgePowerNamesEn: Record<string, string[]> = {
+  "Innocence": ["Shelter", "Illumination", "Summon", "Ambush", "Flare"],
   "Martyrdom": ["Demand", "Witness", "Ravage", "Donate", "Return"],
-  "Redemption": ["Convinced", "Calm", "Placate", "Sequester"],
-  "Vision": ["Foresee", "Pinpoint", "Delve", "Restore", "Suspend"],
+  "Redemption": ["Convinced", "Calm", "Placate", "Sequester", "Bond"],
   "Providence": ["Foresee", "Pinpoint", "Delve", "Restore", "Suspend"],
-  "Zeal": ["Ward", "Rejuvenate", "Cleanse", "Brand", "Champion"],
   "Defense": ["Ward", "Rejuvenate", "Cleanse", "Brand", "Champion"],
   "Judgment": ["Discern", "Burden", "Balance", "Pierce", "Expose"],
-  "Vengeance": ["Cleave", "Trail", "Smolder", "Surge"],
+  "Vengeance": ["Cleave", "Trail", "Smolder", "Surge", "Destroy"],
 };
 
 // Дополнение (Backgrounds)

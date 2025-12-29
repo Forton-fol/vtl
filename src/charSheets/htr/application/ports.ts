@@ -7,6 +7,7 @@ export interface EdgesService {
   edges: Edges;
   addEdge(): void;
   removeEdge(index: number): void;
+  setEdgeEdge(index: number, edge: string): void;
   setEdgeName(index: number, name: string): void;
   setEdgeCreed(index: number, creed: string): void;
   setEdgeLevel(index: number, level: number): void;

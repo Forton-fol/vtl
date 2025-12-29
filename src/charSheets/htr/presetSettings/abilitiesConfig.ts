@@ -4,7 +4,7 @@ import { CommonAbilities } from "../../generic/domain";
 
 type AbilitiesT = keyof CommonAbilities | keyof HTRAbilities;
 
-// Таланты
+// Таланты (согласно PDF Hunter: The Reckoning)
 export const talentsArr: AbilitiesT[] = [
   "alertness",     // Бдительность
   "athletics",     // Атлетика
@@ -20,11 +20,11 @@ export const talentsArr: AbilitiesT[] = [
   "cunning",       // Хитрость
 ];
 
-// Навыки
+// Навыки (согласно PDF Hunter: The Reckoning)
 export const skillsArr: AbilitiesT[] = [
   "animalken",     // Знание животных
   "crafts",        // Ремесла
-  "computer",      // Вычислитель
+  "demolitions",   // Взрывчатка
   "drive",         // Вождение
   "etiquette",     // Этикет
   "firearms",      // Стрельба
@@ -36,18 +36,20 @@ export const skillsArr: AbilitiesT[] = [
   "technology",    // Технология
 ];
 
-// Знания
+// Знания (согласно PDF Hunter: The Reckoning)
 export const knowledgesArr: AbilitiesT[] = [
   "academics",     // Академическая
+  "bureaucracy",   // Бюрократия
   "computer",      // Компьютер
   "finance",       // Финансы
   "investigation", // Расследование
   "law",           // Закон
+  "linguistics",   // Лингвистика
   "medicine",      // Медицина
   "occult",        // Оккультизм
   "politics",      // Политика
+  "research",      // Поиск
   "science",       // Наука
-  "technology",    // Технология
 ];
 
 export const abilitiesConfig: AbilitiesConfig = [

@@ -60,6 +60,8 @@ const abilitiesProps: Record<keyof Abilities, { type: "number" }> = {
   intuition: { type: "number" },
   cunning: { type: "number" },
   fencing: { type: "number" },
+  demolitions: { type: "number" },
+  bureaucracy: { type: "number" },
 };
 
 export const abilitiesSchema: JSONSchemaType<Abilities> = {

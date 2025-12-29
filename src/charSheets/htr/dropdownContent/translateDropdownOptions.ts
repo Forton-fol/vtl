@@ -2,8 +2,8 @@ import { StateStore } from "../../root/services/store";
 import {
   archetypeOptionsRu,
   archetypeOptionsEn,
-  creedOptionsRu,
-  creedOptionsEn,
+  edgeOptionsRu,
+  edgeOptionsEn,
 } from "./resources/optionsSources";
 
 function translateValue(
@@ -28,8 +28,8 @@ export function translateDropdownOptions(
   const fromArchetypes = prevLanguage === "ru" ? archetypeOptionsRu : archetypeOptionsEn;
   const toArchetypes = lng === "ru" ? archetypeOptionsRu : archetypeOptionsEn;
 
-  const fromCreeds = prevLanguage === "ru" ? creedOptionsRu : creedOptionsEn;
-  const toCreeds = lng === "ru" ? creedOptionsRu : creedOptionsEn;
+  const fromEdges = prevLanguage === "ru" ? edgeOptionsRu : edgeOptionsEn;
+  const toEdges = lng === "ru" ? edgeOptionsRu : edgeOptionsEn;
 
   // Translate nature
   if (profile.nature) {
@@ -47,11 +47,11 @@ export function translateDropdownOptions(
     }
   }
 
-  // Translate creed
-  if ((profile as any).creed) {
-    const translated = translateValue((profile as any).creed, fromCreeds, toCreeds);
-    if (translated !== (profile as any).creed) {
-      setProfileItem("creed" as any, translated);
+  // Translate starting virtue (edge)
+  if ((profile as any).startingVirtue) {
+    const translated = translateValue((profile as any).startingVirtue, fromEdges, toEdges);
+    if (translated !== (profile as any).startingVirtue) {
+      setProfileItem("startingVirtue" as any, translated);
     }
   }
 }

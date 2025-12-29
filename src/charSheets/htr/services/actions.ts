@@ -14,13 +14,21 @@ export const htrActions: ServiceToActions<CombinedHTRService> = {
   // Edges
   addEdge(state: CharSheet): CharSheet {
     const edges = ((state as any).edges || []) as Edge[];
-    const newEdge: Edge = { name: "", creed: "", level: 0, trigger: "" };
+    const newEdge: Edge = { edge: "", creed: "", name: "", level: 0, trigger: "" };
     return mutateObj(state, "edges" as any, [...edges, newEdge]);
   },
 
   removeEdge(state: CharSheet, [index]: [number]): CharSheet {
     const edges = ((state as any).edges || []) as Edge[];
     const newEdges = edges.filter((_, i) => i !== index);
+    return mutateObj(state, "edges" as any, newEdges);
+  },
+
+  setEdgeEdge(state: CharSheet, [index, edge]: [number, string]): CharSheet {
+    const edges = ((state as any).edges || []) as Edge[];
+    const newEdges = edges.map((e, i) =>
+      i === index ? { ...e, edge, creed: "", name: "" } : e
+    );
     return mutateObj(state, "edges" as any, newEdges);
   },
 
@@ -35,7 +43,7 @@ export const htrActions: ServiceToActions<CombinedHTRService> = {
   setEdgeCreed(state: CharSheet, [index, creed]: [number, string]): CharSheet {
     const edges = ((state as any).edges || []) as Edge[];
     const newEdges = edges.map((edge, i) =>
-      i === index ? { ...edge, creed } : edge
+      i === index ? { ...edge, creed, name: "" } : edge
     );
     return mutateObj(state, "edges" as any, newEdges);
   },

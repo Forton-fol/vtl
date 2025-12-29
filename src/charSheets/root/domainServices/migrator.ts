@@ -250,5 +250,22 @@ export function migrate(charSheetSrc: any): unknown {
       charSheet.Charsheet.state.convictionPool = 0;
     }
   }
+  if (charSheet.Version === "0.8.0") {
+    charSheet.Version = "0.8.1";
+    // HTR: добавляем новые способности
+    if (!charSheet.Charsheet.abilities.hasOwnProperty('demolitions')) {
+      charSheet.Charsheet.abilities.demolitions = 0;
+    }
+    if (!charSheet.Charsheet.abilities.hasOwnProperty('bureaucracy')) {
+      charSheet.Charsheet.abilities.bureaucracy = 0;
+    }
+    // HTR: добавляем поле edge в каждую грань
+    if (charSheet.Charsheet.edges && Array.isArray(charSheet.Charsheet.edges)) {
+      charSheet.Charsheet.edges = charSheet.Charsheet.edges.map((e: any) => ({
+        ...e,
+        edge: e.edge || "",
+      }));
+    }
+  }
   return charSheet;
 }

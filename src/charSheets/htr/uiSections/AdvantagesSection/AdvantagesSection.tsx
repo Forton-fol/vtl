@@ -17,6 +17,7 @@ export function AdvantagesSection(props: AdvantagesSectionProps): JSX.Element {
     edges,
     addEdge,
     removeEdge,
+    setEdgeEdge,
     setEdgeName,
     setEdgeCreed,
     setEdgeLevel,
@@ -24,7 +25,7 @@ export function AdvantagesSection(props: AdvantagesSectionProps): JSX.Element {
     ...virtuesProps
   } = props;
 
-  const edgesProps = { edges, addEdge, removeEdge, setEdgeName, setEdgeCreed, setEdgeLevel, setEdgeTrigger };
+  const edgesProps = { edges, addEdge, removeEdge, setEdgeEdge, setEdgeName, setEdgeCreed, setEdgeLevel, setEdgeTrigger };
 
   return (
     <div className={classnames("AdvantagesSection", className)}>

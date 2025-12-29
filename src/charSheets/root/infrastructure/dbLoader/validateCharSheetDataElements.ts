@@ -350,12 +350,13 @@ export const spheresSchema: JSONSchemaType<Spheres> = {
 const edgeSchema: JSONSchemaType<Edge> = {
   type: "object",
   properties: {
-    name: { type: "string" },
+    edge: { type: "string" },
     creed: { type: "string" },
+    name: { type: "string" },
     level: { type: "number" },
     trigger: { type: "string" },
   },
-  required: ["name", "creed", "level", "trigger"],
+  required: ["edge", "creed", "name", "level", "trigger"],
   additionalProperties: false,
 };
 

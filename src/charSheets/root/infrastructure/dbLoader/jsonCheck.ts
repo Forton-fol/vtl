@@ -108,6 +108,8 @@ export const m: CharSheetInJson = {
       intuition: 0,
       cunning: 0,
       fencing: 0,
+      demolitions: 0,
+      bureaucracy: 0,
     },
     abilitiesExtension: {
       talentName1: "",
