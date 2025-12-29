@@ -20,6 +20,7 @@ import { Settings, Version } from "../../misc/domain";
 import { Disciplines, DisciplinePaths, Rituals } from "../../vtm/domain";
 import { NuminaAndOtherTraits } from "../../hh2/domain";
 import { Spheres } from "../../mta/domain";
+import { Edges } from "../../htr/domain";
 
 import { Profile, State, Abilities, PresetName } from "./combinedDataTypes";
 
@@ -66,6 +67,10 @@ export interface CharSheet {
 
   // mta
   spheres: Spheres;
+
+  // htr
+  edges: Edges;
+
   // custom dot attachments: disciplineIndex -> dotIndex -> { kind: 'link'|'text', content }
   customDotData?: Record<string, Record<string, { kind: "link" | "text"; content: string }>>;
 }

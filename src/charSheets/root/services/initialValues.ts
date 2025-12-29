@@ -52,6 +52,12 @@ import {
   initialVtM_V3State,
 } from "../../vtm_v3/services/initialValues";
 import { initialMtAAbilities, initialMtAProfile, initialMtAState, initialSpheres } from "../../mta/services/initialValues";
+import {
+  initialHTRProfile,
+  initialHTRState,
+  initialHTRAbilities,
+  initialEdges,
+} from "../../htr/services/initialValues";
 
 export const initialPreset: PresetName = "vampire_v20";
 
@@ -62,6 +68,7 @@ export const initialProfile: Profile = {
   ...initialHH2Profile,
   ...initialVtM_V3Profile,
   ...initialMtAProfile,
+  ...initialHTRProfile,
 };
 
 export const initialAbilities: Abilities = {
@@ -71,6 +78,7 @@ export const initialAbilities: Abilities = {
   ...initialVtDAAbilities,
   ...initialVtM_V3Abilities,
   ...initialMtAAbilities,
+  ...initialHTRAbilities,
 };
 
 export const initialState: State = {
@@ -79,7 +87,8 @@ export const initialState: State = {
   ...initialHH2State,
   ...initialVtDAState,
   ...initialVtM_V3State,
-  ...initialMtAState
+  ...initialMtAState,
+  ...initialHTRState,
 };
 
 export const initialCharSheet: CharSheet = {
@@ -115,5 +124,6 @@ export const initialCharSheet: CharSheet = {
   realms: initialRealms,
 
   numinaAndOtherTraits: initialNuminaAndOtherTraits,
+  edges: initialEdges,
   customDotData: {},
 };

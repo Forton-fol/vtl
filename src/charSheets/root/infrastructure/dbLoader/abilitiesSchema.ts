@@ -55,6 +55,11 @@ const abilitiesProps: Record<keyof Abilities, { type: "number" }> = {
   research: { type: "number" },
   cosmology: { type: "number" },
   esoterica: { type: "number" },
+
+  // HTR
+  intuition: { type: "number" },
+  cunning: { type: "number" },
+  fencing: { type: "number" },
 };
 
 export const abilitiesSchema: JSONSchemaType<Abilities> = {

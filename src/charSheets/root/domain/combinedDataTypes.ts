@@ -40,6 +40,13 @@ import {
   MtAProfile,
   MtAState,
 } from "../../mta/domain";
+import {
+  HTRAbilities,
+  HTRFreebiePointName,
+  HTRPresetName,
+  HTRProfile,
+  HTRState,
+} from "../../htr/domain";
 
 // Profile
 export interface Profile
@@ -48,7 +55,8 @@ export interface Profile
     HH2Profile,
     VtDAProfile,
     VtM_V3Profile,
-    MtAProfile {}
+    MtAProfile,
+    HTRProfile {}
 
 export interface State
   extends VtMState,
@@ -56,7 +64,8 @@ export interface State
     HH2State,
     VtDAState,
     VtM_V3State,
-    MtAState {}
+    MtAState,
+    HTRState {}
 
 export interface Abilities
   extends VtMAbilities,
@@ -64,7 +73,8 @@ export interface Abilities
     HH2Abilities,
     VtDAAbilities,
     VtM_V3Abilities,
-    MtAAbilities {}
+    MtAAbilities,
+    HTRAbilities {}
 
 export type PresetName =
   | VtMPresetName
@@ -72,7 +82,8 @@ export type PresetName =
   | HH2PresetName
   | VtDAPresetName
   | VtM_V3PresetName
-  | MtAPresetName;
+  | MtAPresetName
+  | HTRPresetName;
 
 export type FreebiePointName =
   | CommonFreebiePointName
@@ -80,4 +91,5 @@ export type FreebiePointName =
   | CtDFreebiePointName
   | HH2FreebiePointName
   | VtDAFreebiePointName
-  | MtAFreebiePointName;
+  | MtAFreebiePointName
+  | HTRFreebiePointName;

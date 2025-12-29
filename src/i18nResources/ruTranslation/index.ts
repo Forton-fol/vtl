@@ -10,6 +10,7 @@ import { about } from "./about";
 import { instruction } from "./instruction";
 import { register } from "./register";
 import { library } from "./library";
+import { charsheet_htr } from "./charsheet_htr";
 
 export const ruTranslation = {
   about,
@@ -52,7 +53,9 @@ export const ruTranslation = {
       hunter_v20: "Охота на охотников II. V20",
       vampire_v3_revised: "Вампиры: Маскарад. V3 Revised",
       mage_v20: "Маги: Восхождение. V20",
+      hunter_reckoning: "Охотники: Расплата",
     },
+    htr: charsheet_htr,
     profile,
     attributes,
     abilities,

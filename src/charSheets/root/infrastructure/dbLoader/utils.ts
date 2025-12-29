@@ -38,6 +38,7 @@ export function charSheetToJson(charSheet: CharSheet): CharSheetInJson {
       possessions: charSheet.possessions,
       numinaAndOtherTraits: charSheet.numinaAndOtherTraits,
       spheres: charSheet.spheres,
+      edges: charSheet.edges,
     },
   };
 }
@@ -74,5 +75,6 @@ export function charSheetFromJson(charSheetInJson: CharSheetInJson): CharSheet {
     possessions: charSheetInJson.Charsheet.possessions,
     numinaAndOtherTraits: charSheetInJson.Charsheet.numinaAndOtherTraits,
     spheres: charSheetInJson.Charsheet.spheres,
+    edges: charSheetInJson.Charsheet.edges || [],
   };
 }

@@ -12,6 +12,7 @@ import { about } from "./about";
 import { instruction } from "./instruction";
 import { register } from "./register";
 import { library } from "./library";
+import { charsheet_htr } from "./charsheet_htr";
 
 type TranslationInfo = typeof ruTranslation;
 
@@ -56,7 +57,9 @@ export const enTranslation: TranslationInfo = {
       hunter_v20: "The Hunters Hunted II. V20",
       vampire_v3_revised: "Vampire: The Masquerade. V3 Revised",
       mage_v20: "Mage: The Ascension. V20",
+      hunter_reckoning: "Hunter: The Reckoning",
     },
+    htr: charsheet_htr,
     profile,
     attributes,
     abilities,

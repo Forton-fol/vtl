@@ -1,6 +1,7 @@
 import Ajv, { JSONSchemaType } from "ajv";
 
 import { Arts, Realms } from "../../../ctd/domain";
+import { Edges, Edge } from "../../../htr/domain";
 import { Disciplines, DisciplinePaths, Rituals } from "../../../vtm/domain";
 import {
   Profile,
@@ -36,6 +37,7 @@ export const presetSchema: JSONSchemaType<PresetName> = {
     "vampire_da_v20",
     "vampire_v3_revised",
     "mage_v20",
+    "hunter_reckoning",
   ],
 };
 
@@ -67,6 +69,11 @@ export const profileSchema: JSONSchemaType<Profile> = {
     affiliation: { type: "string" },
     sect: { type: "string" },
     essence: { type: "string" },
+
+    // HTR
+    creed: { type: "string" },
+    startingVirtue: { type: "string" },
+    startingConviction: { type: "string" },
   },
   required: [
     "name",
@@ -94,6 +101,10 @@ export const profileSchema: JSONSchemaType<Profile> = {
     "affiliation",
     "sect",
     "essence",
+
+    "creed",
+    "startingVirtue",
+    "startingConviction",
   ],
   additionalProperties: false,
 };
@@ -216,6 +227,16 @@ export const stateSchema: JSONSchemaType<State> = {
     arete: { type: "number" },
     quintessence: { type: "number" },
     paradox: { type: "number" },
+
+    // HTR
+    mercyBase: { type: "number" },
+    mercyTemp: { type: "number" },
+    visionBase: { type: "number" },
+    visionTemp: { type: "number" },
+    zealBase: { type: "number" },
+    zealTemp: { type: "number" },
+    conviction: { type: "number" },
+    convictionPool: { type: "number" },
   },
   required: [
     "humanity",
@@ -244,6 +265,14 @@ export const stateSchema: JSONSchemaType<State> = {
     "arete",
     "quintessence",
     "paradox",
+    "mercyBase",
+    "mercyTemp",
+    "visionBase",
+    "visionTemp",
+    "zealBase",
+    "zealTemp",
+    "conviction",
+    "convictionPool",
   ],
   additionalProperties: false,
 };
@@ -316,4 +345,21 @@ export const spheresSchema: JSONSchemaType<Spheres> = {
     "time",
   ],
   additionalProperties: false,
+};
+
+const edgeSchema: JSONSchemaType<Edge> = {
+  type: "object",
+  properties: {
+    name: { type: "string" },
+    creed: { type: "string" },
+    level: { type: "number" },
+    trigger: { type: "string" },
+  },
+  required: ["name", "creed", "level", "trigger"],
+  additionalProperties: false,
+};
+
+export const edgesSchema: JSONSchemaType<Edges> = {
+  type: "array",
+  items: edgeSchema,
 };

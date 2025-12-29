@@ -26,4 +26,9 @@ export const profile = {
   essence: "Essence:",
   affiliation: "Affiliation:",
   sect: "Sect:",
+
+  // HTR
+  creed: "Creed:",
+  startingVirtue: "Starting Virtue:",
+  startingConviction: "Starting Conviction:",
 };

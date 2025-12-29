@@ -36,4 +36,9 @@ export const freebiePoints = {
   spheres: "Сферы ({{cost}})",
   arete: "Арете (Макс. 3) ({{cost}})",
   quintessence: "Квинтэссенция ({{cost}})",
+
+  // htr
+  edges: "Грани ({{cost}})",
+  virtues: "Добродетели ({{cost}})",
+  conviction: "Убеждённость ({{cost}})",
 };

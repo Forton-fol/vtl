@@ -32,6 +32,11 @@ export const m: CharSheetInJson = {
       affiliation: "",
       sect: "",
       essence: "",
+
+      // HTR
+      creed: "",
+      startingVirtue: "",
+      startingConviction: "",
     },
     attributes: {
       strength: 3,
@@ -98,6 +103,11 @@ export const m: CharSheetInJson = {
       research: 0,
       cosmology: 0,
       esoterica: 0,
+
+      // HTR
+      intuition: 0,
+      cunning: 0,
+      fencing: 0,
     },
     abilitiesExtension: {
       talentName1: "",
@@ -158,8 +168,19 @@ export const m: CharSheetInJson = {
       arete: 0,
       quintessence: 0,
       paradox: 0,
+
+      // HTR
+      mercyBase: 0,
+      mercyTemp: 0,
+      visionBase: 0,
+      visionTemp: 0,
+      zealBase: 0,
+      zealTemp: 0,
+      conviction: 0,
+      convictionPool: 0,
     },
     health: {
+      bruise: 0,
       bruised: 0,
       hurt: 2,
       injured: 1,
@@ -169,6 +190,7 @@ export const m: CharSheetInJson = {
       incapacitated: 0,
     },
     healthChimerical: {
+      bruise: 0,
       bruised: 0,
       hurt: 2,
       injured: 1,
@@ -205,6 +227,7 @@ export const m: CharSheetInJson = {
       spirit: 0,
       time: 0,
     },
+    edges: [],
   },
   Settings: {
     backgroundColor: "#ababab",

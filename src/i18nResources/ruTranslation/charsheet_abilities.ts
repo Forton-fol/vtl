@@ -64,4 +64,9 @@ export const abilities = {
   research: "Исследование",
   cosmology: "Космология",
   esoterica: "Эзотерика",
+
+  // HTR
+  intuition: "Интуиция",
+  cunning: "Хитрость",
+  fencing: "Фехтование",
 };

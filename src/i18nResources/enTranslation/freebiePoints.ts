@@ -34,6 +34,11 @@ export const freebiePoints = {
 
   // mta
   spheres: "Spheres ({{cost}})",
-  arete: "Arete (Макс. 3) ({{cost}})",
+  arete: "Arete (Max 3) ({{cost}})",
   quintessence: "Quintessence ({{cost}})",
+
+  // htr
+  edges: "Edges ({{cost}})",
+  virtues: "Virtues ({{cost}})",
+  conviction: "Conviction ({{cost}})",
 };

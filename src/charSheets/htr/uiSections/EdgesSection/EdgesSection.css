@@ -1,0 +1,8 @@
+.EdgesSection table {
+  border-spacing: 0;
+}
+
+.EdgesSection th,
+.EdgesSection td {
+  vertical-align: middle;
+}
