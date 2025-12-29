@@ -198,5 +198,57 @@ export function migrate(charSheetSrc: any): unknown {
       charSheet.Charsheet.healthChimerical.bruise = 0;
     }
   }
+  if (charSheet.Version === "0.7.1") {
+    charSheet.Version = "0.8.0";
+    // HTR: добавляем edges
+    if (!charSheet.Charsheet.edges) {
+      charSheet.Charsheet.edges = [];
+    }
+    // HTR: добавляем поля профиля
+    if (!charSheet.Charsheet.profile.hasOwnProperty('creed')) {
+      charSheet.Charsheet.profile.creed = "";
+    }
+    if (!charSheet.Charsheet.profile.hasOwnProperty('startingVirtue')) {
+      charSheet.Charsheet.profile.startingVirtue = "";
+    }
+    if (!charSheet.Charsheet.profile.hasOwnProperty('startingConviction')) {
+      charSheet.Charsheet.profile.startingConviction = "";
+    }
+    // HTR: добавляем способности
+    if (!charSheet.Charsheet.abilities.hasOwnProperty('intuition')) {
+      charSheet.Charsheet.abilities.intuition = 0;
+    }
+    if (!charSheet.Charsheet.abilities.hasOwnProperty('cunning')) {
+      charSheet.Charsheet.abilities.cunning = 0;
+    }
+    if (!charSheet.Charsheet.abilities.hasOwnProperty('fencing')) {
+      charSheet.Charsheet.abilities.fencing = 0;
+    }
+    // HTR: добавляем состояние (virtues и conviction)
+    if (!charSheet.Charsheet.state.hasOwnProperty('mercyBase')) {
+      charSheet.Charsheet.state.mercyBase = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('mercyTemp')) {
+      charSheet.Charsheet.state.mercyTemp = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('visionBase')) {
+      charSheet.Charsheet.state.visionBase = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('visionTemp')) {
+      charSheet.Charsheet.state.visionTemp = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('zealBase')) {
+      charSheet.Charsheet.state.zealBase = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('zealTemp')) {
+      charSheet.Charsheet.state.zealTemp = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('conviction')) {
+      charSheet.Charsheet.state.conviction = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('convictionPool')) {
+      charSheet.Charsheet.state.convictionPool = 0;
+    }
+  }
   return charSheet;
 }
