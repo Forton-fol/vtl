@@ -14,7 +14,7 @@ export const initialHTRProfile: HTRProfile = {
 
 export const initialHTRState: HTRState = {
   willpowerRating: 3,
-  willpowerPool: 3,
+  willpowerPool: 0,
   experience: "",
   mercyBase: 0,
   mercyTemp: 0,
