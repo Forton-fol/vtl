@@ -9,6 +9,7 @@ import classnames from "classnames";
 
 import { initialCharSheet } from "../../../../charSheets/root/services/initialValues";
 import { CharSheetStorageService } from "../../../../charSheets/root/application/ports";
+import { generateSheetId } from "../../../../lib/miscUtils";
 
 interface CreateDatabaseButtonProps extends CharSheetStorageService {
   className?: string;
@@ -21,7 +22,9 @@ export function CreateDatabaseButton(props: CreateDatabaseButtonProps) {
   const { setCharSheet, className } = props;
 
   function setEmptyCharSheet() {
-    setCharSheet(R.clone(initialCharSheet));
+    const newSheet = R.clone(initialCharSheet);
+    newSheet.sheetId = generateSheetId(); // каждый новый лист получает уникальный ID
+    setCharSheet(newSheet);
   }
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {

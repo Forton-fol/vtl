@@ -9,6 +9,7 @@ import {
   CharSheetStorageService,
   ErrorDescriptionService,
 } from "../../../../charSheets/root/application/ports";
+import { generateSheetId } from "../../../../lib/miscUtils";
 
 // @ts-ignore
 function uploadDatabaseFile(evt): void {
@@ -40,7 +41,9 @@ export function UploadDatabaseButton(
             return;
           }
 
-          setCharSheet(strToCharSheet(databaseStr));
+          const cs = strToCharSheet(databaseStr);
+          cs.sheetId = generateSheetId(); // uploaded file gets a fresh unique ID
+          setCharSheet(cs);
         } catch (error) {
           setErrorDescription({
             title: t("errors.error-on-file-loading"),

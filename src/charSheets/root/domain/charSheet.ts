@@ -75,6 +75,9 @@ export interface CharSheet {
   // demon
   lores: Lores;
 
+  // unique sheet identifier — persists across saves, never changes once assigned
+  sheetId?: string;
+
   // custom dot attachments: disciplineIndex -> dotIndex -> { kind: 'link'|'text', content }
   customDotData?: Record<string, Record<string, { kind: "link" | "text"; content: string }>>;
 }

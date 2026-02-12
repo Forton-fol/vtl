@@ -27,14 +27,17 @@ export function onSyncStatus(listener: SyncStatusListener): () => void {
 }
 
 export function getActiveCharId(): string | null {
+  if (typeof window === 'undefined') return null;
   return localStorage.getItem(ACTIVE_CHAR_KEY);
 }
 
 export function setActiveCharId(id: string) {
+  if (typeof window === 'undefined') return;
   localStorage.setItem(ACTIVE_CHAR_KEY, id);
 }
 
 export function clearActiveCharId() {
+  if (typeof window === 'undefined') return;
   localStorage.removeItem(ACTIVE_CHAR_KEY);
 }
 

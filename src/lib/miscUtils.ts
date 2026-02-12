@@ -27,3 +27,13 @@ export function strToNumber(str: string): number {
   const str2 = str.replace(/\D/g, "");
   return str2 === "" ? 0 : Number(str2);
 }
+
+/** Generate a random alphanumeric ID (e.g. "a3f8k2x9b1") */
+export function generateSheetId(): string {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let id = "";
+  for (let i = 0; i < 12; i++) {
+    id += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return id;
+}

@@ -2,23 +2,30 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/cjs/Button";
 import ListGroup from "react-bootstrap/cjs/ListGroup";
 import { useTranslation } from "react-i18next";
-import { listLibrary, saveToLibrary, removeFromLibrary } from "../../lib/libraryStorage";
+import { listLibrary, saveToLibrary, removeFromLibrary, LibraryEntry } from "../../lib/libraryStorage";
 import { getToken } from "../../api/auth";
 import { listCharacters, saveCharacter, deleteCharacter } from "../../api/characters";
 import { useCharSheetStorage } from "../../charSheets/root/services/storageAdapter";
+import { getCharSheetFromLS, removeCharSheetFromLS } from "../../charSheets/root/infrastructure/lsDbService";
 
 export function CharacterLibraryPage(): JSX.Element {
   const { t } = useTranslation();
   const { setCharSheet, charSheet } = useCharSheetStorage();
 
-  const [entries, setEntries] = useState(() => listLibrary());
+  const [entries, setEntries] = useState<LibraryEntry[]>(() => listLibrary());
   const [serverMode, setServerMode] = useState<boolean>(() => !!getToken());
 
   useEffect(() => {
     if (serverMode) {
       listCharacters().then((res) => {
         if (res && res.characters) {
-          setEntries(res.characters.map((c: any) => ({ id: c.id, name: c.name, preset: c.preset, createdAt: c.created_at, raw: c.data })));
+          setEntries(res.characters.map((c: any) => ({
+            id: c.id,
+            name: c.name,
+            preset: c.preset,
+            createdAt: c.created_at,
+            updatedAt: c.updated_at || c.created_at,
+          })));
         }
       }).catch(() => setEntries([]));
     } else {
@@ -30,22 +37,36 @@ export function CharacterLibraryPage(): JSX.Element {
     if (serverMode) {
       saveCharacter({ name: charSheet.profile.name, preset: charSheet.preset, data: charSheet }).then((res) => {
         if (res && res.character) {
-          setEntries((prev) => [{ id: res.character.id, name: res.character.name, preset: res.character.preset, createdAt: res.character.created_at, raw: res.character.data }, ...prev]);
+          setEntries((prev) => [{
+            id: res.character.id,
+            name: res.character.name,
+            preset: res.character.preset,
+            createdAt: res.character.created_at,
+            updatedAt: res.character.updated_at || res.character.created_at,
+          }, ...prev]);
         }
       });
     } else {
-      const entry = saveToLibrary(charSheet);
-      setEntries((prev) => [entry, ...prev]);
+      saveToLibrary(charSheet);
+      setEntries(listLibrary());
     }
   }
 
   function onLoad(id: string) {
     if (serverMode) {
-      const e = entries.find((el) => el.id === id);
-      if (e) setCharSheet(e.raw);
+      // server mode: fetch from server entries (which include data)
+      listCharacters().then((res) => {
+        if (res && res.characters) {
+          const c = res.characters.find((el: any) => el.id === id);
+          if (c && c.data) setCharSheet(c.data);
+        }
+      });
     } else {
-      const e = listLibrary().find((el) => el.id === id);
-      if (e) setCharSheet(e.raw);
+      // local mode: load from localStorage by sheetId
+      const cs = getCharSheetFromLS(id);
+      if (cs) {
+        setCharSheet(cs);
+      }
     }
   }
 
@@ -54,9 +75,12 @@ export function CharacterLibraryPage(): JSX.Element {
       deleteCharacter(id).then(() => setEntries((prev) => prev.filter((p) => p.id !== id)));
     } else {
       removeFromLibrary(id);
+      removeCharSheetFromLS(id);
       setEntries(listLibrary());
     }
   }
+
+  const activeSheetId = charSheet.sheetId;
 
   return (
     <div className="tw-p-6">
@@ -77,10 +101,19 @@ export function CharacterLibraryPage(): JSX.Element {
           <ListGroup.Item
             key={entry.id}
             className="tw-flex tw-justify-between tw-items-center"
+            style={entry.id === activeSheetId ? { borderLeft: "3px solid #337ab7" } : {}}
           >
             <div>
-              <div className="tw-font-semibold">{entry.name || entry.id}</div>
-              <div className="tw-text-sm tw-text-gray-600">{entry.preset} — {new Date(entry.createdAt).toLocaleString()}</div>
+              <div className="tw-font-semibold">
+                {entry.name || entry.id}
+                {entry.id === activeSheetId && " ✦"}
+              </div>
+              <div className="tw-text-sm tw-text-gray-600">
+                {entry.preset} — {new Date(entry.createdAt).toLocaleString()}
+              </div>
+              <div className="tw-text-xs tw-text-gray-400">
+                ID: {entry.id}
+              </div>
             </div>
             <div className="tw-flex tw-gap-2">
               <Button size="sm" variant="outline-success" onClick={() => onLoad(entry.id)}>

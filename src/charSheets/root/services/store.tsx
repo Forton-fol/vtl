@@ -16,6 +16,8 @@ import {
 import { strToCharSheet } from "../infrastructure/dbLoader";
 import { getToken } from "../../../api/auth";
 import { scheduleSave, loadFromServer } from "../../../api/autoSync";
+import { ensureInLibrary, updateLibraryMeta } from "../../../lib/libraryStorage";
+import { generateSheetId } from "../../../lib/miscUtils";
 import {
   CombinedRootService,
   ErrorDescriptionService,
@@ -106,8 +108,26 @@ export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
   }, [limits.bloodPerTurnLimit]);
 
   useEffect(() => {
+    // Ensure charSheet always has a sheetId
+    if (!charSheet.sheetId) {
+      const withId = ensureInLibrary(charSheet);
+      if (withId.sheetId !== charSheet.sheetId) {
+        dispatch({ type: "setCharSheet", props: [withId] });
+        return; // will re-trigger this effect with the updated charSheet
+      }
+    }
+
     saveCharSheetInLS(charSheet);
     scheduleSave(charSheet);
+
+    // Keep library metadata in sync
+    if (charSheet.sheetId) {
+      updateLibraryMeta(
+        charSheet.sheetId,
+        charSheet.profile.name || "",
+        charSheet.preset || ""
+      );
+    }
   }, [charSheet]);
 
   const [errorDescription, setErrorDescription] =
@@ -147,6 +167,8 @@ export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
           while (s.length % 4 !== 0) s += "=";
           const decoded = decodeURIComponent(escape(atob(s)));
           const cs = strToCharSheet(decoded);
+          // Shared chars always get a fresh sheetId
+          cs.sheetId = generateSheetId();
           functions.setCharSheet(cs);
         } catch (err) {
           console.error("Failed to parse shared charsheet", err);
@@ -161,6 +183,7 @@ export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
           .then((text) => {
             try {
               const cs = strToCharSheet(text);
+              cs.sheetId = generateSheetId();
               functions.setCharSheet(cs);
             } catch (err) {
               console.error("Failed to parse downloaded charsheet", err);
