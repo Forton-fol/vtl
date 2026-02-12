@@ -7,10 +7,11 @@ import classnames from "classnames";
 
 interface PageNavProps {
   className?: string;
+  onNavigate?: () => void;
 }
 
 export function PageNav(props: PageNavProps): JSX.Element {
-  const { className } = props;
+  const { className, onNavigate } = props;
   const { t } = useTranslation();
 
   // from
@@ -22,6 +23,7 @@ export function PageNav(props: PageNavProps): JSX.Element {
         to="/charsheet"
         className="tw-px-5 tw-py-3"
         style={{ color: "inherit" }}
+        onClick={onNavigate}
       >
         {t("charsheet.charsheet")}
       </Nav.Link>
@@ -30,6 +32,7 @@ export function PageNav(props: PageNavProps): JSX.Element {
         to="/library"
         className="tw-px-5 tw-py-3"
         style={{ color: "inherit" }}
+        onClick={onNavigate}
       >
         {t("library.header")}
       </Nav.Link>
@@ -38,6 +41,7 @@ export function PageNav(props: PageNavProps): JSX.Element {
         to="/instruction"
         className="tw-px-5 tw-py-3"
         style={{ color: "inherit" }}
+        onClick={onNavigate}
       >
         {t("instruction.header")}
       </Nav.Link>

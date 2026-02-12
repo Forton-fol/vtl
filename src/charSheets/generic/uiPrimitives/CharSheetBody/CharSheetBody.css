@@ -34,6 +34,36 @@
   border-color: transparent !important;
 }
 
+@media (max-width: 768px) {
+  .CharSheetBody {
+    min-width: auto;
+    min-height: auto;
+    border-width: 15px;
+    border-top-width: 20px;
+    border-left-width: 14px;
+    border-right-width: 13px;
+    border-bottom-width: 16px;
+    border-image-slice: 60 40 50 40;
+    border-image-width: 20px 14px 16px 14px;
+    padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  .CharSheetBody {
+    border-width: 8px;
+    border-top-width: 12px;
+    border-left-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 10px;
+    border-image-width: 12px 8px 10px 8px;
+    padding: 0.25rem;
+    font-size: 0.85rem;
+  }
+}
+
 @media print {
   html {
     font-size: 22px;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 // eslint-disable-next-line import/order
 import DocumentTitle from "react-document-title";
@@ -58,6 +58,8 @@ function App(): JSX.Element {
     };
   }, [settings]);
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <DocumentTitle
       title={t("about.defaultPageTitle", {
@@ -66,22 +68,45 @@ function App(): JSX.Element {
       })}
     >
       <div className="app" style={{ height: "100vh", overflow: "hidden" }}>
-        <div style={{ display: "flex", height: "100%" }}>
+        {/* Mobile hamburger button */}
+        <button
+          className="mobile-menu-btn print:tw-hidden"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Menu"
+          style={{
+            backgroundColor: settings.sidebarColor || "#e5e7eb",
+            color: settings.sidebarTextColor || "#111827",
+          }}
+        >
+          <span className={`hamburger-icon ${mobileMenuOpen ? "open" : ""}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+
+        {/* Mobile overlay */}
+        {mobileMenuOpen && (
           <div
-            className="print:tw-hidden"
+            className="mobile-overlay print:tw-hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
+        <div className="app-layout">
+          {/* SIDEBAR */}
+          <div
+            className={`sidebar-panel print:tw-hidden ${mobileMenuOpen ? "sidebar-open" : ""}`}
             style={{
-              flexGrow: 0,
-              flexShrink: 0,
-              maxWidth: "24rem",
-              overflowY: "auto",
               backgroundColor: settings.sidebarColor || "#e5e7eb",
               color: settings.sidebarTextColor || "#111827",
               opacity: (settings.sidebarOpacity ?? 100) / 100,
             }}
           >
-            <ControlPanel />
+            <ControlPanel onNavigate={() => setMobileMenuOpen(false)} />
           </div>
-          <div style={{ flexGrow: 1, width: "100%", overflowY: "auto" }}>
+          {/* MAIN CONTENT */}
+          <div className="main-content">
             <Routes>
               <Route path="/charsheet" element={<CharSheetPage />} />
               <Route path="/library" element={<CharacterLibraryPage />} />

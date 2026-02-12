@@ -83,12 +83,12 @@ export function CharacterLibraryPage(): JSX.Element {
   const activeSheetId = charSheet.sheetId;
 
   return (
-    <div className="tw-p-6">
-      <h2>{t("library.header")}</h2>
-      <p className="tw-mb-4">{t("library.description")}</p>
+    <div className="library-page">
+      <h2 className="tw-text-xl">{t("library.header")}</h2>
+      <p className="tw-mb-4 tw-text-sm">{t("library.description")}</p>
 
       <div className="tw-mb-4">
-        <Button variant="outline-primary" onClick={onSaveCurrent}>
+        <Button variant="outline-primary" className="library-save-btn" onClick={onSaveCurrent}>
           {t("library.save-current")}
         </Button>
       </div>
@@ -100,22 +100,22 @@ export function CharacterLibraryPage(): JSX.Element {
         {entries.map((entry) => (
           <ListGroup.Item
             key={entry.id}
-            className="tw-flex tw-justify-between tw-items-center"
+            className="library-entry"
             style={entry.id === activeSheetId ? { borderLeft: "3px solid #337ab7" } : {}}
           >
-            <div>
-              <div className="tw-font-semibold">
+            <div className="tw-mb-2">
+              <div className="tw-font-semibold tw-break-words">
                 {entry.name || entry.id}
                 {entry.id === activeSheetId && " ✦"}
               </div>
               <div className="tw-text-sm tw-text-gray-600">
                 {entry.preset} — {new Date(entry.createdAt).toLocaleString()}
               </div>
-              <div className="tw-text-xs tw-text-gray-400">
+              <div className="tw-text-xs tw-text-gray-400 tw-break-all">
                 ID: {entry.id}
               </div>
             </div>
-            <div className="tw-flex tw-gap-2">
+            <div className="tw-flex tw-gap-2 tw-flex-wrap">
               <Button size="sm" variant="outline-success" onClick={() => onLoad(entry.id)}>
                 {t("library.load")}
               </Button>

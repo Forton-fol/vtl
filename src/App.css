@@ -69,13 +69,205 @@ body {
 .custom-btn-bg-color {
   background-color: #337ab7;
 }
-/* style={{backgroundColor: '#337ab7'}} */
-/* style={{backgroundColor: '#007bff'}} */
 
+/* ======================================
+   RESPONSIVE LAYOUT
+   ====================================== */
+
+/* Main app layout */
+.app-layout {
+  display: flex;
+  height: 100%;
+}
+
+/* Sidebar — desktop */
+.sidebar-panel {
+  flex-grow: 0;
+  flex-shrink: 0;
+  max-width: 24rem;
+  overflow-y: auto;
+}
+
+/* Main content area */
+.main-content {
+  flex-grow: 1;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* Mobile menu button — hidden on desktop */
+.mobile-menu-btn {
+  display: none;
+}
+
+/* Mobile overlay — used when sidebar is open */
+.mobile-overlay {
+  display: none;
+}
+
+/* ======================================
+   MOBILE (max-width: 768px)
+   ====================================== */
+@media (max-width: 768px) {
+  html, body {
+    overflow: auto;
+  }
+
+  .app {
+    overflow: auto !important;
+    height: auto !important;
+    min-height: 100vh;
+  }
+
+  .app-layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  /* Hamburger button */
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 1001;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Hamburger icon lines */
+  .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 1.25rem;
+    height: 1rem;
+  }
+  .hamburger-icon span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: currentColor;
+    border-radius: 1px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger-icon.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hamburger-icon.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger-icon.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile overlay backdrop */
+  .mobile-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  /* Sidebar — mobile: slide-in drawer */
+  .sidebar-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    max-width: 85vw;
+    width: 20rem;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    padding-top: 3.5rem; /* space for hamburger */
+  }
+
+  .sidebar-panel.sidebar-open {
+    transform: translateX(0);
+  }
+
+  /* Main content — full width on mobile */
+  .main-content {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* CharSheetPage — allow horizontal scroll for char sheet */
+  .CharSheetPage {
+    flex-direction: column !important;
+  }
+
+  /* GameUtilsPanel — full width on mobile */
+  .GameUtilsPanel {
+    width: 100% !important;
+  }
+}
+
+/* ======================================
+   SMALL MOBILE (max-width: 480px)
+   ====================================== */
+@media (max-width: 480px) {
+  .sidebar-panel {
+    width: 100vw;
+    max-width: 100vw;
+  }
+}
+
+/* Library entries responsive */
+.library-page {
+  padding: 1.5rem;
+}
+
+.library-save-btn {
+  width: auto;
+}
+
+.library-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .library-page {
+    padding: 0.75rem;
+  }
+
+  .library-save-btn {
+    width: 100%;
+  }
+
+  .library-entry {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ======================================
+   PRINT STYLES
+   ====================================== */
 @media print {
   @page {
     size: auto;
     margin: 10mm;
+  }
+
+  .mobile-menu-btn {
+    display: none !important;
   }
 }
 

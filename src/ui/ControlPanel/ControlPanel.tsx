@@ -20,13 +20,14 @@ import "./ControlPanel.css";
 
 interface ControlPanelProps {
   className?: string;
+  onNavigate?: () => void;
 }
 
 export function ControlPanel(props: ControlPanelProps): JSX.Element {
   const { t } = useTranslation();
   const [showContent, setShowContent] = useState(true);
 
-  const { className } = props;
+  const { className, onNavigate } = props;
 
   return (
     <div
@@ -35,7 +36,7 @@ export function ControlPanel(props: ControlPanelProps): JSX.Element {
         className,
       )}
     >
-      {showContent && <PageNav className="tw-flex-col tw-mb-8" />}
+      {showContent && <PageNav className="tw-flex-col tw-mb-8" onNavigate={onNavigate} />}
       {showContent && <SyncIndicator />}
 
       {showContent && (
