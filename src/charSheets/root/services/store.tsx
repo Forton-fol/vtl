@@ -16,7 +16,7 @@ import {
 import { strToCharSheet } from "../infrastructure/dbLoader";
 import { getToken } from "../../../api/auth";
 import { scheduleSave, loadFromServer } from "../../../api/autoSync";
-import { ensureInLibrary, updateLibraryMeta } from "../../../lib/libraryStorage";
+import { ensureInLibrary } from "../../../lib/libraryStorage";
 import { generateSheetId } from "../../../lib/miscUtils";
 import {
   CombinedRootService,
@@ -107,27 +107,24 @@ export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
     });
   }, [limits.bloodPerTurnLimit]);
 
+  // Track the previous sheetId so we don't overwrite old sheets
+  const prevSheetIdRef = React.useRef<string | undefined>(charSheet.sheetId);
+
   useEffect(() => {
-    // Ensure charSheet always has a sheetId
-    if (!charSheet.sheetId) {
-      const withId = ensureInLibrary(charSheet);
-      if (withId.sheetId !== charSheet.sheetId) {
-        dispatch({ type: "setCharSheet", props: [withId] });
-        return; // will re-trigger this effect with the updated charSheet
-      }
+    // Ensure charSheet always has a sheetId AND is registered in library
+    const ensured = ensureInLibrary(charSheet);
+    if (ensured.sheetId !== charSheet.sheetId) {
+      // sheetId was just generated — update state, will re-trigger this effect
+      dispatch({ type: "setCharSheet", props: [ensured] });
+      return;
     }
 
+    // Save this sheet's data to its own LS key
     saveCharSheetInLS(charSheet);
     scheduleSave(charSheet);
 
-    // Keep library metadata in sync
-    if (charSheet.sheetId) {
-      updateLibraryMeta(
-        charSheet.sheetId,
-        charSheet.profile.name || "",
-        charSheet.preset || ""
-      );
-    }
+    // Update the previous sheetId ref
+    prevSheetIdRef.current = charSheet.sheetId;
   }, [charSheet]);
 
   const [errorDescription, setErrorDescription] =
