@@ -58,6 +58,12 @@ import {
   initialHTRAbilities,
   initialEdges,
 } from "../../htr/services/initialValues";
+import {
+  initialDemonProfile,
+  initialDemonState,
+  initialDemonAbilities,
+  initialLores,
+} from "../../demon/services/initialValues";
 
 export const initialPreset: PresetName = "vampire_v20";
 
@@ -69,6 +75,7 @@ export const initialProfile: Profile = {
   ...initialVtM_V3Profile,
   ...initialMtAProfile,
   ...initialHTRProfile,
+  ...initialDemonProfile,
 };
 
 export const initialAbilities: Abilities = {
@@ -79,6 +86,7 @@ export const initialAbilities: Abilities = {
   ...initialVtM_V3Abilities,
   ...initialMtAAbilities,
   ...initialHTRAbilities,
+  ...initialDemonAbilities,
 };
 
 export const initialState: State = {
@@ -89,6 +97,7 @@ export const initialState: State = {
   ...initialVtM_V3State,
   ...initialMtAState,
   ...initialHTRState,
+  ...initialDemonState,
 };
 
 export const initialCharSheet: CharSheet = {
@@ -125,5 +134,6 @@ export const initialCharSheet: CharSheet = {
 
   numinaAndOtherTraits: initialNuminaAndOtherTraits,
   edges: initialEdges,
+  lores: initialLores,
   customDotData: {},
 };

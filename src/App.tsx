@@ -34,9 +34,27 @@ function App(): JSX.Element {
 
   useEffect(() => {
     document.body.style.backgroundColor = settings.backgroundColor;
+    if (settings.backgroundImage) {
+      document.body.style.backgroundImage = `url(${settings.backgroundImage})`;
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundPosition = "center";
+      document.body.style.backgroundAttachment = "fixed";
+      document.body.style.backgroundRepeat = "no-repeat";
+    } else {
+      document.body.style.backgroundImage = "";
+      document.body.style.backgroundSize = "";
+      document.body.style.backgroundPosition = "";
+      document.body.style.backgroundAttachment = "";
+      document.body.style.backgroundRepeat = "";
+    }
 
     return () => {
       document.body.style.backgroundColor = "white";
+      document.body.style.backgroundImage = "";
+      document.body.style.backgroundSize = "";
+      document.body.style.backgroundPosition = "";
+      document.body.style.backgroundAttachment = "";
+      document.body.style.backgroundRepeat = "";
     };
   }, [settings]);
 
@@ -47,15 +65,23 @@ function App(): JSX.Element {
         version: CURRENT_VERSION,
       })}
     >
-      <div className="app">
-        <div className="tw-flex">
+      <div className="app" style={{ height: "100vh", overflow: "hidden" }}>
+        <div style={{ display: "flex", height: "100%" }}>
           <div
-            className="tw-flex-grow-0 tw-flex-shrink-0 tw-bg-gray-200 tw-max-w-sm  print:tw-hidden"
-            // style={{flexBasis: '25rem'}}
+            className="print:tw-hidden"
+            style={{
+              flexGrow: 0,
+              flexShrink: 0,
+              maxWidth: "24rem",
+              overflowY: "auto",
+              backgroundColor: settings.sidebarColor || "#e5e7eb",
+              color: settings.sidebarTextColor || "#111827",
+              opacity: (settings.sidebarOpacity ?? 100) / 100,
+            }}
           >
             <ControlPanel />
           </div>
-          <div className="tw-flex-grow-1 tw-w-full">
+          <div style={{ flexGrow: 1, width: "100%", overflowY: "auto" }}>
             <Routes>
               <Route path="/charsheet" element={<CharSheetPage />} />
               <Route path="/library" element={<CharacterLibraryPage />} />

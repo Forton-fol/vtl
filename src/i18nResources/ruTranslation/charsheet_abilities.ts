@@ -71,4 +71,7 @@ export const abilities = {
   fencing: "Фехтование",
   demolitions: "Взрывчатка",
   bureaucracy: "Бюрократия",
+
+  // Demon
+  religion: "Религия",
 };

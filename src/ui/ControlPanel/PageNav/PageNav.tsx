@@ -20,21 +20,24 @@ export function PageNav(props: PageNavProps): JSX.Element {
       <Nav.Link
         as={NavLink}
         to="/charsheet"
-        className="tw-px-5 tw-py-3 tw-text-gray-900"
+        className="tw-px-5 tw-py-3"
+        style={{ color: "inherit" }}
       >
         {t("charsheet.charsheet")}
       </Nav.Link>
       <Nav.Link
         as={NavLink}
         to="/library"
-        className="tw-px-5 tw-py-3 tw-text-gray-900"
+        className="tw-px-5 tw-py-3"
+        style={{ color: "inherit" }}
       >
         {t("library.header")}
       </Nav.Link>
       <Nav.Link
         as={NavLink}
         to="/instruction"
-        className="tw-px-5 tw-py-3 tw-text-gray-900"
+        className="tw-px-5 tw-py-3"
+        style={{ color: "inherit" }}
       >
         {t("instruction.header")}
       </Nav.Link>

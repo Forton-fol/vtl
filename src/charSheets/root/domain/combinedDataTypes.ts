@@ -47,6 +47,12 @@ import {
   HTRProfile,
   HTRState,
 } from "../../htr/domain";
+import {
+  DemonAbilities,
+  DemonPresetName,
+  DemonProfile,
+  DemonState,
+} from "../../demon/domain";
 
 // Profile
 export interface Profile
@@ -56,7 +62,8 @@ export interface Profile
     VtDAProfile,
     VtM_V3Profile,
     MtAProfile,
-    HTRProfile {}
+    HTRProfile,
+    DemonProfile {}
 
 export interface State
   extends VtMState,
@@ -65,7 +72,8 @@ export interface State
     VtDAState,
     VtM_V3State,
     MtAState,
-    HTRState {}
+    HTRState,
+    DemonState {}
 
 export interface Abilities
   extends VtMAbilities,
@@ -74,7 +82,8 @@ export interface Abilities
     VtDAAbilities,
     VtM_V3Abilities,
     MtAAbilities,
-    HTRAbilities {}
+    HTRAbilities,
+    DemonAbilities {}
 
 export type PresetName =
   | VtMPresetName
@@ -83,7 +92,8 @@ export type PresetName =
   | VtDAPresetName
   | VtM_V3PresetName
   | MtAPresetName
-  | HTRPresetName;
+  | HTRPresetName
+  | DemonPresetName;
 
 export type FreebiePointName =
   | CommonFreebiePointName

@@ -15,6 +15,7 @@ import { AccordionToggle } from "../../uiLib/AccordionToggle";
 import { PageNav } from "./PageNav";
 import { ActionList } from "./ActionList";
 import { SettingsSection } from "./SettingsSection";
+import { SyncIndicator } from "./SyncIndicator";
 import "./ControlPanel.css";
 
 interface ControlPanelProps {
@@ -30,15 +31,16 @@ export function ControlPanel(props: ControlPanelProps): JSX.Element {
   return (
     <div
       className={classnames(
-        "ControlPanel tw-sticky tw-top-0 tw-flex tw-flex-col tw-h-screen",
+        "ControlPanel tw-flex tw-flex-col tw-h-full",
         className,
       )}
     >
       {showContent && <PageNav className="tw-flex-col tw-mb-8" />}
+      {showContent && <SyncIndicator />}
 
       {showContent && (
         <Accordion as="aside" defaultActiveKey="0">
-          <Card className="tw-bg-gray-200">
+          <Card style={{ backgroundColor: "inherit", color: "inherit" }}>
             <AccordionToggle
               ariaId="actionMenu-toggle"
               eventKey="0"
@@ -48,14 +50,14 @@ export function ControlPanel(props: ControlPanelProps): JSX.Element {
             <Accordion.Collapse
               id="actionMenu-panel"
               eventKey="0"
-              className="tw-bg-white"
+              style={{ backgroundColor: "inherit", color: "inherit" }}
               role="region"
               aria-labelledby="actionMenu-toggle"
             >
               <ActionList />
             </Accordion.Collapse>
           </Card>
-          <Card className="tw-bg-gray-200">
+          <Card style={{ backgroundColor: "inherit", color: "inherit" }}>
             <AccordionToggle
               ariaId="visualSettings-toggle"
               eventKey="1"
@@ -65,7 +67,7 @@ export function ControlPanel(props: ControlPanelProps): JSX.Element {
             <Accordion.Collapse
               id="visualSettings-panel"
               eventKey="1"
-              className="tw-bg-white"
+              style={{ backgroundColor: "inherit", color: "inherit" }}
               role="region"
               aria-labelledby="visualSettings-toggle"
             >

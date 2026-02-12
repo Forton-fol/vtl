@@ -14,6 +14,8 @@ import {
   saveCharSheetInLS,
 } from "../infrastructure/lsDbService";
 import { strToCharSheet } from "../infrastructure/dbLoader";
+import { getToken } from "../../../api/auth";
+import { scheduleSave, loadFromServer } from "../../../api/autoSync";
 import {
   CombinedRootService,
   ErrorDescriptionService,
@@ -32,6 +34,8 @@ import { CombinedMtAService } from "../../mta/application/ports";
 import { mtaActions } from "../../mta/services/actions";
 import { CombinedHTRService } from "../../htr/application/ports";
 import { htrActions } from "../../htr/services/actions";
+import { CombinedDemonService } from "../../demon/application/ports";
+import { demonActions } from "../../demon/services/actions";
 
 import { initialCharSheet } from "./initialValues";
 import { getLimits } from "./getLimits";
@@ -59,6 +63,7 @@ export interface StateStore
     CombinedHH2Service,
     CombinedMtAService,
     CombinedHTRService,
+    CombinedDemonService,
     ErrorDescriptionService {}
 
 // @ts-ignore
@@ -79,7 +84,8 @@ const reducer = new CompositeReducer<CharSheet>()
   .assign(ctdActions)
   .assign(hh2Actions)
   .assign(mtaActions)
-  .assign(htrActions);
+  .assign(htrActions)
+  .assign(demonActions);
 
 export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
   children,
@@ -101,6 +107,7 @@ export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
 
   useEffect(() => {
     saveCharSheetInLS(charSheet);
+    scheduleSave(charSheet);
   }, [charSheet]);
 
   const [errorDescription, setErrorDescription] =
@@ -170,6 +177,13 @@ export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
               text: "Unable to download shared character data",
             });
           });
+      } else if (getToken()) {
+        // Logged in — try loading from server first, fall back to LS
+        const cs = getCharSheetFromLS();
+        if (cs !== null) {
+          functions.setCharSheet(cs);
+        }
+        loadFromServer(functions.setCharSheet).catch(() => {});
       } else {
         const cs = getCharSheetFromLS();
         if (cs !== null) {

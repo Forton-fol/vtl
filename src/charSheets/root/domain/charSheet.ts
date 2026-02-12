@@ -21,6 +21,7 @@ import { Disciplines, DisciplinePaths, Rituals } from "../../vtm/domain";
 import { NuminaAndOtherTraits } from "../../hh2/domain";
 import { Spheres } from "../../mta/domain";
 import { Edges } from "../../htr/domain";
+import { Lores } from "../../demon/domain";
 
 import { Profile, State, Abilities, PresetName } from "./combinedDataTypes";
 
@@ -70,6 +71,9 @@ export interface CharSheet {
 
   // htr
   edges: Edges;
+
+  // demon
+  lores: Lores;
 
   // custom dot attachments: disciplineIndex -> dotIndex -> { kind: 'link'|'text', content }
   customDotData?: Record<string, Record<string, { kind: "link" | "text"; content: string }>>;

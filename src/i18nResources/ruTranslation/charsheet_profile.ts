@@ -31,4 +31,8 @@ export const profile = {
   creed: "Кредо:",
   startingVirtue: "Нач. добродетель:",
   startingConviction: "Нач. убеждённость:",
+
+  // Demon the Fallen
+  faction: "Группировка:",
+  visage: "Образ:",
 };

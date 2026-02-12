@@ -27,6 +27,7 @@ import {
   numinaAndOtherTraitsSchema,
   spheresSchema,
   edgesSchema,
+  loresSchema,
 } from "./validateCharSheetDataElements";
 import { abilitiesSchema, abilitiesExtensionSchema } from "./abilitiesSchema";
 
@@ -61,6 +62,7 @@ export const charSheetDataSchema: JSONSchemaType<CharSheetData> = {
     numinaAndOtherTraits: numinaAndOtherTraitsSchema,
     spheres: spheresSchema,
     edges: edgesSchema,
+    lores: loresSchema,
   },
   required: [
     "preset",
@@ -91,6 +93,7 @@ export const charSheetDataSchema: JSONSchemaType<CharSheetData> = {
     "numinaAndOtherTraits",
     "spheres",
     "edges",
+    "lores",
   ],
-  additionalProperties: false,
+  additionalProperties: true,
 };

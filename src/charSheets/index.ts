@@ -12,6 +12,7 @@ import { HH2 } from "./hh2";
 import { VtM_v3 } from "./vtm_v3";
 import { MtA } from "./mta";
 import { HTR } from "./htr";
+import { Demon } from "./demon";
 import { PresetName, InternalPresetProps, presetList } from "./root/domain";
 import { ExternalPresetProps, Preset } from "./types";
 
@@ -23,6 +24,7 @@ const presetIndex: Record<PresetName, Preset> = {
   vampire_v3_revised: VtM_v3,
   mage_v20: MtA,
   hunter_reckoning: HTR,
+  demon_the_fallen: Demon,
 };
 
 export function useExternalPresetProps(): ExternalPresetProps {

@@ -81,7 +81,7 @@ export const HealthSection = memo(function HealthSection(
           size="sm"
           variant="outline-secondary"
           onClick={addBruiseBox}
-          className="tw-mx-1"
+          className="tw-mx-1 tw-py-0 tw-px-1 tw-text-xs"
           title={t("common.add")}
         >
           + {t("charsheet.status.bruise")}
@@ -91,7 +91,7 @@ export const HealthSection = memo(function HealthSection(
             size="sm"
             variant="outline-secondary"
             onClick={removeBruiseBox}
-            className="tw-mx-1"
+            className="tw-mx-1 tw-py-0 tw-px-1 tw-text-xs"
             title={t("common.remove")}
           >
             − {t("charsheet.status.bruise")}

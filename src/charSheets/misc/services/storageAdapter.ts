@@ -10,6 +10,14 @@ export function useSettings(): SettingsService {
       "setCharsheetBackColor",
       "setCharsheetBackImage",
       "setCharsheetBackMode",
+      "setCharsheetTextColor",
+      "setSidebarColor",
+      "setSidebarTextColor",
+      "setCharsheetBorderVisible",
+      "setCharsheetFontSize",
+      "setCharsheetBackOpacity",
+      "setBackgroundImage",
+      "setSidebarOpacity",
     ],
     useStore()
   );

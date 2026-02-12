@@ -34,6 +34,11 @@ export const enTranslation: TranslationInfo = {
     "error-on-file-loading": "Error on file loading",
     "check-developer-console": "Check developer console",
   },
+  sync: {
+    saving: "Saving...",
+    saved: "Saved",
+    error: "Sync error",
+  },
   "visual-settings": {
     header: "Visual Settings",
     "background-color": "Background color",
@@ -45,6 +50,17 @@ export const enTranslation: TranslationInfo = {
     "charsheet-image": "Image",
     "charsheet-none": "No background",
     "charsheet-color": "Color",
+
+    "charsheet-text-color": "Sheet text color",
+    "sidebar-settings": "Sidebar settings",
+    "sidebar-color": "Sidebar color",
+    "sidebar-text-color": "Sidebar text color",
+    "charsheet-border-visible": "Show sheet border",
+    "charsheet-font-size": "Font size",
+    "charsheet-back-opacity": "Sheet opacity",
+    "site-background-image": "Site background image",
+    "remove-site-background-image": "Remove background image",
+    "sidebar-opacity": "Sidebar opacity",
   },
   charsheet: {
     emptyName: "Nameless character",
@@ -58,6 +74,7 @@ export const enTranslation: TranslationInfo = {
       vampire_v3_revised: "Vampire: The Masquerade. V3 Revised",
       mage_v20: "Mage: The Ascension. V20",
       hunter_reckoning: "Hunter: The Reckoning",
+      demon_the_fallen: "Demon: The Fallen",
     },
     htr: charsheet_htr,
     profile,

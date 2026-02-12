@@ -16,6 +16,14 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
     setCharsheetBackMode,
     setCharsheetBackColor,
     setCharsheetBackImage,
+    setCharsheetTextColor,
+    setSidebarColor,
+    setSidebarTextColor,
+    setCharsheetBorderVisible,
+    setCharsheetFontSize,
+    setCharsheetBackOpacity,
+    setBackgroundImage,
+    setSidebarOpacity,
   } = useSettings();
 
   function readImage(event: ChangeEvent<HTMLInputElement>): void {
@@ -24,6 +32,19 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
       const imageData = readerEvent.target?.result;
       if (typeof imageData === "string") {
         setCharsheetBackImage(imageData);
+      }
+    };
+    if (event.target.files && event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+
+  function readSiteBackgroundImage(event: ChangeEvent<HTMLInputElement>): void {
+    const reader = new FileReader();
+    reader.onload = (readerEvent) => {
+      const imageData = readerEvent.target?.result;
+      if (typeof imageData === "string") {
+        setBackgroundImage(imageData);
       }
     };
     if (event.target.files && event.target.files[0]) {
@@ -45,6 +66,28 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
             onChange={(e) => setBackgroundColor(e.target.value)}
           />
         </label>
+      </div>
+
+      {/* Site background image */}
+      <div className="tw-m-4">
+        <h3 className="tw-text-lg tw-mb-4">
+          {t("visual-settings.site-background-image")}
+        </h3>
+        <label className="tw-block tw-mb-4">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={readSiteBackgroundImage}
+          />
+        </label>
+        {settings.backgroundImage && (
+          <Button
+            className="custom-btn-bg-color"
+            onClick={() => setBackgroundImage("")}
+          >
+            {t("visual-settings.remove-site-background-image")}
+          </Button>
+        )}
       </div>
       <div className="tw-m-4">
         <h3 className="tw-text-lg tw-mb-4">
@@ -117,6 +160,108 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
             </Button>
           </div>
         </fieldset>
+      </div>
+
+      {/* Text color */}
+      <div className="tw-m-4">
+        <label className="tw-mr-4">
+          <span className="tw-mr-4">
+            {t("visual-settings.charsheet-text-color")}
+          </span>
+          <input
+            type="color"
+            value={settings.charsheetTextColor || "#000000"}
+            onChange={(e) => setCharsheetTextColor(e.target.value)}
+          />
+        </label>
+      </div>
+
+      {/* Sidebar colors */}
+      <div className="tw-m-4">
+        <h3 className="tw-text-lg tw-mb-4">
+          {t("visual-settings.sidebar-settings")}
+        </h3>
+        <label className="tw-block tw-mb-4">
+          <span className="tw-mr-4">
+            {t("visual-settings.sidebar-color")}
+          </span>
+          <input
+            type="color"
+            value={settings.sidebarColor || "#e5e7eb"}
+            onChange={(e) => setSidebarColor(e.target.value)}
+          />
+        </label>
+        <label className="tw-block tw-mb-4">
+          <span className="tw-mr-4">
+            {t("visual-settings.sidebar-text-color")}
+          </span>
+          <input
+            type="color"
+            value={settings.sidebarTextColor || "#111827"}
+            onChange={(e) => setSidebarTextColor(e.target.value)}
+          />
+        </label>
+        <label className="tw-block tw-mb-2">
+          <span className="tw-mr-4">
+            {t("visual-settings.sidebar-opacity")}: {settings.sidebarOpacity ?? 100}%
+          </span>
+        </label>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          step={5}
+          value={settings.sidebarOpacity ?? 100}
+          onChange={(e) => setSidebarOpacity(Number(e.target.value))}
+          className="tw-w-full"
+        />
+      </div>
+
+      {/* Border toggle */}
+      <div className="tw-m-4">
+        <Form.Check
+          type="checkbox"
+          id="charsheet-border-visible"
+          label={t("visual-settings.charsheet-border-visible")}
+          checked={settings.charsheetBorderVisible !== false}
+          onChange={(e) => setCharsheetBorderVisible(e.target.checked)}
+        />
+      </div>
+
+      {/* Font size slider */}
+      <div className="tw-m-4">
+        <label className="tw-block tw-mb-2">
+          <span className="tw-mr-4">
+            {t("visual-settings.charsheet-font-size")}: {settings.charsheetFontSize ?? 100}%
+          </span>
+        </label>
+        <input
+          type="range"
+          min={50}
+          max={150}
+          step={5}
+          value={settings.charsheetFontSize ?? 100}
+          onChange={(e) => setCharsheetFontSize(Number(e.target.value))}
+          className="tw-w-full"
+        />
+      </div>
+
+      {/* Background opacity slider */}
+      <div className="tw-m-4">
+        <label className="tw-block tw-mb-2">
+          <span className="tw-mr-4">
+            {t("visual-settings.charsheet-back-opacity")}: {settings.charsheetBackOpacity ?? 100}%
+          </span>
+        </label>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          step={5}
+          value={settings.charsheetBackOpacity ?? 100}
+          onChange={(e) => setCharsheetBackOpacity(Number(e.target.value))}
+          className="tw-w-full"
+        />
       </div>
     </div>
   );

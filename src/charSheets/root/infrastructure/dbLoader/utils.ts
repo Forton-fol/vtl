@@ -39,6 +39,7 @@ export function charSheetToJson(charSheet: CharSheet): CharSheetInJson {
       numinaAndOtherTraits: charSheet.numinaAndOtherTraits,
       spheres: charSheet.spheres,
       edges: charSheet.edges,
+      lores: charSheet.lores,
     },
   };
 }
@@ -76,5 +77,6 @@ export function charSheetFromJson(charSheetInJson: CharSheetInJson): CharSheet {
     numinaAndOtherTraits: charSheetInJson.Charsheet.numinaAndOtherTraits,
     spheres: charSheetInJson.Charsheet.spheres,
     edges: charSheetInJson.Charsheet.edges || [],
+    lores: charSheetInJson.Charsheet.lores || [],
   };
 }

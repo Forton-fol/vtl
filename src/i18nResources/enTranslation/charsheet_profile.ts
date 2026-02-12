@@ -31,4 +31,8 @@ export const profile = {
   creed: "Creed:",
   startingVirtue: "Starting Virtue:",
   startingConviction: "Starting Conviction:",
+
+  // Demon
+  faction: "Faction:",
+  visage: "Visage:",
 };

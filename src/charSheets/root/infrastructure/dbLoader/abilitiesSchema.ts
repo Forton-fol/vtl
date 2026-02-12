@@ -62,6 +62,9 @@ const abilitiesProps: Record<keyof Abilities, { type: "number" }> = {
   fencing: { type: "number" },
   demolitions: { type: "number" },
   bureaucracy: { type: "number" },
+
+  // Demon
+  religion: { type: "number" },
 };
 
 export const abilitiesSchema: JSONSchemaType<Abilities> = {

@@ -1,4 +1,5 @@
 import { Arts, Realms } from "../../../ctd/domain";
+import { Lores } from "../../../demon/domain";
 import { NuminaAndOtherTraits } from "../../../hh2/domain";
 import { Edges } from "../../../htr/domain";
 import { Settings, Version } from "../../../misc/domain";
@@ -55,6 +56,7 @@ export interface CharSheetData {
   numinaAndOtherTraits: NuminaAndOtherTraits;
   spheres: Spheres;
   edges: Edges;
+  lores: Lores;
 }
 
 export interface CharSheetInJson {

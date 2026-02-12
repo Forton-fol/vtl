@@ -2,16 +2,56 @@
   /* background-color: transparent; */
   border: none;
   border-bottom: 1px solid gray;
-  color:rgb(33, 37, 41);
+  color: inherit;
   text-align: left;
 }
 
 .accordion-toggle:hover {
-  color: #0056b3;
+  color: inherit;
+  opacity: 0.8;
   background-color: transparent;
 }
 
 .accordion-toggle:focus {
-  color: #0056b3;
+  color: inherit;
+  opacity: 0.8;
   background-color: transparent;
+}
+
+/* Inherit sidebar colors for all interactive elements */
+.ControlPanel .dropdown-item,
+.ControlPanel .dropdown-item:hover,
+.ControlPanel .dropdown-item:focus,
+.ControlPanel .dropdown-item:active {
+  color: inherit;
+  background-color: transparent;
+}
+
+.ControlPanel .dropdown-item:hover {
+  opacity: 0.75;
+}
+
+.ControlPanel .nav-link,
+.ControlPanel .nav-link:hover,
+.ControlPanel .nav-link:focus {
+  color: inherit !important;
+}
+
+.ControlPanel .nav-link:hover {
+  opacity: 0.75;
+}
+
+.ControlPanel .card {
+  background-color: inherit;
+  color: inherit;
+  border: none;
+}
+
+.ControlPanel .btn {
+  color: inherit;
+}
+
+.ControlPanel input,
+.ControlPanel select {
+  color: initial;
 }

@@ -37,6 +37,10 @@ export const m: CharSheetInJson = {
       creed: "",
       startingVirtue: "",
       startingConviction: "",
+
+      // Demon
+      faction: "",
+      visage: "",
     },
     attributes: {
       strength: 3,
@@ -110,6 +114,9 @@ export const m: CharSheetInJson = {
       fencing: 0,
       demolitions: 0,
       bureaucracy: 0,
+
+      // Demon
+      religion: 0,
     },
     abilitiesExtension: {
       talentName1: "",
@@ -180,6 +187,12 @@ export const m: CharSheetInJson = {
       zealTemp: 0,
       conviction: 0,
       convictionPool: 0,
+
+      // Demon
+      faithRating: 0,
+      faithPool: 0,
+      tormentPermanent: 0,
+      tormentTemporary: 0,
     },
     health: {
       bruise: 0,
@@ -230,6 +243,7 @@ export const m: CharSheetInJson = {
       time: 0,
     },
     edges: [],
+    lores: [],
   },
   Settings: {
     backgroundColor: "#ababab",

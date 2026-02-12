@@ -29,6 +29,11 @@
   break-after: page;
 }
 
+.charsheet-no-border {
+  border-image-source: none !important;
+  border-color: transparent !important;
+}
+
 @media print {
   html {
     font-size: 22px;

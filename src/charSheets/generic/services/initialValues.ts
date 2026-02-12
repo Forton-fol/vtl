@@ -100,7 +100,7 @@ export const initialHealth: Health = {
   mauled: 0,
   crippled: 0,
   incapacitated: 0,
-  bruiseBoxes: [0, 0, 0], // 3 начальных квадратика для синяков
+  bruiseBoxes: [],
 };
 
 // advantages

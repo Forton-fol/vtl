@@ -30,6 +30,11 @@ export const ruTranslation = {
     "error-on-file-loading": "Ошибка при загрузке листа персонажа",
     "check-developer-console": "См. консоль разработчика",
   },
+  sync: {
+    saving: "Сохранение...",
+    saved: "Сохранено",
+    error: "Ошибка синхронизации",
+  },
   "visual-settings": {
     header: "Настройки внешнего вида",
     "background-color": "Цвет фона",
@@ -41,6 +46,17 @@ export const ruTranslation = {
     "charsheet-image": "Изображение",
     "charsheet-none": "Нет фона",
     "charsheet-color": "Цвет",
+
+    "charsheet-text-color": "Цвет текста листа",
+    "sidebar-settings": "Настройки боковой панели",
+    "sidebar-color": "Цвет боковой панели",
+    "sidebar-text-color": "Цвет текста боковой панели",
+    "charsheet-border-visible": "Показывать рамку листа",
+    "charsheet-font-size": "Размер шрифта",
+    "charsheet-back-opacity": "Непрозрачность листа",
+    "site-background-image": "Фоновое изображение сайта",
+    "remove-site-background-image": "Убрать фоновое изображение",
+    "sidebar-opacity": "Прозрачность боковой панели",
   },
   charsheet: {
     emptyName: "Безымянный персонаж",
@@ -54,6 +70,7 @@ export const ruTranslation = {
       vampire_v3_revised: "Вампиры: Маскарад. V3 Revised",
       mage_v20: "Маги: Восхождение. V20",
       hunter_reckoning: "Охотники: Расплата",
+      demon_the_fallen: "Демон: Падшие",
     },
     htr: charsheet_htr,
     profile,

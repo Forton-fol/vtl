@@ -8,4 +8,12 @@ export interface SettingsService {
   setCharsheetBackColor(charsheetBackColor: string): void;
   setCharsheetBackImage(charsheetBackImage: string): void;
   setCharsheetBackMode(charsheetBackMode: CharsheetBackMode): void;
+  setCharsheetTextColor(color: string): void;
+  setSidebarColor(color: string): void;
+  setSidebarTextColor(color: string): void;
+  setCharsheetBorderVisible(visible: boolean): void;
+  setCharsheetFontSize(size: number): void;
+  setCharsheetBackOpacity(opacity: number): void;
+  setBackgroundImage(image: string): void;
+  setSidebarOpacity(opacity: number): void;
 }

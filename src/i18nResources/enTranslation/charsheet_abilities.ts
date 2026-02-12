@@ -69,4 +69,7 @@ export const abilities = {
   fencing: "Fencing",
   demolitions: "Demolitions",
   bureaucracy: "Bureaucracy",
+
+  // Demon
+  religion: "Religion",
 };

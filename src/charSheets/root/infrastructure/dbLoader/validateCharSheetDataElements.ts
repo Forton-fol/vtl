@@ -1,6 +1,7 @@
 import Ajv, { JSONSchemaType } from "ajv";
 
 import { Arts, Realms } from "../../../ctd/domain";
+import { Lores } from "../../../demon/domain";
 import { Edges, Edge } from "../../../htr/domain";
 import { Disciplines, DisciplinePaths, Rituals } from "../../../vtm/domain";
 import {
@@ -38,6 +39,7 @@ export const presetSchema: JSONSchemaType<PresetName> = {
     "vampire_v3_revised",
     "mage_v20",
     "hunter_reckoning",
+    "demon_the_fallen",
   ],
 };
 
@@ -74,6 +76,11 @@ export const profileSchema: JSONSchemaType<Profile> = {
     creed: { type: "string" },
     startingVirtue: { type: "string" },
     startingConviction: { type: "string" },
+
+    // Demon
+    faction: { type: "string" },
+    visage: { type: "string" },
+
   },
   required: [
     "name",
@@ -106,7 +113,7 @@ export const profileSchema: JSONSchemaType<Profile> = {
     "startingVirtue",
     "startingConviction",
   ],
-  additionalProperties: false,
+  additionalProperties: true,
 };
 
 export const attributesSchema: JSONSchemaType<Attributes> = {
@@ -237,6 +244,12 @@ export const stateSchema: JSONSchemaType<State> = {
     zealTemp: { type: "number" },
     conviction: { type: "number" },
     convictionPool: { type: "number" },
+
+    // Demon
+    faithRating: { type: "number" },
+    faithPool: { type: "number" },
+    tormentPermanent: { type: "number" },
+    tormentTemporary: { type: "number" },
   },
   required: [
     "humanity",
@@ -273,12 +286,16 @@ export const stateSchema: JSONSchemaType<State> = {
     "zealTemp",
     "conviction",
     "convictionPool",
+    "faithRating",
+    "faithPool",
+    "tormentPermanent",
+    "tormentTemporary",
   ],
   additionalProperties: false,
 };
 
 const stringNumberArrSchema: JSONSchemaType<
-  Backgrounds & Disciplines & DisciplinePaths & Arts
+  Backgrounds & Disciplines & DisciplinePaths & Arts & Lores
 > = {
   type: "array",
   items: {
@@ -297,6 +314,7 @@ export const disciplinePathsSchema = stringNumberArrSchema;
 export const artsSchema = stringNumberArrSchema;
 export const otherTraitsSchema = stringNumberArrSchema;
 export const numinaAndOtherTraitsSchema = stringNumberArrSchema;
+export const loresSchema = stringNumberArrSchema;
 
 export const ritualsSchema: JSONSchemaType<Rituals> = {
   type: "array",
