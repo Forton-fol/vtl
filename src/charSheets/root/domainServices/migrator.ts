@@ -267,5 +267,62 @@ export function migrate(charSheetSrc: any): unknown {
       }));
     }
   }
+  if (charSheet.Version === "0.8.1") {
+    charSheet.Version = "0.8.2";
+    // New customization settings
+    if (!charSheet.Settings.hasOwnProperty('charsheetTextColor')) {
+      charSheet.Settings.charsheetTextColor = "#000000";
+    }
+    if (!charSheet.Settings.hasOwnProperty('sidebarColor')) {
+      charSheet.Settings.sidebarColor = "#e5e7eb";
+    }
+    if (!charSheet.Settings.hasOwnProperty('sidebarTextColor')) {
+      charSheet.Settings.sidebarTextColor = "#111827";
+    }
+    if (!charSheet.Settings.hasOwnProperty('charsheetBorderVisible')) {
+      charSheet.Settings.charsheetBorderVisible = true;
+    }
+    if (!charSheet.Settings.hasOwnProperty('charsheetFontSize')) {
+      charSheet.Settings.charsheetFontSize = 100;
+    }
+    if (!charSheet.Settings.hasOwnProperty('charsheetBackOpacity')) {
+      charSheet.Settings.charsheetBackOpacity = 100;
+    }
+    if (!charSheet.Settings.hasOwnProperty('backgroundImage')) {
+      charSheet.Settings.backgroundImage = "";
+    }
+    if (!charSheet.Settings.hasOwnProperty('sidebarOpacity')) {
+      charSheet.Settings.sidebarOpacity = 100;
+    }
+    // Demon: The Fallen fields
+    if (!charSheet.Charsheet.hasOwnProperty('lores')) {
+      charSheet.Charsheet.lores = [];
+    }
+    if (!charSheet.Charsheet.abilities.hasOwnProperty('religion')) {
+      charSheet.Charsheet.abilities.religion = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('faithRating')) {
+      charSheet.Charsheet.state.faithRating = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('faithPool')) {
+      charSheet.Charsheet.state.faithPool = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('tormentPermanent')) {
+      charSheet.Charsheet.state.tormentPermanent = 0;
+    }
+    if (!charSheet.Charsheet.state.hasOwnProperty('tormentTemporary')) {
+      charSheet.Charsheet.state.tormentTemporary = 0;
+    }
+    // Demon profile fields
+    if (!charSheet.Charsheet.profile.hasOwnProperty('demonHouse')) {
+      charSheet.Charsheet.profile.demonHouse = "";
+    }
+    if (!charSheet.Charsheet.profile.hasOwnProperty('faction')) {
+      charSheet.Charsheet.profile.faction = "";
+    }
+    if (!charSheet.Charsheet.profile.hasOwnProperty('visage')) {
+      charSheet.Charsheet.profile.visage = "";
+    }
+  }
   return charSheet;
 }
