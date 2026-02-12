@@ -3,11 +3,12 @@ import { saveCharacter, listCharacters } from "./characters";
 import { CharSheet } from "../charSheets/root/domain";
 
 const SYNC_DEBOUNCE_MS = 3000; // 3 seconds after last change
-const ACTIVE_CHAR_KEY = "vtm_active_char_id";
+const SERVER_ID_PREFIX = "vtm_server_id_"; // per-sheetId server mapping
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 let isSyncing = false;
 let lastSyncedJson = "";
+let lastSyncedSheetId = "";
 
 type SyncStatusListener = (status: SyncStatus) => void;
 
@@ -26,49 +27,51 @@ export function onSyncStatus(listener: SyncStatusListener): () => void {
   };
 }
 
-export function getActiveCharId(): string | null {
+/** Get server-side character ID mapped to a specific sheetId */
+function getServerIdForSheet(sheetId: string): string | null {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem(ACTIVE_CHAR_KEY);
+  return localStorage.getItem(SERVER_ID_PREFIX + sheetId);
 }
 
-export function setActiveCharId(id: string) {
+/** Store server-side character ID for a specific sheetId */
+function setServerIdForSheet(sheetId: string, serverId: string) {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(ACTIVE_CHAR_KEY, id);
-}
-
-export function clearActiveCharId() {
-  if (typeof window === 'undefined') return;
-  localStorage.removeItem(ACTIVE_CHAR_KEY);
+  localStorage.setItem(SERVER_ID_PREFIX + sheetId, serverId);
 }
 
 async function doSave(charSheet: CharSheet): Promise<void> {
   if (isSyncing) return;
   const token = getToken();
   if (!token) return;
+  const sheetId = charSheet.sheetId;
+  if (!sheetId) return;
 
   const json = JSON.stringify(charSheet);
-  if (json === lastSyncedJson) return; // nothing changed
+  // Skip if nothing changed for this exact sheet
+  if (json === lastSyncedJson && sheetId === lastSyncedSheetId) return;
 
   isSyncing = true;
   notifyStatus("saving");
 
   try {
-    const activeId = getActiveCharId();
+    const serverId = getServerIdForSheet(sheetId);
     const payload: any = {
       name: charSheet.profile?.name || "",
       preset: charSheet.preset || "",
       data: charSheet,
     };
-    if (activeId) {
-      payload.id = activeId;
+    if (serverId) {
+      payload.id = serverId; // update existing server record
     }
 
     const res = await saveCharacter(payload);
 
     if (res && res.character) {
       lastSyncedJson = json;
-      if (!activeId && res.character.id) {
-        setActiveCharId(res.character.id);
+      lastSyncedSheetId = sheetId;
+      // Remember the server-side ID for this sheetId
+      if (res.character.id) {
+        setServerIdForSheet(sheetId, res.character.id);
       }
       notifyStatus("saved");
     } else {
@@ -103,10 +106,15 @@ export async function loadFromServer(
   try {
     const res = await listCharacters();
     if (res && res.characters && res.characters.length > 0) {
-      const latest = res.characters[0]; // already sorted by created_at DESC
+      const latest = res.characters[0]; // sorted by created_at DESC
       if (latest.data) {
-        setActiveCharId(latest.id);
+        // Map server ID to sheetId if available
+        const sheetId = latest.data.sheetId;
+        if (sheetId && latest.id) {
+          setServerIdForSheet(sheetId, latest.id);
+        }
         lastSyncedJson = JSON.stringify(latest.data);
+        lastSyncedSheetId = sheetId || "";
         setCharSheet(latest.data);
         return true;
       }
