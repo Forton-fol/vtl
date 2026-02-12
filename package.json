@@ -12,7 +12,7 @@
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist/server",
     "postbuild0": "npx ts-node --esm prerender.ts",
     "postbuild": "npx tsx prerender.ts",
-    "prebuild": "rm -rf dist",
+    "prebuild": "npx rimraf dist",
     "build0": "tsc && vite build",
     "serve": "vite preview",
     "lint": "eslint --quiet",

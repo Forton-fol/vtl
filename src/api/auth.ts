@@ -17,13 +17,20 @@ export async function login(username: string, password: string) {
 }
 
 export function saveToken(token: string) {
-  localStorage.setItem('vtm_token', token);
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('vtm_token', token);
+  }
 }
 
 export function getToken() {
-  return localStorage.getItem('vtm_token');
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('vtm_token');
+  }
+  return null;
 }
 
 export function removeToken() {
-  localStorage.removeItem('vtm_token');
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('vtm_token');
+  }
 }

@@ -3,11 +3,15 @@ import { CharSheet } from "../../domain/charSheet";
 import { charSheetToJson, strToCharSheet } from "../dbLoader";
 
 export function saveCharSheetInLS(charSheet: CharSheet): void {
+  if (typeof window === 'undefined') return;
+
   const serverDbForJson = charSheetToJson(charSheet);
   localStorage.setItem(LS_KEY, JSON.stringify(serverDbForJson));
 }
 
 export function getCharSheetFromLS(): CharSheet | null {
+  if (typeof window === 'undefined') return null;
+
   const str = localStorage.getItem(LS_KEY);
   if (str === null) {
     return null;

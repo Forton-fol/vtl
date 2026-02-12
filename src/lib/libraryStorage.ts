@@ -12,6 +12,8 @@ export interface LibraryEntry {
 const LIB_KEY = `${LS_KEY}_library`;
 
 function readLibrary(): LibraryEntry[] {
+  if (typeof window === 'undefined') return [];
+
   try {
     const raw = localStorage.getItem(LIB_KEY);
     if (!raw) return [];
@@ -23,6 +25,7 @@ function readLibrary(): LibraryEntry[] {
 }
 
 function writeLibrary(entries: LibraryEntry[]) {
+  if (typeof window === 'undefined') return;
   localStorage.setItem(LIB_KEY, JSON.stringify(entries));
 }
 
