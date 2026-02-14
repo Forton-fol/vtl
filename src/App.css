@@ -94,8 +94,6 @@ code {
   gap: 0.25rem;
   flex: 1;
   justify-content: flex-end;
-  overflow: hidden;
-  min-width: 0;
 }
 
 /* ======================================

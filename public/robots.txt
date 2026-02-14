@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vtmlist.netlify.app/sitemap.xml
