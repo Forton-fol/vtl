@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, ChangeEvent } from "react";
-import Dropdown from "react-bootstrap/cjs/Dropdown";
 import { useTranslation } from "react-i18next";
-import classnames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 import { readTextFile } from "../../../../lib/fileUtils";
 import { strToCharSheet } from "../../../../charSheets/root/infrastructure/dbLoader";
@@ -62,12 +62,12 @@ export function UploadDatabaseButton(
   }
 
   return (
-    <Dropdown.Item
-      as="button"
+    <button
       type="button"
       onClick={uploadDatabaseFile}
-      className={classnames("UploadDatabaseButton tw-bg-gray-100", className)}
+      className="nav-item-btn"
       id="uploadDatabaseButton"
+      title={t("actionMenu.open-database")}
     >
       <input
         type="file"
@@ -76,7 +76,8 @@ export function UploadDatabaseButton(
         aria-labelledby="uploadDatabaseButton"
         onChange={onUploadFileSelected}
       />
-      {t("actionMenu.open-database")}
-    </Dropdown.Item>
+      <FontAwesomeIcon icon={faUpload} />
+      <span>{t("actionMenu.open-database")}</span>
+    </button>
   );
 }

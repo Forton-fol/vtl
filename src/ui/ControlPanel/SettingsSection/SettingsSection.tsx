@@ -53,7 +53,7 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
   }
 
   return (
-    <div className="SettingsSection">
+    <div className="SettingsSection" style={{ color: '#c8d6e5' }}>
       <div className="tw-m-4">
         <label className="tw-mr-4">
           <span className="tw-mr-4">

@@ -1,7 +1,5 @@
 import React from "react";
-import Dropdown from "react-bootstrap/cjs/Dropdown";
 import { useTranslation } from "react-i18next";
-import classnames from "classnames";
 
 import { i18n } from "../../../../i18n";
 import enImgUrl from "../../../../../images/en.svg";
@@ -17,18 +15,18 @@ export function LangButton(props: LangButtonProps) {
   const { lang, className } = props;
 
   return (
-    <Dropdown.Item
-      as="button"
+    <button
       type="button"
       onClick={() => i18n.changeLanguage(lang)}
-      className={classnames("LangButton", className)}
+      className="nav-item-btn"
+      title={t(`actionMenu.lang-${lang}`)}
     >
       <img
-        className="tw-w-5 tw-inline tw-leading-5 tw-mr-2"
+        className="tw-w-4 tw-inline"
         src={lang === "en" ? enImgUrl : ruImgUrl}
         alt=""
       />
-      <span className="tw-leading-5">{t(`actionMenu.lang-${lang}`)}</span>
-    </Dropdown.Item>
+      <span>{t(`actionMenu.lang-${lang}`)}</span>
+    </button>
   );
 }

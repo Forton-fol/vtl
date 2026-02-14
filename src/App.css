@@ -1,8 +1,10 @@
+/* ======================================
+   GLOBAL STYLES - MODERN REDESIGN
+   ====================================== */
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -13,48 +15,7 @@ html, body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, monospace;
 }
 
 @font-face {
@@ -62,113 +23,375 @@ code {
   src: url('../images/CentSchbkCyrill.ttf') format("truetype");
 }
 
-body {
-  font-family: CentSchbkCyrill,Helvetica Neue,Helvetica,Arial,sans-serif;
-}
+/* ======================================
+   APP ROOT LAYOUT
+   ====================================== */
 
-.custom-btn-bg-color {
-  background-color: #337ab7;
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ======================================
-   RESPONSIVE LAYOUT
+   TOP NAVIGATION BAR
    ====================================== */
 
-/* Main app layout */
-.app-layout {
-  display: flex;
-  height: 100%;
-}
-
-/* Sidebar — desktop */
-.sidebar-panel {
-  flex-grow: 0;
+.top-navbar {
+  position: relative;
+  z-index: 100;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #e0e0e0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   flex-shrink: 0;
-  max-width: 24rem;
-  overflow-y: auto;
 }
 
-/* Main content area */
-.main-content {
-  flex-grow: 1;
-  width: 100%;
-  overflow-y: auto;
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 3.5rem;
+  max-width: 100%;
 }
 
-/* Mobile menu button — hidden on desktop */
-.mobile-menu-btn {
+/* Brand / Logo */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.brand-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 6px rgba(233, 69, 96, 0.6));
+}
+
+.brand-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: linear-gradient(135deg, #e94560, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-version {
+  font-size: 0.65rem;
+  opacity: 0.5;
+  font-weight: 400;
+  margin-top: 0.15rem;
+}
+
+/* Desktop navigation links area */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  justify-content: flex-end;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* ======================================
+   NAV ITEMS (shared between nav and actions)
+   ====================================== */
+
+.nav-item-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border: none;
+  background: transparent;
+  color: #c8d6e5;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* On desktop navbar, action buttons show icon only */
+.action-list-desktop .nav-item-btn span {
   display: none;
 }
 
-/* Mobile overlay — used when sidebar is open */
+.action-list-desktop .nav-item-btn {
+  padding: 0.45rem 0.6rem;
+  font-size: 1rem;
+}
+
+.nav-item-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.nav-item-btn.active {
+  background: rgba(233, 69, 96, 0.15);
+  color: #e94560;
+}
+
+.nav-item-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: #e94560;
+  border-radius: 1px;
+}
+
+/* Divider between nav groups */
+.nav-divider {
+  width: 1px;
+  height: 1.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 0 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ======================================
+   SETTINGS DROPDOWN
+   ====================================== */
+
+.settings-dropdown-panel {
+  position: absolute;
+  top: 3.5rem;
+  right: 0;
+  width: 22rem;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  border-radius: 0 0 1rem 1rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  color: #c8d6e5;
+  z-index: 200;
+  padding: 1rem;
+}
+
+.settings-dropdown-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.settings-dropdown-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.settings-dropdown-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+/* ======================================
+   MODERN BUTTONS
+   ====================================== */
+
+.btn-modern {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: #c8d6e5;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.btn-modern:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-modern:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn-modern-primary {
+  background: linear-gradient(135deg, #e94560, #c23152);
+  border-color: transparent;
+  color: #fff;
+}
+
+.btn-modern-primary:hover {
+  background: linear-gradient(135deg, #ff5a75, #e94560);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(233, 69, 96, 0.35);
+}
+
+.btn-modern-success {
+  background: linear-gradient(135deg, #00b894, #00a381);
+  border-color: transparent;
+  color: #fff;
+}
+
+.btn-modern-success:hover {
+  background: linear-gradient(135deg, #00d2a8, #00b894);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 184, 148, 0.35);
+}
+
+.btn-modern-danger {
+  background: rgba(255, 71, 87, 0.15);
+  border-color: rgba(255, 71, 87, 0.3);
+  color: #ff4757;
+}
+
+.btn-modern-danger:hover {
+  background: rgba(255, 71, 87, 0.25);
+  border-color: rgba(255, 71, 87, 0.5);
+  color: #ff6b7a;
+}
+
+.btn-modern-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: #8395a7;
+}
+
+.btn-modern-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #c8d6e5;
+}
+
+/* ======================================
+   MAIN CONTENT AREA
+   ====================================== */
+
+.main-content-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.main-content-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-content-area::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+/* ======================================
+   MOBILE
+   ====================================== */
+
+.mobile-only {
+  display: none !important;
+}
+
+.mobile-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: #c8d6e5;
+}
+
+/* Hamburger icon lines */
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 1.15rem;
+  height: 0.85rem;
+}
+.hamburger-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: currentColor;
+  border-radius: 1px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger-icon.open span:nth-child(1) {
+  transform: translateY(5.5px) rotate(45deg);
+}
+.hamburger-icon.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-icon.open span:nth-child(3) {
+  transform: translateY(-5.5px) rotate(-45deg);
+}
+
+/* Mobile overlay */
 .mobile-overlay {
   display: none;
 }
 
-/* ======================================
-   MOBILE (max-width: 768px)
-   ====================================== */
+/* Mobile dropdown (replaces sidebar) */
+.mobile-dropdown {
+  display: none;
+  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.75rem;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
 @media (max-width: 768px) {
   html, body {
     overflow: auto;
   }
 
-  .app {
-    overflow: auto !important;
-    height: auto !important;
-    min-height: 100vh;
-  }
-
-  .app-layout {
-    flex-direction: column;
+  .app-root {
+    overflow: auto;
     height: auto;
     min-height: 100vh;
   }
 
-  /* Hamburger button */
-  .mobile-menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 0.75rem;
-    left: 0.75rem;
-    z-index: 1001;
-    width: 2.75rem;
-    height: 2.75rem;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  .desktop-only {
+    display: none !important;
   }
 
-  /* Hamburger icon lines */
-  .hamburger-icon {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 1.25rem;
-    height: 1rem;
+  .mobile-only {
+    display: flex !important;
   }
-  .hamburger-icon span {
+
+  .mobile-hamburger {
+    display: flex;
+  }
+
+  .mobile-dropdown {
     display: block;
-    height: 2px;
-    width: 100%;
-    background-color: currentColor;
-    border-radius: 1px;
-    transition: transform 0.3s, opacity 0.3s;
-  }
-  .hamburger-icon.open span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-  .hamburger-icon.open span:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger-icon.open span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* Mobile overlay backdrop */
   .mobile-overlay {
     display: block;
     position: fixed;
@@ -176,97 +399,228 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 50;
   }
 
-  /* Sidebar — mobile: slide-in drawer */
-  .sidebar-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    max-width: 85vw;
-    width: 20rem;
-    z-index: 1000;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    overflow-y: auto;
-    padding-top: 3.5rem; /* space for hamburger */
-  }
-
-  .sidebar-panel.sidebar-open {
-    transform: translateX(0);
-  }
-
-  /* Main content — full width on mobile */
-  .main-content {
-    width: 100%;
+  .main-content-area {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* CharSheetPage — allow horizontal scroll for char sheet */
   .CharSheetPage {
     flex-direction: column !important;
   }
 
-  /* GameUtilsPanel — full width on mobile */
   .GameUtilsPanel {
     width: 100% !important;
+  }
+
+  .settings-dropdown-panel {
+    position: static;
+    width: 100%;
+    max-height: none;
+    border-radius: 0.75rem;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-inner {
+    padding: 0 0.75rem;
+  }
+
+  .brand-text {
+    font-size: 0.95rem;
   }
 }
 
 /* ======================================
-   SMALL MOBILE (max-width: 480px)
+   LIBRARY PAGE - MODERN CARDS
    ====================================== */
-@media (max-width: 480px) {
-  .sidebar-panel {
-    width: 100vw;
-    max-width: 100vw;
-  }
-}
 
-/* Library entries responsive */
 .library-page {
-  padding: 1.5rem;
+  padding: 2rem;
+  max-width: 56rem;
+  margin: 0 auto;
 }
 
-.library-save-btn {
-  width: auto;
+.library-header {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1a1a2e;
 }
 
-.library-entry {
+.library-desc {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1rem;
+}
+
+.library-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.library-card:hover {
+  border-color: #c7d2fe;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.library-card.is-active {
+  border-color: #e94560;
+  border-width: 2px;
+}
+
+.library-card.is-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #e94560, #ff6b6b);
+}
+
+.library-card-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1f2937;
+  word-break: break-word;
+  margin-bottom: 0.25rem;
+}
+
+.library-card-preset {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.35rem;
+}
+
+.library-card-id {
+  font-size: 0.65rem;
+  color: #9ca3af;
+  word-break: break-all;
+}
+
+.library-card-actions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.library-empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: #f9fafb;
+  border-radius: 1rem;
+  color: #9ca3af;
+  border: 2px dashed #e5e7eb;
 }
 
 @media (max-width: 768px) {
   .library-page {
-    padding: 0.75rem;
+    padding: 1rem;
   }
 
-  .library-save-btn {
-    width: 100%;
+  .library-grid {
+    grid-template-columns: 1fr;
   }
+}
 
-  .library-entry {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* ======================================
+   CUSTOM BTN (legacy compatibility)
+   ====================================== */
+
+.custom-btn-bg-color {
+  background-color: #337ab7;
+}
+
+/* ======================================
+   SYNC INDICATOR
+   ====================================== */
+
+.sync-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: #8395a7;
+}
+
+/* ======================================
+   ACTION LIST LAYOUT
+   ====================================== */
+
+.action-list-desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.action-list-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.action-list-mobile .nav-item-btn {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
+}
+
+.action-list-mobile .nav-item-btn span {
+  display: inline;
+}
+
+.action-list-mobile .nav-item-btn {
+  font-size: 0.85rem;
+}
+
+.sync-indicator.saving {
+  color: #feca57;
+}
+
+.sync-indicator.saved {
+  color: #00b894;
+}
+
+.sync-indicator.error {
+  color: #ff6348;
 }
 
 /* ======================================
    PRINT STYLES
    ====================================== */
+
 @media print {
   @page {
     size: auto;
     margin: 10mm;
   }
 
-  .mobile-menu-btn {
+  .top-navbar {
+    display: none !important;
+  }
+
+  .mobile-hamburger {
     display: none !important;
   }
 }
@@ -287,7 +641,6 @@ body {
   display: none !important;
 }
 
-/* Убираем границы и отступы при экспорте в PDF */
 .pdf-export-mode .CharSheetBody {
   border: none !important;
   border-image: none !important;
@@ -297,7 +650,6 @@ body {
   width: 100% !important;
 }
 
-/* Делаем квадраты пустыми в PDF */
 .pdf-export-mode .HealthInput .health-input-checkbox,
 .pdf-export-mode .HealthInput .health-input-checkbox[data-damage-type="no-damage"],
 .pdf-export-mode .HealthInput .health-input-checkbox[data-damage-type="bashing-damage"],

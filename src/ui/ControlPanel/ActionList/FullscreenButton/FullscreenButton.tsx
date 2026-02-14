@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Dropdown from "react-bootstrap/cjs/Dropdown";
-import classnames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExpand } from "@fortawesome/free-solid-svg-icons";
 
 interface FullscreenButtonProps {
   className?: string;
@@ -22,13 +22,13 @@ export function FullscreenButton(props: FullscreenButtonProps) {
   }
 
   return (
-    <Dropdown.Item
-      as="button"
+    <button
       type="button"
       onClick={onClick}
-      className={classnames("FullscreenButton", className)}
+      className="nav-item-btn"
+      title={t("actionMenu.fullscreen-toggle")}
     >
-      {t("actionMenu.fullscreen-toggle")}
-    </Dropdown.Item>
+      <FontAwesomeIcon icon={faExpand} />
+    </button>
   );
 }

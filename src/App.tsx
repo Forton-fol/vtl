@@ -8,20 +8,13 @@ import "./i18n";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./tailwind.css";
 
-// import logo from './logo.svg';
 import "./App.css";
-
-// import { Settings } from "luxon";
 
 import { useTranslation } from "react-i18next";
 
-// import { defaultLang } from "./i18nResources";
-
-// import { Header } from "./ui/Header";
 import { ErrorNotification } from "./uiLib/ErrorNotification";
 import { CharSheetPage } from "./ui/CharSheetPage";
 import { CharacterLibraryPage } from "./ui/CharLibraryPage/CharacterLibraryPage";
-import { AboutPage } from "./ui/AboutPage";
 import { ControlPanel } from "./ui/ControlPanel";
 import { CURRENT_VERSION } from "./constants";
 import { useInternalPresetProps } from "./charSheets";
@@ -59,6 +52,7 @@ function App(): JSX.Element {
   }, [settings]);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <DocumentTitle
@@ -67,53 +61,70 @@ function App(): JSX.Element {
         version: CURRENT_VERSION,
       })}
     >
-      <div className="app" style={{ height: "100vh", overflow: "hidden" }}>
-        {/* Mobile hamburger button */}
-        <button
-          className="mobile-menu-btn print:tw-hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Menu"
-          style={{
-            backgroundColor: settings.sidebarColor || "#e5e7eb",
-            color: settings.sidebarTextColor || "#111827",
-          }}
-        >
-          <span className={`hamburger-icon ${mobileMenuOpen ? "open" : ""}`}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </button>
+      <div className="app-root">
+        {/* TOP NAVIGATION BAR */}
+        <header className="top-navbar print:tw-hidden">
+          <div className="navbar-inner">
+            {/* Logo / Brand */}
+            <div className="navbar-brand">
+              <span className="brand-icon">⚔</span>
+              <span className="brand-text">VTM CharSheet</span>
+              <span className="brand-version">v{CURRENT_VERSION}</span>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="navbar-links desktop-only">
+              <ControlPanel
+                onNavigate={() => setMobileMenuOpen(false)}
+                onSettingsToggle={() => setSettingsOpen(!settingsOpen)}
+                settingsOpen={settingsOpen}
+              />
+            </nav>
+
+            {/* Mobile hamburger */}
+            <button
+              className="mobile-hamburger mobile-only"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu"
+            >
+              <span className={`hamburger-icon ${mobileMenuOpen ? "open" : ""}`}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+          </div>
+
+          {/* Mobile dropdown menu */}
+          {mobileMenuOpen && (
+            <div className="mobile-dropdown">
+              <ControlPanel
+                onNavigate={() => setMobileMenuOpen(false)}
+                onSettingsToggle={() => setSettingsOpen(!settingsOpen)}
+                settingsOpen={settingsOpen}
+                mobile
+              />
+            </div>
+          )}
+        </header>
+
+        {/* MAIN CONTENT */}
+        <main className="main-content-area">
+          <Routes>
+            <Route path="/charsheet" element={<CharSheetPage />} />
+            <Route path="/library" element={<CharacterLibraryPage />} />
+            <Route path="/" element={<CharSheetPage />} />
+          </Routes>
+        </main>
 
         {/* Mobile overlay */}
         {mobileMenuOpen && (
           <div
-            className="mobile-overlay print:tw-hidden"
+            className="mobile-overlay"
             onClick={() => setMobileMenuOpen(false)}
           />
         )}
 
-        <div className="app-layout">
-          {/* SIDEBAR */}
-          <div
-            className={`sidebar-panel print:tw-hidden ${mobileMenuOpen ? "sidebar-open" : ""}`}
-            style={{
-              backgroundColor: settings.sidebarColor || "#e5e7eb",
-              color: settings.sidebarTextColor || "#111827",
-              opacity: (settings.sidebarOpacity ?? 100) / 100,
-            }}
-          >
-            <ControlPanel onNavigate={() => setMobileMenuOpen(false)} />
-          </div>
-          {/* MAIN CONTENT */}
-          <div className="main-content">
-            <Routes>
-              <Route path="/charsheet" element={<CharSheetPage />} />
-              <Route path="/library" element={<CharacterLibraryPage />} />
-              <Route path="/" element={<CharSheetPage />} />
-            </Routes>
-          </div>
-        </div>
         <ErrorNotification />
       </div>
     </DocumentTitle>

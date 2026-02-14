@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Button from "react-bootstrap/cjs/Button";
-import ListGroup from "react-bootstrap/cjs/ListGroup";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSave, faFolderOpen, faTrash, faStar } from "@fortawesome/free-solid-svg-icons";
 import { listLibrary, saveToLibrary, removeFromLibrary, LibraryEntry } from "../../lib/libraryStorage";
 import { getToken } from "../../api/auth";
 import { listCharacters, saveCharacter, deleteCharacter } from "../../api/characters";
@@ -54,7 +54,6 @@ export function CharacterLibraryPage(): JSX.Element {
 
   function onLoad(id: string) {
     if (serverMode) {
-      // server mode: fetch from server entries (which include data)
       listCharacters().then((res) => {
         if (res && res.characters) {
           const c = res.characters.find((el: any) => el.id === id);
@@ -62,7 +61,6 @@ export function CharacterLibraryPage(): JSX.Element {
         }
       });
     } else {
-      // local mode: load from localStorage by sheetId
       const cs = getCharSheetFromLS(id);
       if (cs) {
         setCharSheet(cs);
@@ -84,48 +82,53 @@ export function CharacterLibraryPage(): JSX.Element {
 
   return (
     <div className="library-page">
-      <h2 className="tw-text-xl">{t("library.header")}</h2>
-      <p className="tw-mb-4 tw-text-sm">{t("library.description")}</p>
+      <h2 className="library-header">{t("library.header")}</h2>
+      <p className="library-desc">{t("library.description")}</p>
 
-      <div className="tw-mb-4">
-        <Button variant="outline-primary" className="library-save-btn" onClick={onSaveCurrent}>
-          {t("library.save-current")}
-        </Button>
+      <div className="tw-mb-6">
+        <button className="btn-modern btn-modern-primary" onClick={onSaveCurrent}>
+          <FontAwesomeIcon icon={faSave} />
+          <span>{t("library.save-current")}</span>
+        </button>
       </div>
 
-      <ListGroup>
-        {entries.length === 0 && (
-          <ListGroup.Item>{t("library.no-entries")}</ListGroup.Item>
-        )}
-        {entries.map((entry) => (
-          <ListGroup.Item
-            key={entry.id}
-            className="library-entry"
-            style={entry.id === activeSheetId ? { borderLeft: "3px solid #337ab7" } : {}}
-          >
-            <div className="tw-mb-2">
-              <div className="tw-font-semibold tw-break-words">
+      {entries.length === 0 ? (
+        <div className="library-empty">
+          {t("library.no-entries")}
+        </div>
+      ) : (
+        <div className="library-grid">
+          {entries.map((entry) => (
+            <div
+              key={entry.id}
+              className={`library-card ${entry.id === activeSheetId ? "is-active" : ""}`}
+            >
+              <div className="library-card-name">
                 {entry.name || entry.id}
-                {entry.id === activeSheetId && " ✦"}
+                {entry.id === activeSheetId && (
+                  <FontAwesomeIcon icon={faStar} className="tw-ml-2 tw-text-yellow-500" style={{ fontSize: '0.75rem' }} />
+                )}
               </div>
-              <div className="tw-text-sm tw-text-gray-600">
+              <div className="library-card-preset">
                 {entry.preset} — {new Date(entry.createdAt).toLocaleString()}
               </div>
-              <div className="tw-text-xs tw-text-gray-400 tw-break-all">
+              <div className="library-card-id">
                 ID: {entry.id}
               </div>
+              <div className="library-card-actions">
+                <button className="btn-modern btn-modern-success" onClick={() => onLoad(entry.id)}>
+                  <FontAwesomeIcon icon={faFolderOpen} />
+                  <span>{t("library.load")}</span>
+                </button>
+                <button className="btn-modern btn-modern-danger" onClick={() => onDelete(entry.id)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                  <span>{t("library.delete")}</span>
+                </button>
+              </div>
             </div>
-            <div className="tw-flex tw-gap-2 tw-flex-wrap">
-              <Button size="sm" variant="outline-success" onClick={() => onLoad(entry.id)}>
-                {t("library.load")}
-              </Button>
-              <Button size="sm" variant="outline-danger" onClick={() => onDelete(entry.id)}>
-                {t("library.delete")}
-              </Button>
-            </div>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

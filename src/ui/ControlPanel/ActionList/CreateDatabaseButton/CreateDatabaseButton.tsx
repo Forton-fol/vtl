@@ -1,11 +1,11 @@
 import React, { FormEvent, useState } from "react";
 import * as R from "ramda";
-import Dropdown from "react-bootstrap/cjs/Dropdown";
 import { useTranslation } from "react-i18next";
 import Modal from "react-bootstrap/cjs/Modal";
 import Button from "react-bootstrap/cjs/Button";
 import Form from "react-bootstrap/cjs/Form";
-import classnames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { initialCharSheet } from "../../../../charSheets/root/services/initialValues";
 import { CharSheetStorageService } from "../../../../charSheets/root/application/ports";
@@ -35,15 +35,15 @@ export function CreateDatabaseButton(props: CreateDatabaseButtonProps) {
 
   return (
     <>
-      <Dropdown.Item
-        as="button"
+      <button
         type="button"
-        data-original-title=""
         onClick={() => setShowModal(true)}
-        className={classnames("CreateDatabaseButton", className)}
+        className="nav-item-btn"
+        title={t("actionMenu.create-database")}
       >
-        {t("actionMenu.create-database")}
-      </Dropdown.Item>
+        <FontAwesomeIcon icon={faPlus} />
+        <span>{t("actionMenu.create-database")}</span>
+      </button>
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Form onSubmit={onSubmit}>
           <Modal.Header closeButton>

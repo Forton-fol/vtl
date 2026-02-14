@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Dropdown from "react-bootstrap/cjs/Dropdown";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useCharSheetStorage } from "../../../../charSheets/root/services/storageAdapter";
@@ -48,7 +49,7 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
       }
 
       // Скрываем панель управления для экспорта
-      const controlPanel = document.querySelector('.ControlPanel') as HTMLElement;
+      const controlPanel = document.querySelector('.top-navbar') as HTMLElement;
       const originalDisplay = controlPanel?.style.display;
       if (controlPanel) {
         controlPanel.style.display = 'none';
@@ -171,7 +172,7 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
       // Убираем класс PDF режима
       document.body.classList.remove('pdf-export-mode');
       // Восстанавливаем панель и фон в случае ошибки
-      const controlPanel = document.querySelector('.ControlPanel') as HTMLElement;
+      const controlPanel = document.querySelector('.top-navbar') as HTMLElement;
       if (controlPanel) {
         controlPanel.style.display = '';
       }
@@ -190,14 +191,15 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
   };
 
   return (
-    <Dropdown.Item
-      as="button"
-      className={className}
+    <button
+      className="nav-item-btn"
       type="button"
       onClick={handleExportPdf}
       disabled={isGenerating}
+      title={t("buttons.export-pdf", "Скачать PDF")}
     >
-      {isGenerating ? t("buttons.generating-pdf", "Генерация PDF...") : t("buttons.export-pdf", "Скачать PDF")}
-    </Dropdown.Item>
+      <FontAwesomeIcon icon={faFilePdf} />
+      <span>{isGenerating ? "..." : t("buttons.export-pdf", "PDF")}</span>
+    </button>
   );
 }

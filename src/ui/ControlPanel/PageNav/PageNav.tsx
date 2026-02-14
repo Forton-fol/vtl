@@ -1,50 +1,42 @@
 import React from "react";
 import "./PageNav.css";
-import Nav from "react-bootstrap/cjs/Nav";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import classnames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faScroll, faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 interface PageNavProps {
   className?: string;
   onNavigate?: () => void;
+  mobile?: boolean;
 }
 
 export function PageNav(props: PageNavProps): JSX.Element {
-  const { className, onNavigate } = props;
+  const { onNavigate, mobile } = props;
   const { t } = useTranslation();
 
-  // from
-  // https://stackoverflow.com/questions/35687353/react-bootstrap-link-item-in-a-navitem
   return (
-    <Nav as="nav" className={classnames("PageNav", className)}>
-      <Nav.Link
-        as={NavLink}
+    <nav className={mobile ? "page-nav-mobile" : "page-nav-desktop"}>
+      <NavLink
         to="/charsheet"
-        className="tw-px-5 tw-py-3"
-        style={{ color: "inherit" }}
+        className={({ isActive }) =>
+          `nav-item-btn ${isActive ? "active" : ""}`
+        }
         onClick={onNavigate}
       >
-        {t("charsheet.charsheet")}
-      </Nav.Link>
-      <Nav.Link
-        as={NavLink}
+        <FontAwesomeIcon icon={faScroll} />
+        <span>{t("charsheet.charsheet")}</span>
+      </NavLink>
+      <NavLink
         to="/library"
-        className="tw-px-5 tw-py-3"
-        style={{ color: "inherit" }}
+        className={({ isActive }) =>
+          `nav-item-btn ${isActive ? "active" : ""}`
+        }
         onClick={onNavigate}
       >
-        {t("library.header")}
-      </Nav.Link>
-      <Nav.Link
-        as={NavLink}
-        to="/instruction"
-        className="tw-px-5 tw-py-3"
-        style={{ color: "inherit" }}
-        onClick={onNavigate}
-      >
-        {t("instruction.header")}
-      </Nav.Link>
-    </Nav>
+        <FontAwesomeIcon icon={faBookOpen} />
+        <span>{t("library.header")}</span>
+      </NavLink>
+    </nav>
   );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import classnames from "classnames";
 
 import {
   useCharSheetStorage,
@@ -16,40 +15,41 @@ import { AuthSection } from "../AuthSection/AuthSection";
 
 interface ActionListProps {
   className?: string;
+  mobile?: boolean;
 }
 
 export function ActionList(props: ActionListProps): JSX.Element {
-  const { className } = props;
+  const { mobile } = props;
 
   const errorDescriptionService = useErrorDescription();
   const charSheetStorageService = useCharSheetStorage();
 
   return (
-    <div className={classnames("ActionList", className)}>
+    <div className={mobile ? "action-list-mobile" : "action-list-desktop"}>
       <UploadDatabaseButton
-        className="ActionListItem"
+        className="action-item"
         {...errorDescriptionService}
         {...charSheetStorageService}
       />
       <DownloadDatabaseButton
-        className="ActionListItem"
+        className="action-item"
         {...charSheetStorageService}
       />
       <CreateDatabaseButton
-        className="ActionListItem"
+        className="action-item"
         {...charSheetStorageService}
       />
-      <ExportPdfButton className="ActionListItem" />
-      <div className="ActionListItem">
+      <ExportPdfButton className="action-item" />
+      <div className="action-item">
         <AuthSection />
       </div>
       {globalThis.GLOBAL_DEFAULT_LANG === "ru" && (
         <>
-          <LangButton className="ActionListItem" lang="ru" />
-          <LangButton className="ActionListItem" lang="en" />
+          <LangButton className="action-item" lang="ru" />
+          <LangButton className="action-item" lang="en" />
         </>
       )}
-      <FullscreenButton className="ActionListItem" />
+      <FullscreenButton className="action-item" />
     </div>
   );
 }

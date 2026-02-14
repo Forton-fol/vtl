@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import Dropdown from "react-bootstrap/cjs/Dropdown";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import classnames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 import { json2File, makeFileName } from "../../../../lib/fileUtils";
 import { charSheetToJson } from "../../../../charSheets/root/infrastructure/dbLoader";
@@ -29,14 +29,14 @@ export function DownloadDatabaseButton(
   }
 
   return (
-    <Dropdown.Item
-      as="button"
+    <button
       type="button"
-      data-original-title=""
       onClick={() => downloadDatabaseAsFile()}
-      className={classnames("DownloadDatabaseButton", className)}
+      className="nav-item-btn"
+      title={t("actionMenu.save-database")}
     >
-      {t("actionMenu.save-database")}
-    </Dropdown.Item>
+      <FontAwesomeIcon icon={faDownload} />
+      <span>{t("actionMenu.save-database")}</span>
+    </button>
   );
 }

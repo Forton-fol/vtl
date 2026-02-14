@@ -1,8 +1,20 @@
-.PageNav a.active {
-  color: #fff;
-  background-color: #337ab7;
+/* Page Navigation — horizontal on desktop, vertical on mobile */
+
+.page-nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
 }
 
-.PageNav a {
-  border-bottom: 1px solid gray;
+.page-nav-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.page-nav-mobile .nav-item-btn {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
 }

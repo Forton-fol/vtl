@@ -1,52 +1,26 @@
-.accordion-toggle {
-  /* background-color: transparent; */
-  border: none;
-  border-bottom: 1px solid gray;
-  color: inherit;
-  text-align: left;
+/* ======================================
+   CONTROL PANEL — TOP BAR LAYOUT
+   ====================================== */
+
+.control-panel-desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
-.accordion-toggle:hover {
-  color: inherit;
-  opacity: 0.8;
-  background-color: transparent;
+.control-panel-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.accordion-toggle:focus {
-  color: inherit;
-  opacity: 0.8;
-  background-color: transparent;
+.mobile-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.35rem 0;
 }
 
-/* Inherit sidebar colors for all interactive elements */
-.ControlPanel .dropdown-item,
-.ControlPanel .dropdown-item:hover,
-.ControlPanel .dropdown-item:focus,
-.ControlPanel .dropdown-item:active {
-  color: inherit;
-  background-color: transparent;
-}
-
-.ControlPanel .dropdown-item:hover {
-  opacity: 0.75;
-}
-
-.ControlPanel .nav-link,
-.ControlPanel .nav-link:hover,
-.ControlPanel .nav-link:focus {
-  color: inherit !important;
-}
-
-.ControlPanel .nav-link:hover {
-  opacity: 0.75;
-}
-
-.ControlPanel .card {
-  background-color: inherit;
-  color: inherit;
-  border: none;
-}
-
+/* ControlPanel inherits */
 .ControlPanel .btn {
   color: inherit;
 }

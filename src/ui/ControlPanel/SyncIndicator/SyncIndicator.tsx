@@ -41,10 +41,7 @@ export function SyncIndicator(): JSX.Element | null {
   if (status === "idle") return null;
 
   return (
-    <div
-      className="tw-px-4 tw-py-1 tw-text-sm tw-flex tw-items-center tw-gap-2"
-      style={{ opacity: 0.8 }}
-    >
+    <div className={`sync-indicator ${status}`}>
       <span>{icons[status]}</span>
       <span>{labels[status]}</span>
     </div>
