@@ -4,6 +4,7 @@ import { Preset } from "../types";
 import { CheckList } from "./checkListUi";
 import { abilitiesConfig } from "./presetSettings/abilitiesConfig";
 import { freebiePointsConfig } from "./presetSettings/freebiePoints";
+import { experiencePointsConfig } from "./presetSettings/experiencePoints";
 import { profileConfig } from "./presetSettings/profileConfig";
 import { CharSheet } from "./CharSheet";
 import { getDropdownOptions } from "./dropdownContent";
@@ -14,6 +15,7 @@ export const CtD: Preset = {
   attributesConfig,
   abilitiesConfig,
   freebiePointsConfig,
+  experiencePointsConfig,
   profileConfig,
   CheckList,
   CharSheet,

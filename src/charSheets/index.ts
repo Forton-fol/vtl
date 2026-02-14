@@ -31,7 +31,7 @@ export function useExternalPresetProps(): ExternalPresetProps {
   const { preset } = usePreset();
 
   return R.pick(
-    ["CharSheet", "CheckList", "freebiePointsConfig"],
+    ["CharSheet", "CheckList", "freebiePointsConfig", "experiencePointsConfig"],
     presetIndex[preset],
   );
 }

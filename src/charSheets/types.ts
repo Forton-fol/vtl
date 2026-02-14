@@ -5,6 +5,7 @@ import {
   DropdownOptions,
   FreebiePointsConfig,
 } from "./root/domain";
+import { ExperiencePointsConfig } from "./generic/presetSettings/experiencePointCommons";
 import { StateStore } from "./root/services/store";
 
 export type Preset = {
@@ -14,6 +15,7 @@ export type Preset = {
   abilitiesConfig: AbilitiesConfig;
 
   freebiePointsConfig?: FreebiePointsConfig;
+  experiencePointsConfig?: ExperiencePointsConfig;
   dropdownOptions?: DropdownOptions;
 
   CharSheet: (props: {}) => JSX.Element;
@@ -28,5 +30,5 @@ export type Preset = {
 
 export type ExternalPresetProps = Pick<
   Preset,
-  "CharSheet" | "CheckList" | "freebiePointsConfig"
+  "CharSheet" | "CheckList" | "freebiePointsConfig" | "experiencePointsConfig"
 >;

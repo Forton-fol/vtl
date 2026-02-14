@@ -8,6 +8,7 @@ import { AccordionToggle } from "../../../uiLib/AccordionToggle";
 import { useExternalPresetProps } from "../../../charSheets";
 
 import { FreebiePointsPanel } from "./FreebiePointsPanel/FreebiePointsPanel";
+import { ExperiencePointsPanel } from "./ExperiencePointsPanel";
 // import { FreebiePointsPanel } from "./FreebiePointsPanel";
 
 interface GameUtilsPanelProps {
@@ -16,11 +17,11 @@ interface GameUtilsPanelProps {
 
 export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
   const { t } = useTranslation();
-  const { CheckList, freebiePointsConfig } = useExternalPresetProps();
+  const { CheckList, freebiePointsConfig, experiencePointsConfig } = useExternalPresetProps();
 
   const { className } = props;
 
-  if (CheckList === undefined && freebiePointsConfig === undefined) {
+  if (CheckList === undefined && freebiePointsConfig === undefined && experiencePointsConfig === undefined) {
     return null;
   }
 
@@ -69,6 +70,25 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
               aria-labelledby="freebie-points-toggle"
             >
               <FreebiePointsPanel freebiePointsConfig={freebiePointsConfig} />
+            </Accordion.Collapse>
+          </Card>
+        )}
+        {experiencePointsConfig && (
+          <Card className="tw-bg-gray-200">
+            <AccordionToggle
+              ariaId="experience-points-toggle"
+              eventKey="2"
+              title={t("experiencePoints.header")}
+              ariaControls="experience-points-panel"
+            />
+            <Accordion.Collapse
+              id="experience-points-panel"
+              eventKey="2"
+              className="tw-bg-white"
+              role="region"
+              aria-labelledby="experience-points-toggle"
+            >
+              <ExperiencePointsPanel experiencePointsConfig={experiencePointsConfig} />
             </Accordion.Collapse>
           </Card>
         )}
