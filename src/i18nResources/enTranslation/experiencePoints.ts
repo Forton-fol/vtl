@@ -20,4 +20,14 @@ export const experiencePoints = {
   "xp-realm": "Realm",
   "xp-willpower": "Willpower",
   "xp-glamour": "Glamour",
+
+  // VTM experience cost items
+  "xp-new-path": "New Path (Necromancy or Thaumaturgy)",
+  "xp-new-discipline": "New Discipline",
+  "xp-clan-discipline": "Clan Discipline",
+  "xp-other-discipline": "Other Discipline",
+  "xp-secondary-path": "Secondary Path (Necromancy or Thaumaturgy)",
+  "xp-virtue": "Virtue",
+  "xp-humanity": "Humanity",
+  "xp-willpower-vtm": "Willpower",
 };

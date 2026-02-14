@@ -20,4 +20,14 @@ export const experiencePoints = {
   "xp-realm": "Королевство",
   "xp-willpower": "Воля",
   "xp-glamour": "Гламур",
+
+  // VTM experience cost items
+  "xp-new-path": "Новый Путь (Некромантия или Тауматургия)",
+  "xp-new-discipline": "Новая Дисциплина",
+  "xp-clan-discipline": "Клановая Дисциплина",
+  "xp-other-discipline": "Другая Дисциплина",
+  "xp-secondary-path": "Вторичный путь (Некромантия или Тауматургия)",
+  "xp-virtue": "Добродетель",
+  "xp-humanity": "Человечность",
+  "xp-willpower-vtm": "Сила воли",
 };

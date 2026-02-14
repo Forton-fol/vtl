@@ -4,6 +4,7 @@ import { Preset } from "../types";
 import { CheckList } from "./checkListUi";
 import { abilitiesConfig } from "./presetSettings/abilitiesConfig";
 import { freebiePointsConfig } from "./presetSettings/freebiePoints";
+import { experiencePointsConfig } from "../vtm/presetSettings/experiencePoints";
 import { profileConfig } from "./presetSettings/profileConfig";
 import { CharSheet } from "./CharSheet";
 import { getDropdownOptions } from "./dropdownContent";
@@ -15,6 +16,7 @@ export const VtDA: Preset = {
   attributesConfig,
   abilitiesConfig,
   freebiePointsConfig,
+  experiencePointsConfig,
   CheckList,
   CharSheet,
   getDropdownOptions,

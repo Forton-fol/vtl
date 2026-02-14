@@ -3,6 +3,7 @@ import { Preset } from "../types";
 
 import { CheckList } from "../vtm/checkListUi";
 import { freebiePointsConfig } from "../vtm/presetSettings/freebiePoints";
+import { experiencePointsConfig } from "../vtm/presetSettings/experiencePoints";
 
 import { abilitiesConfig } from "./presetSettings/abilitiesConfig";
 // import { freebiePointsConfig } from "./presetSettings/freebiePoints";
@@ -17,6 +18,7 @@ export const VtM_v3: Preset = {
   attributesConfig,
   abilitiesConfig,
   freebiePointsConfig,
+  experiencePointsConfig,
   CheckList,
   CharSheet,
   getDropdownOptions,
