@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faFolderOpen, faTrash, faStar } from "@fortawesome/free-solid-svg-icons";
 import { listLibrary, saveToLibrary, removeFromLibrary, LibraryEntry } from "../../lib/libraryStorage";
@@ -10,6 +11,7 @@ import { getCharSheetFromLS, removeCharSheetFromLS } from "../../charSheets/root
 
 export function CharacterLibraryPage(): JSX.Element {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { setCharSheet, charSheet } = useCharSheetStorage();
 
   const [entries, setEntries] = useState<LibraryEntry[]>(() => listLibrary());
@@ -57,13 +59,17 @@ export function CharacterLibraryPage(): JSX.Element {
       listCharacters().then((res) => {
         if (res && res.characters) {
           const c = res.characters.find((el: any) => el.id === id);
-          if (c && c.data) setCharSheet(c.data);
+          if (c && c.data) {
+            setCharSheet(c.data);
+            navigate("/charsheet");
+          }
         }
       });
     } else {
       const cs = getCharSheetFromLS(id);
       if (cs) {
         setCharSheet(cs);
+        navigate("/charsheet");
       }
     }
   }
