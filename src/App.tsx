@@ -19,6 +19,7 @@ import { ControlPanel } from "./ui/ControlPanel";
 import { CURRENT_VERSION } from "./constants";
 import { useInternalPresetProps } from "./charSheets";
 import { useSettings } from "./charSheets/misc/services/storageAdapter";
+import { loadImage, IDB_MARKER } from "./lib/imageStorage";
 
 function App(): JSX.Element {
   const { t } = useTranslation();
@@ -27,13 +28,15 @@ function App(): JSX.Element {
 
   useEffect(() => {
     document.body.style.backgroundColor = settings.backgroundColor;
-    if (settings.backgroundImage) {
-      document.body.style.backgroundImage = `url(${settings.backgroundImage})`;
+
+    function applyBg(url: string) {
+      document.body.style.backgroundImage = `url(${url})`;
       document.body.style.backgroundSize = "cover";
       document.body.style.backgroundPosition = "center";
       document.body.style.backgroundAttachment = "fixed";
       document.body.style.backgroundRepeat = "no-repeat";
-    } else {
+    }
+    function clearBg() {
       document.body.style.backgroundImage = "";
       document.body.style.backgroundSize = "";
       document.body.style.backgroundPosition = "";
@@ -41,13 +44,21 @@ function App(): JSX.Element {
       document.body.style.backgroundRepeat = "";
     }
 
+    if (settings.backgroundImage === IDB_MARKER) {
+      // Load from IndexedDB
+      loadImage("site_bg").then((data) => {
+        if (data) applyBg(data); else clearBg();
+      });
+    } else if (settings.backgroundImage) {
+      // Legacy: direct data URL stored in settings
+      applyBg(settings.backgroundImage);
+    } else {
+      clearBg();
+    }
+
     return () => {
       document.body.style.backgroundColor = "white";
-      document.body.style.backgroundImage = "";
-      document.body.style.backgroundSize = "";
-      document.body.style.backgroundPosition = "";
-      document.body.style.backgroundAttachment = "";
-      document.body.style.backgroundRepeat = "";
+      clearBg();
     };
   }, [settings]);
 

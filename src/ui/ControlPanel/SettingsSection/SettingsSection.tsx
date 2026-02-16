@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { initialSettings } from "../../../charSheets/misc/services/initialValues";
 import { useSettings } from "../../../charSheets/misc/services/storageAdapter";
 import { getAutoSaveEnabled, setAutoSaveEnabled } from "../../../lib/libraryStorage";
+import { saveImage, removeImage, IDB_MARKER } from "../../../lib/imageStorage";
 
 interface SettingsSectionProps {}
 
@@ -34,87 +35,45 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
     setAutoSaveEnabled(checked);
   }
 
-  /** Read file as dataURL — works for any format including GIF */
-  function readFileAsDataUrl(
-    file: File,
-    callback: (dataUrl: string) => void,
-  ): void {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = e.target?.result;
-      if (typeof result === "string") callback(result);
-    };
-    reader.onerror = () => console.error("Failed to read file");
-    reader.readAsDataURL(file);
+  /** Read a file as dataURL */
+  function readFileAsDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result;
+        if (typeof result === "string") resolve(result);
+        else reject(new Error("FileReader returned non-string"));
+      };
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
   }
 
-  /**
-   * Process an image file for storage.
-   * GIF → kept as-is (animation preserved).
-   * Others → compressed via canvas to fit localStorage.
-   * If canvas fails, falls back to raw dataURL.
-   */
-  function processImage(
+  /** Save image to IndexedDB under the given key, set marker in settings */
+  async function handleImageUpload(
     file: File,
-    callback: (dataUrl: string) => void,
-    maxDim = 1920,
-    quality = 0.8,
-  ): void {
-    // GIF — always keep raw to preserve animation
-    if (file.type === "image/gif") {
-      readFileAsDataUrl(file, callback);
-      return;
+    idbKey: string,
+    setter: (val: string) => void,
+  ): Promise<void> {
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      await saveImage(idbKey, dataUrl);
+      // Store a small marker in settings (not the huge dataURL)
+      setter(IDB_MARKER);
+    } catch (err) {
+      console.error("Failed to save image", err);
     }
-
-    // Small files (< 500 KB) — keep as-is, no need to compress
-    if (file.size < 500 * 1024) {
-      readFileAsDataUrl(file, callback);
-      return;
-    }
-
-    // Large files — compress via canvas
-    readFileAsDataUrl(file, (dataUrl) => {
-      const img = new Image();
-      img.onload = () => {
-        try {
-          let { width, height } = img;
-          if (width > maxDim || height > maxDim) {
-            const ratio = Math.min(maxDim / width, maxDim / height);
-            width = Math.round(width * ratio);
-            height = Math.round(height * ratio);
-          }
-          const canvas = document.createElement("canvas");
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          if (!ctx) {
-            callback(dataUrl); // fallback
-            return;
-          }
-          ctx.drawImage(img, 0, 0, width, height);
-          callback(canvas.toDataURL("image/jpeg", quality));
-        } catch {
-          callback(dataUrl); // fallback to original
-        }
-      };
-      img.onerror = () => callback(dataUrl); // fallback
-      img.src = dataUrl;
-    });
   }
 
   function readImage(event: ChangeEvent<HTMLInputElement>): void {
     if (event.target.files && event.target.files[0]) {
-      processImage(event.target.files[0], (dataUrl) => {
-        setCharsheetBackImage(dataUrl);
-      });
+      handleImageUpload(event.target.files[0], "sheet_bg", setCharsheetBackImage);
     }
   }
 
   function readSiteBackgroundImage(event: ChangeEvent<HTMLInputElement>): void {
     if (event.target.files && event.target.files[0]) {
-      processImage(event.target.files[0], (dataUrl) => {
-        setBackgroundImage(dataUrl);
-      });
+      handleImageUpload(event.target.files[0], "site_bg", setBackgroundImage);
     }
   }
 
@@ -163,7 +122,7 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
         {settings.backgroundImage && (
           <Button
             className="custom-btn-bg-color"
-            onClick={() => setBackgroundImage("")}
+            onClick={() => { removeImage("site_bg"); setBackgroundImage(""); }}
           >
             {t("visual-settings.remove-site-background-image")}
           </Button>

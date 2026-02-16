@@ -1,9 +1,10 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import classnames from "classnames";
 
 import "./CharSheetBody.css";
 import { Settings } from "../../../misc/domain";
 import { useSettings } from "../../../misc/services/storageAdapter";
+import { loadImage, IDB_MARKER } from "../../../../lib/imageStorage";
 
 interface CharSheetBodyProps {
   className?: string;
@@ -17,17 +18,26 @@ function getBgColor(settings: Settings): string {
   return "transparent";
 }
 
-function getBgImage(settings: Settings): string {
-  const { charsheetBackMode, charsheetBackImage_v2 } = settings;
-  if (charsheetBackMode === "charsheet-image") {
-    return `url(${charsheetBackImage_v2})`;
-  }
-  return "none";
-}
-
 export function CharSheetBody(props: PropsWithChildren<CharSheetBodyProps>) {
   const { settings } = useSettings();
   const { children, className } = props;
+  const [sheetBgUrl, setSheetBgUrl] = useState<string>("none");
+
+  useEffect(() => {
+    if (settings.charsheetBackMode !== "charsheet-image") {
+      setSheetBgUrl("none");
+      return;
+    }
+    if (settings.charsheetBackImage_v2 === IDB_MARKER) {
+      loadImage("sheet_bg").then((data) => {
+        setSheetBgUrl(data ? `url(${data})` : "none");
+      });
+    } else if (settings.charsheetBackImage_v2) {
+      setSheetBgUrl(`url(${settings.charsheetBackImage_v2})`);
+    } else {
+      setSheetBgUrl("none");
+    }
+  }, [settings.charsheetBackMode, settings.charsheetBackImage_v2]);
 
   const opacity = (settings.charsheetBackOpacity ?? 100) / 100;
   const fontSize = (settings.charsheetFontSize ?? 100) / 100;
@@ -42,7 +52,7 @@ export function CharSheetBody(props: PropsWithChildren<CharSheetBodyProps>) {
       )}
       style={{
         backgroundColor: getBgColor(settings),
-        backgroundImage: getBgImage(settings),
+        backgroundImage: sheetBgUrl,
         color: settings.charsheetTextColor || "#000000",
         opacity,
         fontSize: `${fontSize}rem`,
