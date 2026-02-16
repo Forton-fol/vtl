@@ -7,7 +7,7 @@ export const experiencePoints = {
   costTable: "Таблица стоимости",
   trait: "Черта",
   cost: "Стоимость",
-  currentTimesN: "Текущее значение × {{n}}",
+  currentTimesN: "Ур. × {{n}}",
   remaining: "Остаток",
 
   // CTD experience cost items
@@ -24,6 +24,8 @@ export const experiencePoints = {
   // VTM experience cost items
   "xp-new-path": "Новый Путь (Некромантия или Тауматургия)",
   "xp-new-discipline": "Новая Дисциплина",
+  "xp-new-clan-discipline": "Новая клановая Дисциплина",
+  "xp-new-other-discipline": "Новая неклановая Дисциплина",
   "xp-clan-discipline": "Клановая Дисциплина",
   "xp-other-discipline": "Другая Дисциплина",
   "xp-secondary-path": "Вторичный путь (Некромантия или Тауматургия)",

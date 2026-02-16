@@ -9,9 +9,24 @@ import {
   extractWillpowerValue,
 } from "../../generic/presetSettings/experiencePointCommons";
 import { abilitiesConfig } from "./abilitiesConfig";
+import { clanDisciplineMap } from "./clanDisciplines";
 
 function extractDisciplineValues(cs: CharSheet): number[] {
   return R.pluck("value", cs.disciplines);
+}
+
+function extractClanDisciplineValues(cs: CharSheet): number[] {
+  const clanDiscs = new Set(clanDisciplineMap[cs.profile.clan] ?? []);
+  return cs.disciplines
+    .filter((d) => clanDiscs.has(d.name))
+    .map((d) => d.value);
+}
+
+function extractOtherDisciplineValues(cs: CharSheet): number[] {
+  const clanDiscs = new Set(clanDisciplineMap[cs.profile.clan] ?? []);
+  return cs.disciplines
+    .filter((d) => !clanDiscs.has(d.name))
+    .map((d) => d.value);
 }
 
 function extractDisciplinePathValues(cs: CharSheet): number[] {
@@ -62,11 +77,18 @@ export const experiencePointsConfig: ExperiencePointsConfig = {
       extractValues: extractDisciplinePathValues,
     },
     {
-      name: "xp-new-discipline",
+      name: "xp-new-clan-discipline",
+      multiplier: 5,
+      isNew: true,
+      flatCost: 10,
+      extractValues: extractClanDisciplineValues,
+    },
+    {
+      name: "xp-new-other-discipline",
       multiplier: 7,
       isNew: true,
       flatCost: 10,
-      extractValues: extractDisciplineValues,
+      extractValues: extractOtherDisciplineValues,
     },
     {
       name: "xp-attribute",
@@ -81,12 +103,12 @@ export const experiencePointsConfig: ExperiencePointsConfig = {
     {
       name: "xp-clan-discipline",
       multiplier: 5,
-      extractValues: extractDisciplineValues,
+      extractValues: extractClanDisciplineValues,
     },
     {
       name: "xp-other-discipline",
       multiplier: 7,
-      extractValues: extractDisciplineValues,
+      extractValues: extractOtherDisciplineValues,
     },
     {
       name: "xp-secondary-path",

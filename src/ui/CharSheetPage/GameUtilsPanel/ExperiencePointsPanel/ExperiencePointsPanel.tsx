@@ -115,37 +115,39 @@ export function ExperiencePointsPanel(
         <h4 className="tw-text-sm tw-font-semibold tw-mb-2">
           {t("experiencePoints.costTable")}
         </h4>
-        <table className="tw-w-full tw-text-xs tw-border-collapse">
-          <thead>
-            <tr className="tw-border-b tw-border-gray-400">
-              <th className="tw-text-left tw-py-1 tw-pr-2">
-                {t("experiencePoints.trait")}
-              </th>
-              <th className="tw-text-left tw-py-1">
-                {t("experiencePoints.cost")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {experiencePointsConfig.list.map((item) => (
-              <tr
-                key={item.name}
-                className="tw-border-b tw-border-gray-200"
-              >
-                <td className="tw-py-1 tw-pr-2">
-                  {t(`experiencePoints.${item.name}`)}
-                </td>
-                <td className="tw-py-1">
-                  {item.isNew && item.flatCost !== undefined
-                    ? String(item.flatCost)
-                    : t("experiencePoints.currentTimesN", {
-                        n: item.multiplier,
-                      })}
-                </td>
+        <div className="tw-max-h-72 tw-overflow-y-auto">
+          <table className="tw-w-full tw-text-xs tw-border-collapse">
+            <thead>
+              <tr className="tw-border-b tw-border-gray-400">
+                <th className="tw-text-left tw-py-1 tw-pr-4">
+                  {t("experiencePoints.trait")}
+                </th>
+                <th className="tw-text-right tw-py-1">
+                  {t("experiencePoints.cost")}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {experiencePointsConfig.list.map((item) => (
+                <tr
+                  key={item.name}
+                  className="tw-border-b tw-border-gray-200"
+                >
+                  <td className="tw-py-1 tw-pr-4">
+                    {t(`experiencePoints.${item.name}`)}
+                  </td>
+                  <td className="tw-py-1 tw-text-right tw-whitespace-nowrap">
+                    {item.isNew && item.flatCost !== undefined
+                      ? String(item.flatCost)
+                      : t("experiencePoints.currentTimesN", {
+                          n: item.multiplier,
+                        })}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Spending tracker (only when active) */}

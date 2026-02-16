@@ -45,26 +45,23 @@ export function calcXpCostForItem(
   let totalCost = 0;
 
   if (item.isNew && item.flatCost !== undefined) {
-    // Count how many traits were raised from 0 to something
+    // Count how many traits were raised from 0 to something — flat cost only
     for (let i = 0; i < currentValues.length; i++) {
       const prev = prevValues[i] ?? 0;
       const curr = currentValues[i] ?? 0;
       if (prev === 0 && curr > 0) {
         totalCost += item.flatCost;
-        // Also add the level-up costs for levels 1..curr-1 (if curr > 1)
-        for (let lvl = 1; lvl < curr; lvl++) {
-          totalCost += lvl * item.multiplier;
-        }
       }
     }
   } else {
     // Regular upgrade: cost = sum(level * multiplier) for each level gained
+    // Level 0→1 costs 0 here (covered by flat cost in the corresponding "new" entry)
     for (let i = 0; i < Math.max(prevValues.length, currentValues.length); i++) {
       const prev = prevValues[i] ?? 0;
       const curr = currentValues[i] ?? 0;
       if (curr > prev) {
         for (let lvl = prev; lvl < curr; lvl++) {
-          totalCost += (lvl === 0 ? 1 : lvl) * item.multiplier;
+          totalCost += lvl * item.multiplier;
         }
       }
     }

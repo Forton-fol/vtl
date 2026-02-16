@@ -7,7 +7,7 @@ export const experiencePoints = {
   costTable: "Cost Table",
   trait: "Trait",
   cost: "Cost",
-  currentTimesN: "Current rating × {{n}}",
+  currentTimesN: "Lvl × {{n}}",
   remaining: "Remaining",
 
   // CTD experience cost items
@@ -24,6 +24,8 @@ export const experiencePoints = {
   // VTM experience cost items
   "xp-new-path": "New Path (Necromancy or Thaumaturgy)",
   "xp-new-discipline": "New Discipline",
+  "xp-new-clan-discipline": "New Clan Discipline",
+  "xp-new-other-discipline": "New Other Discipline",
   "xp-clan-discipline": "Clan Discipline",
   "xp-other-discipline": "Other Discipline",
   "xp-secondary-path": "Secondary Path (Necromancy or Thaumaturgy)",
