@@ -64,6 +64,8 @@ export const enTranslation: TranslationInfo = {
     "remove-site-background-image": "Remove background image",
     "sidebar-opacity": "Sidebar opacity",
     "autosave-enabled": "Auto-save",
+    "recommended-size-site": "Recommended: 1920×1080 px, JPG/PNG/GIF",
+    "recommended-size-sheet": "Recommended: 800×1200 px, JPG/PNG/GIF",
   },
   charsheet: {
     emptyName: "Nameless character",

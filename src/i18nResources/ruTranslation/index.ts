@@ -60,6 +60,8 @@ export const ruTranslation = {
     "remove-site-background-image": "Убрать фоновое изображение",
     "sidebar-opacity": "Прозрачность боковой панели",
     "autosave-enabled": "Автосохранение",
+    "recommended-size-site": "Рекомендуемый размер: 1920×1080 px, JPG/PNG/GIF",
+    "recommended-size-sheet": "Рекомендуемый размер: 800×1200 px, JPG/PNG/GIF",
   },
   charsheet: {
     emptyName: "Безымянный персонаж",

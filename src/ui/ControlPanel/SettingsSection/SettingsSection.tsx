@@ -34,10 +34,25 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
     setAutoSaveEnabled(checked);
   }
 
+  /** Read file as dataURL — works for any format including GIF */
+  function readFileAsDataUrl(
+    file: File,
+    callback: (dataUrl: string) => void,
+  ): void {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result;
+      if (typeof result === "string") callback(result);
+    };
+    reader.onerror = () => console.error("Failed to read file");
+    reader.readAsDataURL(file);
+  }
+
   /**
-   * Compress an image file via canvas so it fits in localStorage.
-   * GIF files are passed through as-is to preserve animation.
-   * Other formats are resized and converted to JPEG.
+   * Process an image file for storage.
+   * GIF → kept as-is (animation preserved).
+   * Others → compressed via canvas to fit localStorage.
+   * If canvas fails, falls back to raw dataURL.
    */
   function processImage(
     file: File,
@@ -45,41 +60,46 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
     maxDim = 1920,
     quality = 0.8,
   ): void {
-    // GIF — read as-is to keep animation
+    // GIF — always keep raw to preserve animation
     if (file.type === "image/gif") {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result;
-        if (typeof result === "string") {
-          callback(result);
-        }
-      };
-      reader.readAsDataURL(file);
+      readFileAsDataUrl(file, callback);
       return;
     }
 
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-      let { width, height } = img;
-      if (width > maxDim || height > maxDim) {
-        const ratio = Math.min(maxDim / width, maxDim / height);
-        width = Math.round(width * ratio);
-        height = Math.round(height * ratio);
-      }
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d")!;
-      ctx.drawImage(img, 0, 0, width, height);
-      callback(canvas.toDataURL("image/jpeg", quality));
-    };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      console.error("Failed to load image for compression");
-    };
-    img.src = url;
+    // Small files (< 500 KB) — keep as-is, no need to compress
+    if (file.size < 500 * 1024) {
+      readFileAsDataUrl(file, callback);
+      return;
+    }
+
+    // Large files — compress via canvas
+    readFileAsDataUrl(file, (dataUrl) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            const ratio = Math.min(maxDim / width, maxDim / height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            callback(dataUrl); // fallback
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          callback(canvas.toDataURL("image/jpeg", quality));
+        } catch {
+          callback(dataUrl); // fallback to original
+        }
+      };
+      img.onerror = () => callback(dataUrl); // fallback
+      img.src = dataUrl;
+    });
   }
 
   function readImage(event: ChangeEvent<HTMLInputElement>): void {
@@ -130,10 +150,13 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
         <h3 className="tw-text-lg tw-mb-4">
           {t("visual-settings.site-background-image")}
         </h3>
+        <p className="tw-text-sm tw-text-gray-400 tw-mb-2">
+          {t("visual-settings.recommended-size-site")}
+        </p>
         <label className="tw-block tw-mb-4">
           <input
             type="file"
-            accept="image/*"
+            accept="image/*,.gif"
             onChange={readSiteBackgroundImage}
           />
         </label>
@@ -197,8 +220,12 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
               <span className="tw-mr-4">
                 {t("visual-settings.charsheet-background-image")}
               </span>
+              <p className="tw-text-sm tw-text-gray-400 tw-mb-2">
+                {t("visual-settings.recommended-size-sheet")}
+              </p>
               <input
                 type="file"
+                accept="image/*,.gif"
                 className="charsheet-background-image-input"
                 onChange={readImage}
                 disabled={settings.charsheetBackMode !== "charsheet-image"}
