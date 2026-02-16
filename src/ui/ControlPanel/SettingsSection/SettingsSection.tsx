@@ -36,15 +36,28 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
 
   /**
    * Compress an image file via canvas so it fits in localStorage.
-   * Accepts any image format the browser can decode (jpg, png, webp, bmp, gif, avif, …).
-   * Output is always JPEG ≤ MAX_DIM px on longest side, quality 0.8.
+   * GIF files are passed through as-is to preserve animation.
+   * Other formats are resized and converted to JPEG.
    */
-  function compressImage(
+  function processImage(
     file: File,
     callback: (dataUrl: string) => void,
     maxDim = 1920,
     quality = 0.8,
   ): void {
+    // GIF — read as-is to keep animation
+    if (file.type === "image/gif") {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result;
+        if (typeof result === "string") {
+          callback(result);
+        }
+      };
+      reader.readAsDataURL(file);
+      return;
+    }
+
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
@@ -71,7 +84,7 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
 
   function readImage(event: ChangeEvent<HTMLInputElement>): void {
     if (event.target.files && event.target.files[0]) {
-      compressImage(event.target.files[0], (dataUrl) => {
+      processImage(event.target.files[0], (dataUrl) => {
         setCharsheetBackImage(dataUrl);
       });
     }
@@ -79,7 +92,7 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
 
   function readSiteBackgroundImage(event: ChangeEvent<HTMLInputElement>): void {
     if (event.target.files && event.target.files[0]) {
-      compressImage(event.target.files[0], (dataUrl) => {
+      processImage(event.target.files[0], (dataUrl) => {
         setBackgroundImage(dataUrl);
       });
     }
