@@ -63,6 +63,7 @@ export const enTranslation: TranslationInfo = {
     "site-background-image": "Site background image",
     "remove-site-background-image": "Remove background image",
     "sidebar-opacity": "Sidebar opacity",
+    "autosave-enabled": "Auto-save",
   },
   charsheet: {
     emptyName: "Nameless character",

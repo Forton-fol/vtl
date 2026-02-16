@@ -7,7 +7,7 @@ import { listLibrary, saveToLibrary, removeFromLibrary, LibraryEntry } from "../
 import { getToken } from "../../api/auth";
 import { listCharacters, saveCharacter, deleteCharacter } from "../../api/characters";
 import { useCharSheetStorage } from "../../charSheets/root/services/storageAdapter";
-import { getCharSheetFromLS, removeCharSheetFromLS } from "../../charSheets/root/infrastructure/lsDbService";
+import { getCharSheetFromLS, removeCharSheetFromLS, saveCharSheetInLS } from "../../charSheets/root/infrastructure/lsDbService";
 
 export function CharacterLibraryPage(): JSX.Element {
   const { t } = useTranslation();
@@ -50,6 +50,7 @@ export function CharacterLibraryPage(): JSX.Element {
       });
     } else {
       saveToLibrary(charSheet);
+      saveCharSheetInLS(charSheet);
       setEntries(listLibrary());
     }
   }

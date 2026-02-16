@@ -16,7 +16,12 @@ import {
 import { strToCharSheet } from "../infrastructure/dbLoader";
 import { getToken } from "../../../api/auth";
 import { scheduleSave, loadFromServer } from "../../../api/autoSync";
-import { ensureInLibrary } from "../../../lib/libraryStorage";
+import {
+  ensureInLibrary,
+  isInLibrary,
+  updateLibraryMeta,
+  getAutoSaveEnabled,
+} from "../../../lib/libraryStorage";
 import { generateSheetId } from "../../../lib/miscUtils";
 import {
   CombinedRootService,
@@ -111,17 +116,28 @@ export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
   const prevSheetIdRef = React.useRef<string | undefined>(charSheet.sheetId);
 
   useEffect(() => {
-    // Ensure charSheet always has a sheetId AND is registered in library
-    const ensured = ensureInLibrary(charSheet);
-    if (ensured.sheetId !== charSheet.sheetId) {
-      // sheetId was just generated — update state, will re-trigger this effect
-      dispatch({ type: "setCharSheet", props: [ensured] });
+    // Ensure charSheet always has a sheetId (but do NOT create a library entry)
+    if (!charSheet.sheetId) {
+      const newId = generateSheetId();
+      dispatch({ type: "setCharSheet", props: [{ ...charSheet, sheetId: newId }] });
       return;
     }
 
-    // Save this sheet's data to its own LS key
-    saveCharSheetInLS(charSheet);
-    scheduleSave(charSheet);
+    // Auto-save: only save data if auto-save is enabled
+    if (getAutoSaveEnabled()) {
+      // Always persist data to LS (crash recovery)
+      saveCharSheetInLS(charSheet);
+      // If the sheet is already in the library, update its metadata
+      if (isInLibrary(charSheet.sheetId)) {
+        updateLibraryMeta(
+          charSheet.sheetId,
+          charSheet.profile.name || "",
+          charSheet.preset || "",
+        );
+      }
+      // Server sync (debounced)
+      scheduleSave(charSheet);
+    }
 
     // Update the previous sheetId ref
     prevSheetIdRef.current = charSheet.sheetId;

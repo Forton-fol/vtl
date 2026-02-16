@@ -84,6 +84,11 @@ export function getLibraryEntry(id: string): LibraryEntry | undefined {
   return readLibrary().find((e) => e.id === id);
 }
 
+/** Check whether a sheet with the given id already exists in the library */
+export function isInLibrary(sheetId: string): boolean {
+  return readLibrary().some((e) => e.id === sheetId);
+}
+
 /** Update just metadata (name/preset) for an existing entry */
 export function updateLibraryMeta(sheetId: string, name: string, preset: string) {
   const entries = readLibrary();
@@ -94,4 +99,19 @@ export function updateLibraryMeta(sheetId: string, name: string, preset: string)
     entry.updatedAt = new Date().toISOString();
     writeLibrary(entries);
   }
+}
+
+/* ───── Auto-save preference ───── */
+const AUTOSAVE_KEY = `${LS_KEY}_autosave`;
+
+export function getAutoSaveEnabled(): boolean {
+  if (typeof window === 'undefined') return true;
+  const val = localStorage.getItem(AUTOSAVE_KEY);
+  // enabled by default
+  return val === null ? true : val === "1";
+}
+
+export function setAutoSaveEnabled(enabled: boolean): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(AUTOSAVE_KEY, enabled ? "1" : "0");
 }

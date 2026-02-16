@@ -59,6 +59,7 @@ export const ruTranslation = {
     "site-background-image": "Фоновое изображение сайта",
     "remove-site-background-image": "Убрать фоновое изображение",
     "sidebar-opacity": "Прозрачность боковой панели",
+    "autosave-enabled": "Автосохранение",
   },
   charsheet: {
     emptyName: "Безымянный персонаж",

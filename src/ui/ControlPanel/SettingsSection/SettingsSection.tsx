@@ -1,10 +1,11 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 import Form from "react-bootstrap/cjs/Form";
 import Button from "react-bootstrap/cjs/Button";
 import { useTranslation } from "react-i18next";
 
 import { initialSettings } from "../../../charSheets/misc/services/initialValues";
 import { useSettings } from "../../../charSheets/misc/services/storageAdapter";
+import { getAutoSaveEnabled, setAutoSaveEnabled } from "../../../lib/libraryStorage";
 
 interface SettingsSectionProps {}
 
@@ -25,6 +26,13 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
     setBackgroundImage,
     setSidebarOpacity,
   } = useSettings();
+
+  const [autoSave, setAutoSave] = useState(() => getAutoSaveEnabled());
+
+  function handleAutoSaveToggle(checked: boolean) {
+    setAutoSave(checked);
+    setAutoSaveEnabled(checked);
+  }
 
   function readImage(event: ChangeEvent<HTMLInputElement>): void {
     const reader = new FileReader();
@@ -54,6 +62,17 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
 
   return (
     <div className="SettingsSection" style={{ color: '#c8d6e5' }}>
+      {/* Auto-save toggle */}
+      <div className="tw-m-4">
+        <Form.Check
+          type="checkbox"
+          id="autosave-toggle"
+          label={t("visual-settings.autosave-enabled")}
+          checked={autoSave}
+          onChange={(e) => handleAutoSaveToggle(e.target.checked)}
+        />
+      </div>
+
       <div className="tw-m-4">
         <label className="tw-mr-4">
           <span className="tw-mr-4">
