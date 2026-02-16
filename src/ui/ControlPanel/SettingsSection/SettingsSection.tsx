@@ -34,29 +34,54 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
     setAutoSaveEnabled(checked);
   }
 
-  function readImage(event: ChangeEvent<HTMLInputElement>): void {
-    const reader = new FileReader();
-    reader.onload = (readerEvent) => {
-      const imageData = readerEvent.target?.result;
-      if (typeof imageData === "string") {
-        setCharsheetBackImage(imageData);
+  /**
+   * Compress an image file via canvas so it fits in localStorage.
+   * Accepts any image format the browser can decode (jpg, png, webp, bmp, gif, avif, …).
+   * Output is always JPEG ≤ MAX_DIM px on longest side, quality 0.8.
+   */
+  function compressImage(
+    file: File,
+    callback: (dataUrl: string) => void,
+    maxDim = 1920,
+    quality = 0.8,
+  ): void {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        const ratio = Math.min(maxDim / width, maxDim / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
       }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(img, 0, 0, width, height);
+      callback(canvas.toDataURL("image/jpeg", quality));
     };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      console.error("Failed to load image for compression");
+    };
+    img.src = url;
+  }
+
+  function readImage(event: ChangeEvent<HTMLInputElement>): void {
     if (event.target.files && event.target.files[0]) {
-      reader.readAsDataURL(event.target.files[0]);
+      compressImage(event.target.files[0], (dataUrl) => {
+        setCharsheetBackImage(dataUrl);
+      });
     }
   }
 
   function readSiteBackgroundImage(event: ChangeEvent<HTMLInputElement>): void {
-    const reader = new FileReader();
-    reader.onload = (readerEvent) => {
-      const imageData = readerEvent.target?.result;
-      if (typeof imageData === "string") {
-        setBackgroundImage(imageData);
-      }
-    };
     if (event.target.files && event.target.files[0]) {
-      reader.readAsDataURL(event.target.files[0]);
+      compressImage(event.target.files[0], (dataUrl) => {
+        setBackgroundImage(dataUrl);
+      });
     }
   }
 
