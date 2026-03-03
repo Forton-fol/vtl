@@ -13,11 +13,35 @@ import { register } from "./register";
 import { library } from "./library";
 import { charsheet_htr } from "./charsheet_htr";
 
+const randomizer = {
+  header: "Рандомайзер",
+  description: "Генерация случайного персонажа по правилам текущей линейки или случайное распределение свободных очков.",
+  randomCharacter: "Случайный персонаж",
+  randomFreebiePoints: "Рандом свободных очков",
+  clanFilter: "Кланы для рандома",
+  selectAll: "Выбрать все",
+  deselectAll: "Снять все",
+  settings: "Настройки",
+  attributePriority: "Приоритет атрибутов",
+  abilityPriority: "Приоритет способностей",
+  priorityClanRecommended: "Рекомендация клана",
+  priorityRandom: "Полный рандом",
+  priorityPhysical: "Физические",
+  prioritySocial: "Социальные",
+  priorityMental: "Ментальные",
+  priorityTalents: "Таланты",
+  prioritySkills: "Навыки",
+  priorityKnowledges: "Знания",
+  useClanFocus: "Клановый фокус атрибутов",
+  useClanFocusHint: "Больше точек в рекомендуемые атрибуты клана",
+};
+
 export const ruTranslation = {
   about,
   checklist,
   freebiePoints,
   experiencePoints,
+  randomizer,
   actionMenu,
   instruction,
   register,

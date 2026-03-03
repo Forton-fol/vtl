@@ -6,9 +6,12 @@ import classnames from "classnames";
 
 import { AccordionToggle } from "../../../uiLib/AccordionToggle";
 import { useExternalPresetProps } from "../../../charSheets";
+import { usePreset } from "../../../charSheets/root/services/storageAdapter";
+import { getRandomizerConfig } from "../../../charSheets/generic/randomizer";
 
 import { FreebiePointsPanel } from "./FreebiePointsPanel/FreebiePointsPanel";
 import { ExperiencePointsPanel } from "./ExperiencePointsPanel";
+import { RandomizerPanel } from "./RandomizerPanel";
 // import { FreebiePointsPanel } from "./FreebiePointsPanel";
 
 interface GameUtilsPanelProps {
@@ -18,10 +21,12 @@ interface GameUtilsPanelProps {
 export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
   const { t } = useTranslation();
   const { CheckList, freebiePointsConfig, experiencePointsConfig } = useExternalPresetProps();
+  const { preset } = usePreset();
+  const randomizerConfig = getRandomizerConfig(preset);
 
   const { className } = props;
 
-  if (CheckList === undefined && freebiePointsConfig === undefined && experiencePointsConfig === undefined) {
+  if (CheckList === undefined && freebiePointsConfig === undefined && experiencePointsConfig === undefined && !randomizerConfig) {
     return null;
   }
 
@@ -89,6 +94,25 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
               aria-labelledby="experience-points-toggle"
             >
               <ExperiencePointsPanel experiencePointsConfig={experiencePointsConfig} />
+            </Accordion.Collapse>
+          </Card>
+        )}
+        {randomizerConfig && (
+          <Card className="tw-bg-gray-200">
+            <AccordionToggle
+              ariaId="randomizer-toggle"
+              eventKey="3"
+              title={t("randomizer.header")}
+              ariaControls="randomizer-panel"
+            />
+            <Accordion.Collapse
+              id="randomizer-panel"
+              eventKey="3"
+              className="tw-bg-white"
+              role="region"
+              aria-labelledby="randomizer-toggle"
+            >
+              <RandomizerPanel />
             </Accordion.Collapse>
           </Card>
         )}
