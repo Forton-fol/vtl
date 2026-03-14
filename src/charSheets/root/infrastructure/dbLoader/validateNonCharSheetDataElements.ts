@@ -39,6 +39,7 @@ export const settingsSchema: JSONSchemaType<Settings> = {
     charsheetBackOpacity: { type: "number" },
     backgroundImage: { type: "string" },
     sidebarOpacity: { type: "number" },
+    showSpecializations: { type: "boolean" },
   },
   required: [
     "backgroundColor",
@@ -53,6 +54,7 @@ export const settingsSchema: JSONSchemaType<Settings> = {
     "charsheetBackOpacity",
     "backgroundImage",
     "sidebarOpacity",
+    "showSpecializations",
   ],
   additionalProperties: false,
 };
