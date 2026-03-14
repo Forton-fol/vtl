@@ -324,5 +324,14 @@ export function migrate(charSheetSrc: any): unknown {
       charSheet.Charsheet.profile.visage = "";
     }
   }
+  if (charSheet.Version === "0.8.2") {
+    charSheet.Version = "0.8.3";
+    if (!charSheet.Charsheet.hasOwnProperty('specializations')) {
+      charSheet.Charsheet.specializations = {};
+    }
+    if (!charSheet.Settings.hasOwnProperty('showSpecializations')) {
+      charSheet.Settings.showSpecializations = true;
+    }
+  }
   return charSheet;
 }

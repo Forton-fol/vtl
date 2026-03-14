@@ -16,4 +16,5 @@ export interface SettingsService {
   setCharsheetBackOpacity(opacity: number): void;
   setBackgroundImage(image: string): void;
   setSidebarOpacity(opacity: number): void;
+  setShowSpecializations(visible: boolean): void;
 }

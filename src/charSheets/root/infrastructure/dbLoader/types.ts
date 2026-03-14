@@ -57,6 +57,7 @@ export interface CharSheetData {
   spheres: Spheres;
   edges: Edges;
   lores: Lores;
+  specializations?: Record<string, string>;
 }
 
 export interface CharSheetInJson {

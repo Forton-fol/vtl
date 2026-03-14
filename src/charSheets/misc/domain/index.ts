@@ -19,4 +19,5 @@ export interface Settings {
   charsheetBackOpacity: number;
   backgroundImage: string;
   sidebarOpacity: number;
+  showSpecializations: boolean;
 }

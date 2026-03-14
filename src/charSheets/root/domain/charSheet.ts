@@ -75,6 +75,9 @@ export interface CharSheet {
   // demon
   lores: Lores;
 
+  // specializations: statKey -> chosen specialization text
+  specializations: Record<string, string>;
+
   // unique sheet identifier — persists across saves, never changes once assigned
   sheetId?: string;
 

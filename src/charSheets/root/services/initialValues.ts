@@ -136,4 +136,5 @@ export const initialCharSheet: CharSheet = {
   edges: initialEdges,
   lores: initialLores,
   customDotData: {},
+  specializations: {},
 };

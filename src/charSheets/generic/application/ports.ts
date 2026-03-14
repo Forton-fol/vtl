@@ -24,6 +24,7 @@ export interface CombinedGenericService
     AttributesService,
     AbilitiesService,
     AbilitiesExtensionService,
+    SpecializationsService,
     BackgroundsService,
     OtherTraitsService,
     MeritsNFlawsService,
@@ -62,6 +63,11 @@ export interface AbilitiesExtensionService {
     abilityName: AbilitiesExtensionValue,
     value: number
   ): void;
+}
+
+export interface SpecializationsService {
+  specializations: Record<string, string>;
+  setSpecialization(statKey: string, value: string): void;
 }
 
 export interface BackgroundsService {

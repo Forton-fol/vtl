@@ -244,6 +244,7 @@ export const m: CharSheetInJson = {
     },
     edges: [],
     lores: [],
+    specializations: {},
   },
   Settings: {
     backgroundColor: "#ababab",

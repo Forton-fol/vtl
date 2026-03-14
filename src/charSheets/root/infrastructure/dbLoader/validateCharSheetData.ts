@@ -63,6 +63,12 @@ export const charSheetDataSchema: JSONSchemaType<CharSheetData> = {
     spheres: spheresSchema,
     edges: edgesSchema,
     lores: loresSchema,
+    specializations: {
+      type: "object",
+      additionalProperties: { type: "string" },
+      required: [],
+      nullable: true,
+    } as any,
   },
   required: [
     "preset",

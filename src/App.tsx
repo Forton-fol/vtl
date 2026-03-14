@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { ErrorNotification } from "./uiLib/ErrorNotification";
 import { CharSheetPage } from "./ui/CharSheetPage";
 import { CharacterLibraryPage } from "./ui/CharLibraryPage/CharacterLibraryPage";
+import { DonatePage } from "./ui/DonatePage/DonatePage";
 import { ControlPanel } from "./ui/ControlPanel";
 import { CURRENT_VERSION } from "./constants";
 import { useInternalPresetProps } from "./charSheets";
@@ -124,6 +125,7 @@ function App(): JSX.Element {
           <Routes>
             <Route path="/charsheet" element={<CharSheetPage />} />
             <Route path="/library" element={<CharacterLibraryPage />} />
+            <Route path="/donate" element={<DonatePage />} />
             <Route path="/" element={<CharSheetPage />} />
           </Routes>
         </main>

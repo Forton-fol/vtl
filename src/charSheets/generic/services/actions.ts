@@ -118,6 +118,16 @@ export const genericActions: ServiceToActions<CombinedGenericService> = {
     );
   },
 
+  setSpecialization(
+    state: CharSheet,
+    [statKey, value]: [string, string]
+  ): CharSheet {
+    return mutateObj(state, "specializations", {
+      ...state.specializations,
+      [statKey]: value,
+    });
+  },
+
   setHealth(
     state: CharSheet,
     [healthName, value]: [keyof Health, number]

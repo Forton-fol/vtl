@@ -46,6 +46,9 @@ export const ruTranslation = {
   instruction,
   register,
   library,
+  donate: {
+    header: "Донат",
+  },
   buttons: {
     "hide-panel": "Спрятать панель",
     "show-panel": "Показать панель",
@@ -84,6 +87,7 @@ export const ruTranslation = {
     "remove-site-background-image": "Убрать фоновое изображение",
     "sidebar-opacity": "Прозрачность боковой панели",
     "autosave-enabled": "Автосохранение",
+    "show-specializations": "Показывать специализации (4+ точек)",
     "recommended-size-site": "Рекомендуемый размер: 1920×1080 px, JPG/PNG/GIF",
     "recommended-size-sheet": "Рекомендуемый размер: 800×1200 px, JPG/PNG/GIF",
   },

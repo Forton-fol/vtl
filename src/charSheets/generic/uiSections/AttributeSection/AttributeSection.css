@@ -13,7 +13,7 @@
   /* flex-shrink: 0; */
   display: block;
   /* word-break: break-all; */
-  font-size: 0.875rem;
+  font-size: 0.875em;
   flex: 1 1 0%;
   min-width: 8rem;
   white-space: nowrap;

@@ -26,6 +26,7 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
     setCharsheetBackOpacity,
     setBackgroundImage,
     setSidebarOpacity,
+    setShowSpecializations,
   } = useSettings();
 
   const [autoSave, setAutoSave] = useState(() => getAutoSaveEnabled());
@@ -268,6 +269,17 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
           label={t("visual-settings.charsheet-border-visible")}
           checked={settings.charsheetBorderVisible !== false}
           onChange={(e) => setCharsheetBorderVisible(e.target.checked)}
+        />
+      </div>
+
+      {/* Specializations toggle */}
+      <div className="tw-m-4">
+        <Form.Check
+          type="checkbox"
+          id="show-specializations"
+          label={t("visual-settings.show-specializations")}
+          checked={settings.showSpecializations !== false}
+          onChange={(e) => setShowSpecializations(e.target.checked)}
         />
       </div>
 

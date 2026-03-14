@@ -18,6 +18,7 @@ import {
   useAbilitiesExtension,
   useAttributes,
   useProfile,
+  useSpecializations,
 } from "../../services/storageAdapter";
 
 interface CharSheetStarterProps {}
@@ -47,6 +48,7 @@ export function CharSheetStarter(props: CharSheetStarterProps): JSX.Element {
   const attributesService = useAttributes();
   const { limits } = useLimits();
   const abilitiesExtensionService = useAbilitiesExtension();
+  const specializationsService = useSpecializations();
 
   return (
     <>
@@ -72,6 +74,7 @@ export function CharSheetStarter(props: CharSheetStarterProps): JSX.Element {
       <AttributeSection
         className="tw-mb-3"
         {...attributesService}
+        {...specializationsService}
         attributesConfig={presetSettings.attributesConfig}
         limits={limits}
       />
@@ -82,6 +85,7 @@ export function CharSheetStarter(props: CharSheetStarterProps): JSX.Element {
         className="tw-mb-3"
         {...abilitiesService}
         {...abilitiesExtensionService}
+        {...specializationsService}
         abilitiesConfig={presetSettings.abilitiesConfig}
         limits={limits}
       />

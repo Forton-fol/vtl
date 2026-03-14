@@ -18,6 +18,7 @@ export function useSettings(): SettingsService {
       "setCharsheetBackOpacity",
       "setBackgroundImage",
       "setSidebarOpacity",
+      "setShowSpecializations",
     ],
     useStore()
   );

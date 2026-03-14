@@ -5,6 +5,7 @@ import {
   AttributesService,
   AbilitiesService,
   AbilitiesExtensionService,
+  SpecializationsService,
   BackgroundsService,
   HealthService,
   StatusService,
@@ -36,6 +37,10 @@ export function useAbilitiesExtension(): AbilitiesExtensionService {
     ],
     useStore()
   );
+}
+
+export function useSpecializations(): SpecializationsService {
+  return R.pick(["specializations", "setSpecialization"], useStore());
 }
 
 export function useBackgrounds(): BackgroundsService {

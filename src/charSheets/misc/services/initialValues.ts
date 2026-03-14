@@ -19,4 +19,5 @@ export const initialSettings: Settings = {
   charsheetBackOpacity: 100,
   backgroundImage: "",
   sidebarOpacity: 100,
+  showSpecializations: true,
 };

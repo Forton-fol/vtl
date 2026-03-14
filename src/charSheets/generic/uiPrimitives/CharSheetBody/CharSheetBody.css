@@ -64,6 +64,16 @@
   }
 }
 
+/* Override Tailwind rem-based text classes to use em inside CharSheetBody,
+   so they scale with the container's font-size setting */
+.CharSheetBody [class*="tw-text-xs"] { font-size: 0.75em !important; }
+.CharSheetBody [class*="tw-text-sm"] { font-size: 0.875em !important; }
+.CharSheetBody [class*="tw-text-base"] { font-size: 1em !important; }
+.CharSheetBody [class*="tw-text-lg"] { font-size: 1.125em !important; }
+.CharSheetBody [class*="tw-text-xl"]:not([class*="tw-text-2xl"]):not([class*="tw-text-3xl"]) { font-size: 1.25em !important; }
+.CharSheetBody [class*="tw-text-2xl"] { font-size: 1.5em !important; }
+.CharSheetBody [class*="tw-text-3xl"] { font-size: 1.875em !important; }
+
 @media print {
   html {
     font-size: 22px;

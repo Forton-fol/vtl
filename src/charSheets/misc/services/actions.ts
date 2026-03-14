@@ -122,4 +122,14 @@ export const miscActions: ServiceToActions<CombinedMiscService> = {
       mutateObj(state.settings, "sidebarOpacity", opacity)
     );
   },
+  setShowSpecializations(
+    state: CharSheet,
+    [visible]: [boolean]
+  ): CharSheet {
+    return mutateObj(
+      state,
+      "settings",
+      mutateObj(state.settings, "showSpecializations", visible)
+    );
+  },
 };

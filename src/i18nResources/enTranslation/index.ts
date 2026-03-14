@@ -47,6 +47,9 @@ export const enTranslation: TranslationInfo = {
   actionMenu,
   instruction,
   library,
+  donate: {
+    header: "Donate",
+  },
   register,
   buttons: {
     "hide-panel": "Hide panel",
@@ -86,6 +89,7 @@ export const enTranslation: TranslationInfo = {
     "remove-site-background-image": "Remove background image",
     "sidebar-opacity": "Sidebar opacity",
     "autosave-enabled": "Auto-save",
+    "show-specializations": "Show specializations (4+ dots)",
     "recommended-size-site": "Recommended: 1920×1080 px, JPG/PNG/GIF",
     "recommended-size-sheet": "Recommended: 800×1200 px, JPG/PNG/GIF",
   },

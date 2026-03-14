@@ -4,6 +4,7 @@ import classnames from "classnames";
 
 import { Subheader } from "../../uiPrimitives/Subheader";
 import { RangeInput2 } from "../../uiPrimitives/RangeInput2";
+import { SpecializationPicker } from "../../uiPrimitives/SpecializationPicker/SpecializationPicker";
 import {
   Abilities,
   AbilitiesConfig,
@@ -13,11 +14,13 @@ import {
 import {
   AbilitiesExtensionService,
   AbilitiesService,
+  SpecializationsService,
 } from "../../application/ports";
 
 interface AbilitiesSectionProps
   extends AbilitiesService,
-    AbilitiesExtensionService {
+    AbilitiesExtensionService,
+    SpecializationsService {
   limits: Limits;
   abilitiesConfig: AbilitiesConfig;
   className?: string;
@@ -36,6 +39,8 @@ export const AbilitiesSection = memo(function AbilitiesSection(
     setAbilityExtensionName,
     setAbilityExtensionValue,
     abilitiesConfig,
+    specializations,
+    setSpecialization,
   } = props;
 
   const setValue = useCallback(
@@ -67,7 +72,7 @@ export const AbilitiesSection = memo(function AbilitiesSection(
           {items.map((ability) => (
             <div
               role="group"
-              className="stat-container"
+              className="stat-container tw-flex-wrap"
               key={ability}
               aria-labelledby={`ability.label.${ability}`}
             >
@@ -84,6 +89,12 @@ export const AbilitiesSection = memo(function AbilitiesSection(
                 dataContext={ability}
                 onClick={setValue}
                 className="tw-ml-4"
+              />
+              <SpecializationPicker
+                statKey={ability}
+                value={abilities[ability]}
+                specialization={specializations[ability]}
+                onSetSpecialization={setSpecialization}
               />
             </div>
           ))}

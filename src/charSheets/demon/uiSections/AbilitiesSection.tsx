@@ -2,12 +2,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import classnames from "classnames";
 
-import { AbilitiesService, AbilitiesExtensionService } from "../../generic/application/ports";
+import { AbilitiesService, AbilitiesExtensionService, SpecializationsService } from "../../generic/application/ports";
 import { LimitService } from "../../../charSheets/root/application/ports";
 import { AbilitiesSection as GenericAbilitiesSection } from "../../generic/uiSections/AbilitiesSection";
 import { AbilitiesConfig } from "../../../charSheets/root/domain";
 
-interface AbilitiesSectionProps extends AbilitiesService, AbilitiesExtensionService, LimitService {
+interface AbilitiesSectionProps extends AbilitiesService, AbilitiesExtensionService, SpecializationsService, LimitService {
   className?: string;
 }
 
