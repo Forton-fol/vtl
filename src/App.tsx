@@ -16,6 +16,7 @@ import { ErrorNotification } from "./uiLib/ErrorNotification";
 import { CharSheetPage } from "./ui/CharSheetPage";
 import { CharacterLibraryPage } from "./ui/CharLibraryPage/CharacterLibraryPage";
 import { DonatePage } from "./ui/DonatePage/DonatePage";
+import { EncyclopediaPage } from "./ui/EncyclopediaPage";
 import { ControlPanel } from "./ui/ControlPanel";
 import { CURRENT_VERSION } from "./constants";
 import { useInternalPresetProps } from "./charSheets";
@@ -126,6 +127,7 @@ function App(): JSX.Element {
             <Route path="/charsheet" element={<CharSheetPage />} />
             <Route path="/library" element={<CharacterLibraryPage />} />
             <Route path="/donate" element={<DonatePage />} />
+            <Route path="/encyclopedia" element={<EncyclopediaPage />} />
             <Route path="/" element={<CharSheetPage />} />
           </Routes>
         </main>

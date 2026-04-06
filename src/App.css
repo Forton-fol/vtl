@@ -286,6 +286,16 @@ code {
   overflow-y: auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  /* Ensure full-height child pages (like encyclopedia) can self-manage scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+/* When encyclopedia is shown, the main area should not add extra scroll */
+.main-content-area > .enc-root {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .main-content-area::-webkit-scrollbar {

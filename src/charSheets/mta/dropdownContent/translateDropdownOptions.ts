@@ -5,6 +5,7 @@ import { mta_translateBackground } from "./resources/backgrounds";
 import { translateConcept } from "./resources/concepts";
 import { translateEssence } from "./resources/essences";
 import { translateFaction, translateSect } from "./resources/sects";
+import { mta_translateMeritsAndFlaws } from "./resources/meritsAndFlaws";
 
 export function translateDropdownOptions(
   store: StateStore,
@@ -50,10 +51,10 @@ export function translateDropdownOptions(
       mta_translateBackground(background.name, prevLanguage, lng),
     );
   });
-  // merits.forEach((merit, index) => {
-  //   setMerit(index, c20_translateMeritsAndFlaws(merit, prevLanguage, lng));
-  // });
-  // flaws.forEach((flaw, index) => {
-  //   setFlaw(index, c20_translateMeritsAndFlaws(flaw, prevLanguage, lng));
-  // });
+  merits.forEach((merit, index) => {
+    setMerit(index, mta_translateMeritsAndFlaws(merit, prevLanguage, lng));
+  });
+  flaws.forEach((flaw, index) => {
+    setFlaw(index, mta_translateMeritsAndFlaws(flaw, prevLanguage, lng));
+  });
 }

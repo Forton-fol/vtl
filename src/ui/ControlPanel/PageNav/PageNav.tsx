@@ -3,7 +3,7 @@ import "./PageNav.css";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faScroll, faBookOpen, faDollarSign } from "@fortawesome/free-solid-svg-icons";
+import { faScroll, faBookOpen, faDollarSign, faBook } from "@fortawesome/free-solid-svg-icons";
 
 interface PageNavProps {
   className?: string;
@@ -46,6 +46,16 @@ export function PageNav(props: PageNavProps): JSX.Element {
       >
         <FontAwesomeIcon icon={faDollarSign} />
         <span>{t("donate.header")}</span>
+      </NavLink>
+      <NavLink
+        to="/encyclopedia"
+        className={({ isActive }) =>
+          `nav-item-btn ${isActive ? "active" : ""}`
+        }
+        onClick={onNavigate}
+      >
+        <FontAwesomeIcon icon={faBook} />
+        <span>Энциклопедия WoD</span>
       </NavLink>
     </nav>
   );

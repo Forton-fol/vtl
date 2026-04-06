@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import classnames from "classnames";
 
@@ -41,6 +41,8 @@ export function AdvantagesSection(props: AdvantagesSectionProps): JSX.Element {
 
   const { backgroundOptions } = useMtADropdownOptions();
 
+  const [linkQnP, setLinkQnP] = useState(true);
+
   return (
     <div
       className={classnames("AdvantagesSection tw-flex tw-gap-x-4", className)}
@@ -72,11 +74,19 @@ export function AdvantagesSection(props: AdvantagesSectionProps): JSX.Element {
         <Subheader id="quintessence.header" className="tw-mb-2">
           {t("charsheet.status.quintessence")}
         </Subheader>
-        <QuintessenceSection {...statusService} />
-        <Subheader id="paradox.header" className="tw-mb-2">
+        <QuintessenceSection {...statusService} linkQnP={linkQnP} />
+        <Subheader id="paradox.header" className="tw-mb-2 tw-flex tw-items-center tw-gap-x-2">
           {t("charsheet.status.paradox")}
+          <button
+            type="button"
+            className="tw-text-xs tw-px-1 tw-border tw-rounded print:tw-hidden"
+            onClick={() => setLinkQnP(!linkQnP)}
+            title={linkQnP ? "Отвязать Квинтэссенцию и Парадокс" : "Связать Квинтэссенцию и Парадокс"}
+          >
+            {linkQnP ? "🔗" : "⛓️‍💥"}
+          </button>
         </Subheader>
-        <ParadoxSection {...statusService} />
+        <ParadoxSection {...statusService} linkQnP={linkQnP} />
       </div>
       <div className="tw-flex-1">
         <Subheader className="tw-mb-2">
