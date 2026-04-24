@@ -4,13 +4,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { register, login, saveToken, getToken, removeToken } from '../../../api/auth';
 
-export function AuthSection(): JSX.Element {
+interface AuthSectionProps {
+  mobile?: boolean;
+}
+
+export function AuthSection(props: AuthSectionProps): JSX.Element {
+  const { mobile } = props;
   const { t } = useTranslation();
   const [mode, setMode] = useState<'login'|'register'>('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -47,35 +53,59 @@ export function AuthSection(): JSX.Element {
   function doLogout() {
     removeToken();
     setUser(null);
+    setShowUserMenu(false);
   }
 
   if (user) {
     return (
       <div className="tw-flex tw-items-center tw-gap-1">
-        <span className="nav-item-btn" style={{ cursor: 'default' }}>
+        <button
+          className="nav-item-btn"
+          onClick={() => setShowUserMenu((prev) => !prev)}
+          title={user}
+        >
           <FontAwesomeIcon icon={faUser} />
           <span>{user}</span>
-        </span>
-        <button className="nav-item-btn" onClick={doLogout} title="Logout">
-          <FontAwesomeIcon icon={faSignOutAlt} />
         </button>
+        {(mobile || showUserMenu) && (
+          <button className="nav-item-btn" onClick={doLogout} title={t('register.logout')}>
+            <FontAwesomeIcon icon={faSignOutAlt} />
+            <span>{t('register.logout')}</span>
+          </button>
+        )}
+        {!mobile && showUserMenu && (
+          <button
+            className="nav-item-btn"
+            onClick={() => setShowUserMenu(false)}
+            title={t('register.close')}
+          >
+            <span>{t('register.close')}</span>
+          </button>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="tw-relative">
+    <div className="tw-relative tw-w-full">
       <button className="nav-item-btn" onClick={() => setShowForm(!showForm)}>
         <FontAwesomeIcon icon={faUser} />
-        <span>Login</span>
+        <span>{t('register.login')}</span>
       </button>
       {showForm && (
-        <div className="settings-dropdown-panel" style={{ width: '18rem', right: 'auto', left: 0 }}>
+        <div
+          className="settings-dropdown-panel"
+          style={{
+            width: mobile ? '100%' : '18rem',
+            right: 'auto',
+            left: 0,
+          }}
+        >
           <form onSubmit={mode === 'login' ? doLogin : doRegister}>
             <div className="tw-mb-3">
               <input
                 className="tw-w-full tw-px-3 tw-py-2 tw-rounded-lg tw-border tw-border-gray-600 tw-bg-gray-800 tw-text-white tw-text-sm"
-                placeholder="Username"
+                placeholder={t('register.username')}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -84,21 +114,21 @@ export function AuthSection(): JSX.Element {
               <input
                 type="password"
                 className="tw-w-full tw-px-3 tw-py-2 tw-rounded-lg tw-border tw-border-gray-600 tw-bg-gray-800 tw-text-white tw-text-sm"
-                placeholder="Password"
+                placeholder={t('register.password')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="tw-flex tw-gap-2">
               <button type="submit" className="btn-modern btn-modern-primary tw-text-xs">
-                {mode === 'login' ? 'Login' : 'Register'}
+                {mode === 'login' ? t('register.login') : t('register.submit')}
               </button>
               <button
                 type="button"
                 className="btn-modern btn-modern-ghost tw-text-xs"
                 onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
               >
-                {mode === 'login' ? 'Register' : 'Login'}
+                {mode === 'login' ? t('register.switch-to-register') : t('register.switch-to-login')}
               </button>
             </div>
           </form>

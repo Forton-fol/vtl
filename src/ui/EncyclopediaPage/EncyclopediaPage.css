@@ -159,8 +159,6 @@
 /* ── Sidebar categories ──────────────────── */
 .enc-sb-cats { background: rgba(0,0,0,0.2); }
 
-.enc-sb-cat {}
-
 .enc-sb-cat-btn {
   display: flex;
   align-items: center;
@@ -623,8 +621,6 @@
 .enc-article-body { display: flex; flex-direction: column; gap: 22px; }
 
 /* ── Text blocks ─────────────────────────── */
-.enc-block-text {}
-
 .enc-block-heading {
   font-size: 14px;
   font-weight: 700;
@@ -661,8 +657,6 @@
 .enc-block-list ul li strong { color: var(--enc-text-head); }
 
 /* ── Table blocks ────────────────────────── */
-.enc-block-table {}
-
 .enc-table-wrap {
   overflow-x: auto;
   border-radius: var(--enc-radius);

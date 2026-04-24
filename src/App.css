@@ -117,6 +117,7 @@ code {
   white-space: nowrap;
   position: relative;
   flex-shrink: 0;
+  min-height: 2.25rem;
 }
 
 /* On desktop navbar, action buttons show icon only */
@@ -378,6 +379,12 @@ code {
     overflow: auto;
   }
 
+  .top-navbar {
+    position: sticky;
+    top: 0;
+    padding-top: env(safe-area-inset-top);
+  }
+
   .app-root {
     overflow: auto;
     height: auto;
@@ -398,6 +405,8 @@ code {
 
   .mobile-dropdown {
     display: block;
+    max-height: calc(100dvh - 3.5rem - env(safe-area-inset-top));
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
   }
 
   .mobile-overlay {
@@ -414,6 +423,7 @@ code {
   .main-content-area {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    min-height: 0;
   }
 
   .CharSheetPage {
@@ -431,6 +441,13 @@ code {
     border-radius: 0.75rem;
     margin-top: 0.5rem;
   }
+
+  .page-nav-mobile .nav-item-btn,
+  .action-list-mobile .nav-item-btn {
+    white-space: normal;
+    line-height: 1.2;
+    text-align: left;
+  }
 }
 
 @media (max-width: 480px) {
@@ -440,6 +457,10 @@ code {
 
   .brand-text {
     font-size: 0.95rem;
+  }
+
+  .brand-version {
+    display: none;
   }
 }
 

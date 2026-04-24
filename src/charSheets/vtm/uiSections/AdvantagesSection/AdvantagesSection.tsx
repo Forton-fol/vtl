@@ -7,16 +7,19 @@ import { useLimits } from "../../../../charSheets/root/services/storageAdapter";
 import { Subheader } from "../../../generic/uiPrimitives";
 import {
   BackgroundsSection,
-  VirtuesSection,
 } from "../../../generic/uiSections";
 import { useDisciplines } from "../../services/storageAdapter";
 import {
   useBackgrounds,
-  useVirtues,
+  useHealth,
+  useStatus,
 } from "../../../generic/services/storageAdapter";
 import { OptionGroup, Options } from "../../../root/domain";
 
 import { DisciplinesSection } from "./DisciplinesSection";
+import { HungerSection } from "./HungerSection";
+import { V5HealthSection } from "./V5HealthSection";
+import { V5WillSection } from "./V5WillSection";
 
 interface AdvantagesSectionProps {
   backgroundOptions?: Options;
@@ -31,7 +34,8 @@ export function AdvantagesSection(props: AdvantagesSectionProps): JSX.Element {
   const { limits } = useLimits();
   const disciplinesService = useDisciplines();
   const backgroundsService = useBackgrounds();
-  const virtuesService = useVirtues();
+  const healthService = useHealth();
+  const statusService = useStatus();
 
   return (
     <div
@@ -61,7 +65,26 @@ export function AdvantagesSection(props: AdvantagesSectionProps): JSX.Element {
         <Subheader className="tw-mb-2 print:tw-hidden">
           {t("charsheet.advantages.virtues")}
         </Subheader>
-        <VirtuesSection {...virtuesService} />
+        
+        {/* Health and Will - side by side */}
+        <div className="tw-flex tw-gap-2 tw-mb-3">
+          {/* Health - vertical points */}
+          <div className="tw-flex-1">
+            <V5HealthSection 
+              limits={limits} 
+              {...healthService}
+              {...statusService}
+            />
+          </div>
+
+          {/* Willpower - vertical points */}
+          <div className="tw-flex-1">
+            <V5WillSection {...statusService} />
+          </div>
+        </div>
+
+        {/* Hunger - below Health and Will */}
+        <HungerSection limits={limits} {...statusService} />
       </div>
     </div>
   );

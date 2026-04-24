@@ -37,6 +37,7 @@ export const presetSchema: JSONSchemaType<PresetName> = {
     "hunter_v20",
     "vampire_da_v20",
     "vampire_v3_revised",
+    "vampire_v5",
     "mage_v20",
     "hunter_reckoning",
     "demon_the_fallen",
@@ -219,6 +220,7 @@ export const stateSchema: JSONSchemaType<State> = {
 
     weakness: { type: "string" },
     experience: { type: "string" },
+    hunger: { type: "number", nullable: true },
 
     antithesis: { type: "string" },
     thresholds: { type: "string" },
@@ -295,7 +297,7 @@ export const stateSchema: JSONSchemaType<State> = {
 };
 
 const stringNumberArrSchema: JSONSchemaType<
-  Backgrounds & Disciplines & DisciplinePaths & Arts & Lores
+  Backgrounds & DisciplinePaths & Arts & Lores
 > = {
   type: "array",
   items: {
@@ -308,7 +310,24 @@ const stringNumberArrSchema: JSONSchemaType<
   },
 };
 
-export const disciplinesSchema = stringNumberArrSchema;
+const disciplinesArrSchema: JSONSchemaType<Disciplines> = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      name: { type: "string" },
+      value: { type: "number" },
+      subtitles: {
+        type: "array",
+        items: { type: "string" },
+        nullable: true,
+      },
+    },
+    required: ["name", "value"],
+  },
+};
+
+export const disciplinesSchema = disciplinesArrSchema;
 export const backgroundsSchema = stringNumberArrSchema;
 export const disciplinePathsSchema = stringNumberArrSchema;
 export const artsSchema = stringNumberArrSchema;

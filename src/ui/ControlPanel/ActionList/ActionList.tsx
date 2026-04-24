@@ -41,7 +41,7 @@ export function ActionList(props: ActionListProps): JSX.Element {
       />
       <ExportPdfButton className="action-item" />
       <div className="action-item">
-        <AuthSection />
+        <AuthSection mobile={mobile} />
       </div>
       {globalThis.GLOBAL_DEFAULT_LANG === "ru" && (
         <>

@@ -10,9 +10,9 @@ import { VtDA } from "./vtda";
 import { CtD } from "./ctd";
 import { HH2 } from "./hh2";
 import { VtM_v3 } from "./vtm_v3";
+import { VtM_v5 } from "./vtm_v5";
 import { MtA } from "./mta";
 import { HTR } from "./htr";
-import { Demon } from "./demon";
 import { PresetName, InternalPresetProps, presetList } from "./root/domain";
 import { ExternalPresetProps, Preset } from "./types";
 
@@ -22,16 +22,16 @@ const presetIndex: Record<PresetName, Preset> = {
   hunter_v20: HH2,
   vampire_da_v20: VtDA,
   vampire_v3_revised: VtM_v3,
+  vampire_v5: VtM_v5,
   mage_v20: MtA,
   hunter_reckoning: HTR,
-  demon_the_fallen: Demon,
 };
 
 export function useExternalPresetProps(): ExternalPresetProps {
   const { preset } = usePreset();
 
   return R.pick(
-    ["CharSheet", "CheckList", "freebiePointsConfig", "experiencePointsConfig"],
+    ["CharSheet", "CheckList", "freebiePointsConfig"],
     presetIndex[preset],
   );
 }

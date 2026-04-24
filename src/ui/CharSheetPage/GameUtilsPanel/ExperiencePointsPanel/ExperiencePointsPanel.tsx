@@ -134,7 +134,7 @@ export function ExperiencePointsPanel(
                   className="tw-border-b tw-border-gray-200"
                 >
                   <td className="tw-py-1 tw-pr-4">
-                    {t(`experiencePoints.${item.name}`)}
+                    {t(`experiencePoints.${item.name}` as any)}
                   </td>
                   <td className="tw-py-1 tw-text-right tw-whitespace-nowrap">
                     {item.isNew && item.flatCost !== undefined
@@ -170,7 +170,7 @@ export function ExperiencePointsPanel(
                 .map((el) => (
                   <li key={el.name}>
                     <span>
-                      {t(`experiencePoints.${el.name}`)}
+                      {t(`experiencePoints.${el.name}` as any)}
                     </span>
                     <span className="tw-float-right">
                       -{el.cost}

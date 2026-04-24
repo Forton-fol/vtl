@@ -1,0 +1,9 @@
+.V5HealthSection__container {
+  display: inline-block;
+}
+
+.V5HealthSection__container .RangeInput2 > div {
+  display: inline-grid !important;
+  grid-template-columns: 1.2rem !important;
+  grid-template-rows: repeat(10, 1.5rem) !important;
+}

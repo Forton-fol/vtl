@@ -1,16 +1,16 @@
-export const abilities = {
-  header: "Способности",
+﻿export const abilities = {
+  header: "Навыки",
 
   talents: "Таланты",
   athletics: "Атлетика",
-  alertness: "Бдительность",
+  alertness: "Внимательность",
   brawl: "Драка",
   intimidation: "Запугивание",
-  expression: "Красноречие",
+  expression: "Убеждение",
   leadership: "Лидерство",
   streetwise: "Уличное чутьё",
   subterfuge: "Хитрость",
-  awareness: "Шестое чувство",
+  awareness: "Проницательность",
   empathy: "Эмпатия",
   dodge: "Уклонение",
 
@@ -19,7 +19,7 @@ export const abilities = {
   larceny: "Воровство",
   survival: "Выживание",
   performance: "Исполнение",
-  animalken: "Обр. с животными",
+  animalken: "Обращение с животными",
   crafts: "Ремесло",
   stealth: "Скрытность",
   firearms: "Стрельба",
@@ -29,18 +29,18 @@ export const abilities = {
   security: "Взлом",
 
   knowledges: "Знания",
-  academics: "Гум. науки",
-  science: "Ест. науки",
+  academics: "Гуманитарные науки",
+  science: "Естественные науки",
   computer: "Информатика",
   medicine: "Медицина",
   occult: "Оккультизм",
   politics: "Политика",
   investigation: "Расследование",
   finance: "Финансы",
-  technology: "Электроника",
+  technology: "Техника",
   law: "Законы",
 
-  linguistics: "Лингвистика",
+  linguistics: "Язык",
 
   "extension-talent": "Дополнительный талант {{id}}",
   "extension-skill": "Дополнительный навык {{id}}",
@@ -67,8 +67,8 @@ export const abilities = {
 
   // HTR
   intuition: "Интуиция",
-  cunning: "Хитрость",
-  fencing: "Фехтование",
+  cunning: "Ловкость рук",
+  fencing: "Мастерство оружия",
   demolitions: "Взрывчатка",
   bureaucracy: "Бюрократия",
 

@@ -1,0 +1,1 @@
+export type VtM_V5PresetName = "vampire_v5";

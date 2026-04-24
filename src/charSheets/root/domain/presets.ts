@@ -23,9 +23,9 @@ const presetStubs: Record<PresetName, number> = {
   hunter_v20: 0,
   vampire_da_v20: 0,
   vampire_v3_revised: 0,
+  vampire_v5: 0,
   mage_v20: 0,
   hunter_reckoning: 0,
-  demon_the_fallen: 0,
 };
 
 export const presetList: PresetName[] = [
@@ -34,9 +34,9 @@ export const presetList: PresetName[] = [
   "hunter_v20",
   "vampire_da_v20",
   "vampire_v3_revised",
+  "vampire_v5",
   "mage_v20",
-  "hunter_reckoning",
-  "demon_the_fallen",
+  "hunter_reckoning"
 ];
 
 export type ProfileConfigItem =

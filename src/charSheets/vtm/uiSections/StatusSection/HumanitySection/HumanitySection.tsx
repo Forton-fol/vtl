@@ -16,6 +16,10 @@ export const HumanitySection = memo(function HumanitySection(
   const { t } = useTranslation();
   const { state, setState, className, pathOptions } = props;
 
+  const onHumanityChange = (value: number) => {
+    setState("humanity", value);
+  };
+
   return (
     <fieldset
       className={classnames("HumanitySection", className)}
@@ -44,7 +48,7 @@ export const HumanitySection = memo(function HumanitySection(
         name="humanity"
         value={state.humanity}
         dataContext={"humanity"}
-        onClick={(value: number) => setState("humanity", value)}
+        onClick={onHumanityChange}
         className="tw-h-6 tw-mb-2"
         multiplier={1.3}
       />

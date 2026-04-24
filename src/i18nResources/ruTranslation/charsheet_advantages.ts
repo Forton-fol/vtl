@@ -6,6 +6,8 @@ export const advantages = {
   "remove-discipline": "Удалить дисциплину",
   "select-discipline": "Выбрать дисциплину",
   "discipline-label": "Дисциплина {{index}}",
+  specialization: "Специализация",
+  "enter-subtitle": "Введите подзаголовок",
 
   "discipline-paths": "Пути дисциплин",
   "add-discipline-path": "Добавить путь дисциплины",
@@ -39,7 +41,7 @@ export const advantages = {
 
   // 'traits': 'Трайты',
   virtues: "Добродетели",
-  conscience: "Совесть/Решимость",
+  conscience: "Сила крови",
   self_control: "Самоконтроль/Инстинкты",
   courage: "Смелость",
 

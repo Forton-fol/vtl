@@ -15,6 +15,8 @@ export function useDisciplines(): DisciplinesService {
       "removeDiscipline",
       "setDisciplineName",
       "setDisciplineValue",
+      "setDisciplineSubtitles",
+      "setDisciplineSubtitle",
     ],
     useStore()
   );

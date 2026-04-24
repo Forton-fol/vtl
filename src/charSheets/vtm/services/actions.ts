@@ -10,7 +10,7 @@ export const vtmActions: ServiceToActions<CombinedVtMService> = {
     return mutateObj(
       state,
       "disciplines",
-      R.append({ name: "", value: 0 }, state.disciplines)
+      R.append({ name: "", value: 0, subtitles: [] }, state.disciplines)
     );
   },
   removeDiscipline(state: CharSheet, [index]: [number]): CharSheet {
@@ -50,6 +50,43 @@ export const vtmActions: ServiceToActions<CombinedVtMService> = {
         {
           ...state.disciplines[index],
           value: applyRange(0, limits.parameterLimit, value),
+        },
+        state.disciplines
+      )
+    );
+  },
+  setDisciplineSubtitles(
+    state: CharSheet,
+    [index, subtitles]: [number, string[]]
+  ): CharSheet {
+    return mutateObj(
+      state,
+      "disciplines",
+      R.update(
+        index,
+        {
+          ...state.disciplines[index],
+          subtitles,
+        },
+        state.disciplines
+      )
+    );
+  },
+  setDisciplineSubtitle(
+    state: CharSheet,
+    [disciplineIndex, subtitleIndex, subtitle]: [number, number, string]
+  ): CharSheet {
+    const discipline = state.disciplines[disciplineIndex];
+    const newSubtitles = [...(discipline.subtitles || [])];
+    newSubtitles[subtitleIndex] = subtitle;
+    return mutateObj(
+      state,
+      "disciplines",
+      R.update(
+        disciplineIndex,
+        {
+          ...discipline,
+          subtitles: newSubtitles,
         },
         state.disciplines
       )
