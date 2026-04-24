@@ -366,11 +366,11 @@ code {
 
 /* Mobile dropdown (replaces sidebar) */
 .mobile-dropdown {
-  display: none;
+  display: block;
   background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding: 0.75rem;
-  max-height: 75vh;
+  max-height: calc(100dvh - 3.5rem);
   overflow-y: auto;
 }
 
@@ -419,7 +419,6 @@ code {
   }
 
   .mobile-dropdown {
-    display: block;
     max-height: calc(100dvh - 3.5rem - env(safe-area-inset-top));
     padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
   }
