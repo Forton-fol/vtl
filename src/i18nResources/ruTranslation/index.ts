@@ -6,8 +6,6 @@ import { status } from "./charsheet_status";
 import { checklist } from "./checklist";
 import { freebiePoints } from "./freebiePoints";
 import { experiencePoints } from "./experiencePoints";
-import { randomizer } from "./randomizer";
-import { donate } from "./donate";
 import { actionMenu } from "./actionMenu";
 import { about } from "./about";
 import { instruction } from "./instruction";
@@ -15,17 +13,42 @@ import { register } from "./register";
 import { library } from "./library";
 import { charsheet_htr } from "./charsheet_htr";
 
+const randomizer = {
+  header: "Рандомайзер",
+  description: "Генерация случайного персонажа по правилам текущей линейки или случайное распределение свободных очков.",
+  randomCharacter: "Случайный персонаж",
+  randomFreebiePoints: "Рандом свободных очков",
+  clanFilter: "Кланы для рандома",
+  selectAll: "Выбрать все",
+  deselectAll: "Снять все",
+  settings: "Настройки",
+  attributePriority: "Приоритет атрибутов",
+  abilityPriority: "Приоритет способностей",
+  priorityClanRecommended: "Рекомендация клана",
+  priorityRandom: "Полный рандом",
+  priorityPhysical: "Физические",
+  prioritySocial: "Социальные",
+  priorityMental: "Ментальные",
+  priorityTalents: "Таланты",
+  prioritySkills: "Навыки",
+  priorityKnowledges: "Знания",
+  useClanFocus: "Клановый фокус атрибутов",
+  useClanFocusHint: "Больше точек в рекомендуемые атрибуты клана",
+};
+
 export const ruTranslation = {
   about,
   checklist,
   freebiePoints,
   experiencePoints,
   randomizer,
-  donate,
   actionMenu,
   instruction,
   register,
   library,
+  donate: {
+    header: "Донат",
+  },
   buttons: {
     "hide-panel": "Спрятать панель",
     "show-panel": "Показать панель",
@@ -35,6 +58,11 @@ export const ruTranslation = {
   errors: {
     "error-on-file-loading": "Ошибка при загрузке листа персонажа",
     "check-developer-console": "См. консоль разработчика",
+  },
+  sync: {
+    saving: "Сохранение...",
+    saved: "Сохранено",
+    error: "Ошибка синхронизации",
   },
   "visual-settings": {
     header: "Настройки внешнего вида",
@@ -47,6 +75,21 @@ export const ruTranslation = {
     "charsheet-image": "Изображение",
     "charsheet-none": "Нет фона",
     "charsheet-color": "Цвет",
+
+    "charsheet-text-color": "Цвет текста листа",
+    "sidebar-settings": "Настройки боковой панели",
+    "sidebar-color": "Цвет боковой панели",
+    "sidebar-text-color": "Цвет текста боковой панели",
+    "charsheet-border-visible": "Показывать рамку листа",
+    "charsheet-font-size": "Размер шрифта",
+    "charsheet-back-opacity": "Непрозрачность листа",
+    "site-background-image": "Фоновое изображение сайта",
+    "remove-site-background-image": "Убрать фоновое изображение",
+    "sidebar-opacity": "Прозрачность боковой панели",
+    "autosave-enabled": "Автосохранение",
+    "show-specializations": "Показывать специализации (4+ точек)",
+    "recommended-size-site": "Рекомендуемый размер: 1920×1080 px, JPG/PNG/GIF",
+    "recommended-size-sheet": "Рекомендуемый размер: 800×1200 px, JPG/PNG/GIF",
   },
   charsheet: {
     emptyName: "Безымянный персонаж",
@@ -58,9 +101,9 @@ export const ruTranslation = {
       changeling_v20: "Подменыши: Грёза. V20",
       hunter_v20: "Охота на охотников II. V20",
       vampire_v3_revised: "Вампиры: Маскарад. V3 Revised",
-      vampire_v5: "Вампиры: Маскарад. V5",
       mage_v20: "Маги: Восхождение. V20",
       hunter_reckoning: "Охотники: Расплата",
+      demon_the_fallen: "Демон: Падшие",
     },
     htr: charsheet_htr,
     profile,

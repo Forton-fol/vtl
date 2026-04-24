@@ -33,7 +33,6 @@ import {
   VtM_V3Abilities,
   VtM_V3PresetName,
 } from "../../vtm_v3/domain";
-import { VtM_V5PresetName } from "../../vtm_v5/domain";
 import {
   MtAAbilities,
   MtAFreebiePointName,
@@ -92,7 +91,6 @@ export type PresetName =
   | HH2PresetName
   | VtDAPresetName
   | VtM_V3PresetName
-  | VtM_V5PresetName
   | MtAPresetName
   | HTRPresetName
   | DemonPresetName;

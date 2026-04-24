@@ -1,1 +1,0 @@
-export { HungerSection } from "./HungerSection";

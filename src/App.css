@@ -374,6 +374,21 @@ code {
   overflow-y: auto;
 }
 
+/* Switch to hamburger earlier to avoid clipped top links on phones/tablets */
+@media (max-width: 1100px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .mobile-hamburger {
+    display: flex;
+  }
+}
+
 @media (max-width: 768px) {
   html, body {
     overflow: auto;
@@ -457,6 +472,9 @@ code {
 
   .brand-text {
     font-size: 0.95rem;
+    max-width: 11rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .brand-version {

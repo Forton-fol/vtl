@@ -6,8 +6,6 @@ export const advantages = {
   "remove-discipline": "Remove discipline",
   "select-discipline": "Select discipline",
   "discipline-label": "Discipline {{index}}",
-  specialization: "Specialization",
-  "enter-subtitle": "Enter subtitle",
 
   "discipline-paths": "Paths",
   "add-discipline-path": "Add discipline path",
@@ -41,7 +39,7 @@ export const advantages = {
 
   // 'traits': 'Traits',
   virtues: "Virtues",
-  conscience: "Blood Potency",
+  conscience: "Conscience/Conviction",
   self_control: "Self control/Instinct",
   courage: "Courage",
 

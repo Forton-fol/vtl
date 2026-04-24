@@ -16,11 +16,12 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "downlevelIteration": true,
     "allowImportingTsExtensions": true
     // "paths": {
     //   "@/*": ["src/*"]

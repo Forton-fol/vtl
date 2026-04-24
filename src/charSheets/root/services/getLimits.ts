@@ -17,8 +17,7 @@ export function getLimits(limitArgs: LimitArgs): Limits {
   if (
     limitArgs.preset === "vampire_v20" ||
     limitArgs.preset === "vampire_da_v20" ||
-    limitArgs.preset === "vampire_v3_revised" ||
-    limitArgs.preset === "vampire_v5"
+    limitArgs.preset === "vampire_v3_revised"
   ) {
     const { generation } = limitArgs.profile;
     const str = generation.replace(/\D/g, "");

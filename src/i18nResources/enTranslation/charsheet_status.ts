@@ -20,7 +20,6 @@ export const status = {
   antithesis: "Antithesis",
   thresholds: "Ravaging/Musing Threshold",
   birthrightsFrailties: "Birthright/Frailty",
-  hunger: "Hunger",
 
   faith: "Faith",
 

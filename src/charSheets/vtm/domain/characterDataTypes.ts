@@ -26,16 +26,10 @@ export interface VtMState extends CommonState {
   bloodPerTurn: string;
   // other
   weakness: string;
-  // V5 specific
-  hunger?: number;
 }
 
 // Advantages
-export type Disciplines = {
-  name: string;
-  value: number;
-  subtitles?: string[];
-}[];
+export type Disciplines = NameStringArray;
 export type DisciplinePaths = NameStringArray;
 export type Rituals = {
   name: string;

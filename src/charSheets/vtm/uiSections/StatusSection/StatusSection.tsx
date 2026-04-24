@@ -6,13 +6,16 @@ import { useLimits } from "../../../../charSheets/root/services/storageAdapter";
 import {
   ExperienceSection,
   FlawsSection,
+  HealthSection,
   MeritsSection,
+  WillSection,
 } from "../../../generic/uiSections";
 import { Subheader } from "../../../generic/uiPrimitives";
 import { useDropdownOptions } from "../../dropdownContent";
 import {
   useMeritsNFlaws,
   useStatus,
+  useHealth,
 } from "../../../generic/services/storageAdapter";
 
 import { HumanitySection } from "./HumanitySection";
@@ -30,6 +33,7 @@ export function StatusSection(props: StatusSectionProps): JSX.Element {
   const meritsNFlawsService = useMeritsNFlaws();
   const { meritOptions, flawOptions, pathOptions } = useDropdownOptions();
   const statusService = useStatus();
+  const healthService = useHealth();
   const { limits } = useLimits();
 
   return (
@@ -57,12 +61,22 @@ export function StatusSection(props: StatusSectionProps): JSX.Element {
           {...statusService}
         />
 
+        <Subheader className="tw-mb-2 tw-mt-2">
+          {t("charsheet.status.willpower")}
+        </Subheader>
+        <WillSection className="tw-mb-4 print:tw-mb-2" {...statusService} />
+
         <Subheader id="bloodpool.header" className="tw-mb-2 tw-mt-2">
-          {t("charsheet.advantages.conscience")}
+          {t("charsheet.status.bloodpool")}
         </Subheader>
         <BloodpoolSection {...statusService} limits={limits} />
       </div>
       <div className="tw-flex-1">
+        <Subheader className="tw-mb-2">
+          {t("charsheet.status.health")}
+        </Subheader>
+        <HealthSection className="tw-mb-6 print:tw-mb-2" {...healthService} />
+
         <Subheader className="tw-mb-2">
           {t("charsheet.status.weakness")}
         </Subheader>

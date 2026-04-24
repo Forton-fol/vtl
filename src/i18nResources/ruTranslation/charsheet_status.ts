@@ -20,7 +20,6 @@ export const status = {
   antithesis: "Антитезис",
   thresholds: "Порог Музы/Опустошения",
   birthrightsFrailties: "Права/Слабости крови",
-  hunger: "Голод",
   "health-real-short": "Р",
   "health-real-long": "Реальное",
   "health-chimerical-short": "Х",

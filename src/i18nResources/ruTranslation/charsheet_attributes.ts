@@ -1,4 +1,4 @@
-﻿export const attributes = {
+export const attributes = {
   header: "Характеристики",
 
   physical: "Физические",
@@ -9,10 +9,10 @@
   social: "Социальные",
   charisma: "Обаяние",
   manipulation: "Манипуляция",
-  appearance: "Самообладание",
+  appearance: "Привлекательность",
 
   mental: "Ментальные",
-  perception: "Упорство",
+  perception: "Восприятие",
   intelligence: "Интеллект",
   wits: "Смекалка",
 };

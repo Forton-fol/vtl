@@ -23,7 +23,6 @@ export const initialVtMState: VtMState = {
   bloodPerTurn: "",
 
   weakness: "",
-  hunger: 0,
 };
 
 export const initialVtMProfile: VtMProfile = {
