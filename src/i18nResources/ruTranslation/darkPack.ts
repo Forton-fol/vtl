@@ -1,6 +1,6 @@
 export const darkPack = {
-  nav: "Dark Pack",
-  header: "Dark Pack Agreement",
+  nav: "Соглашение Dark Pack",
+  header: "Соглашение Dark Pack",
   subtitle:
     "Эта страница размещена для соблюдения правил Paradox Interactive по использованию материалов World of Darkness в некоммерческом фанатском проекте.",
   intro:
@@ -8,10 +8,10 @@ export const darkPack = {
   officialAgreement: "Официальное соглашение Dark Pack",
   legalNoticeLabel: "Обязательное уведомление об авторских правах и товарных знаках",
   legalNotice:
-    "Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit worldofdarkness.com.",
+    "Официальный текст уведомления (оригинал на английском): Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit worldofdarkness.com.",
   unofficialLabel: "Уведомление о неофициальном статусе",
   unofficialNotice:
-    "This is an unofficial fan project and is not official World of Darkness material.",
+    "Это неофициальный фанатский проект и не официальный материал World of Darkness.",
   complianceListTitle: "Что размещено на сайте для соблюдения соглашения",
   compliancePoint1:
     "Логотип Dark Pack размещён внизу сайта и на этой отдельной странице.",
@@ -21,7 +21,7 @@ export const darkPack = {
     "Явная пометка о том, что проект является неофициальным фанатским материалом, размещена рядом с legal notice.",
   compliancePoint4:
     "На этой странице есть ссылка на оригинальный текст соглашения Paradox Interactive для проверки актуальных условий.",
-  footerTitle: "Dark Pack Notice",
+  footerTitle: "Уведомление Dark Pack",
   footerLink: "Страница Dark Pack",
   footerOfficialLink: "Оригинал соглашения",
 };
