@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { Link, Routes, Route } from "react-router-dom";
 // eslint-disable-next-line import/order
 import DocumentTitle from "react-document-title";
 
@@ -17,6 +17,7 @@ import { CharSheetPage } from "./ui/CharSheetPage";
 import { CharacterLibraryPage } from "./ui/CharLibraryPage/CharacterLibraryPage";
 import { DonatePage } from "./ui/DonatePage/DonatePage";
 import { EncyclopediaPage } from "./ui/EncyclopediaPage";
+import { DarkPackPage } from "./ui/DarkPackPage";
 import { ControlPanel } from "./ui/ControlPanel";
 import { CURRENT_VERSION } from "./constants";
 import { useInternalPresetProps } from "./charSheets";
@@ -128,9 +129,39 @@ function App(): JSX.Element {
             <Route path="/library" element={<CharacterLibraryPage />} />
             <Route path="/donate" element={<DonatePage />} />
             <Route path="/encyclopedia" element={<EncyclopediaPage />} />
+            <Route path="/dark-pack" element={<DarkPackPage />} />
             <Route path="/" element={<CharSheetPage />} />
           </Routes>
         </main>
+
+        <footer className="dark-pack-footer print:tw-hidden">
+          <div className="dark-pack-footer__content">
+            <img
+              className="dark-pack-footer__logo"
+              src="/dark-pack-logo.png"
+              alt="Dark Pack logo"
+            />
+            <div className="dark-pack-footer__text">
+              <p className="dark-pack-footer__title">{t("darkPack.footerTitle")}</p>
+              <p>{t("darkPack.legalNotice")}</p>
+              <p>{t("darkPack.unofficialNotice")}</p>
+              <p>
+                <Link className="dark-pack-footer__link" to="/dark-pack">
+                  {t("darkPack.footerLink")}
+                </Link>
+                {" · "}
+                <a
+                  className="dark-pack-footer__link"
+                  href="https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {t("darkPack.footerOfficialLink")}
+                </a>
+              </p>
+            </div>
+          </div>
+        </footer>
 
         {/* Mobile overlay */}
         {mobileMenuOpen && (

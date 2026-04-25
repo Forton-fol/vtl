@@ -119,6 +119,18 @@ export function migrate(charSheetSrc: any): unknown {
   if (charSheet.Version === "0.2.5") {
     charSheet.Version = "0.3.0";
   }
+  if (
+    charSheet?.Charsheet?.state &&
+    !charSheet.Charsheet.state.hasOwnProperty("willpowerBoxes")
+  ) {
+    charSheet.Charsheet.state.willpowerBoxes = [];
+  }
+  if (
+    charSheet?.Charsheet?.state &&
+    !charSheet.Charsheet.state.hasOwnProperty("v5HealthBoxes")
+  ) {
+    charSheet.Charsheet.state.v5HealthBoxes = [];
+  }
   if (charSheet.Version === "0.3.0") {
     charSheet.Charsheet.charHistory = "";
     charSheet.Charsheet.goals = "";

@@ -113,6 +113,41 @@ export const randomizerConfigs: Partial<
     ],
   },
 
+  // ── Vampire: The Masquerade V5 ──
+  vampire_v5: {
+    expectedAttributeDots: [7, 5, 3],
+    expectedAbilityDots: [13, 9, 5],
+    abilityLimit: 3,
+    expectedBackgroundDots: 5,
+    hasAge: true,
+    virtuesConfig: {
+      expectedTotal: 7,
+      minPerVirtue: 1,
+      maxPerVirtue: 5,
+    },
+    advantages: [
+      {
+        charSheetKey: "disciplines",
+        type: "nameValue",
+        expectedDots: 3,
+        maxPerItem: 3,
+        optionsKey: "disciplineOptions",
+        useClanDisciplines: true,
+      },
+    ],
+    derivedValues: [
+      { type: "conscience_selfcontrol_as_humanity" },
+      { type: "virtue_courage_as_willpower" },
+      { type: "random", target: "bloodpool", min: 1, max: 10 },
+    ],
+    profileDropdowns: [
+      { field: "nature", optionsKey: "archetypeOptions" },
+      { field: "demeanor", optionsKey: "archetypeOptions" },
+      { field: "concept", optionsKey: "conceptOptions" },
+      { field: "clan", optionsKey: "clanOptions" },
+    ],
+  },
+
   // ── Changeling: The Dreaming V20 ──
   changeling_v20: {
     expectedAttributeDots: [7, 5, 3],

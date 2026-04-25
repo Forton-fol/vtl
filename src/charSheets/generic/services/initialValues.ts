@@ -22,6 +22,8 @@ import {
 export const initialCommonState: CommonState = {
   willpowerRating: 0,
   willpowerPool: 0,
+  willpowerBoxes: [],
+  v5HealthBoxes: [],
   experience: "",
 };
 

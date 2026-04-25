@@ -58,6 +58,8 @@ export type Possessions = string;
 export interface CommonState {
   willpowerRating: number;
   willpowerPool: number;
+  willpowerBoxes?: number[];
+  v5HealthBoxes?: number[];
   experience: string;
 }
 

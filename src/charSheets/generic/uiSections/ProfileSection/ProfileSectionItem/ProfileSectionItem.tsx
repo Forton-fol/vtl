@@ -2,6 +2,7 @@ import React, { ChangeEvent, useCallback, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Options, Profile } from "../../../../root/domain";
+import { usePreset } from "../../../../root/services/storageAdapter";
 import { SelectButton } from "../../../uiPrimitives/SelectButton";
 
 interface ProfileSectionItemProps<DataContext> {
@@ -17,6 +18,17 @@ export const ProfileSectionItem = memo(function ProfileSectionItem<DataContext>(
 ) {
   const { itemName, options, value, dataContext, setValue } = props;
   const { t } = useTranslation();
+  const { preset } = usePreset();
+
+  const labelKey = `charsheet.profile.${itemName}`;
+  const v5LabelKey = `charsheet.v5.profile.${itemName}`;
+  const label =
+    preset === "vampire_v5"
+      ? (() => {
+          const translated = t(v5LabelKey);
+          return translated === v5LabelKey ? t(labelKey) : translated;
+        })()
+      : t(labelKey);
 
   const onProfileChange = useCallback(
     function onProfileChange(e: ChangeEvent<HTMLInputElement>) {
@@ -45,7 +57,7 @@ export const ProfileSectionItem = memo(function ProfileSectionItem<DataContext>(
           flexBasis: "7rem",
         }}
       >
-        {t(`charsheet.profile.${itemName}`)}
+        {label}
       </label>
       <input
         size={1}
@@ -63,7 +75,7 @@ export const ProfileSectionItem = memo(function ProfileSectionItem<DataContext>(
           options={options}
           onChange={onSelectChange}
           selectOptionMsg={t("charsheet.profile.select-label", {
-            title: t(`charsheet.profile.${itemName}`),
+            title: label,
           })}
         />
       )}

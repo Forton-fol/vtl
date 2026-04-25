@@ -58,7 +58,7 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
 
   if (user) {
     return (
-      <div className="tw-flex tw-items-center tw-gap-1">
+      <div className="tw-relative tw-flex tw-items-center tw-gap-1">
         <button
           className="nav-item-btn"
           onClick={() => setShowUserMenu((prev) => !prev)}
@@ -67,20 +67,37 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
           <FontAwesomeIcon icon={faUser} />
           <span>{user}</span>
         </button>
-        {(mobile || showUserMenu) && (
+
+        {mobile && (
           <button className="nav-item-btn" onClick={doLogout} title={t('register.logout')}>
             <FontAwesomeIcon icon={faSignOutAlt} />
             <span>{t('register.logout')}</span>
           </button>
         )}
+
         {!mobile && showUserMenu && (
-          <button
-            className="nav-item-btn"
-            onClick={() => setShowUserMenu(false)}
-            title={t('register.close')}
+          <div
+            className="settings-dropdown-panel"
+            style={{ width: '14rem', right: 'auto', left: 0 }}
           >
-            <span>{t('register.close')}</span>
-          </button>
+            <div className="tw-flex tw-flex-col tw-gap-2">
+              <button
+                className="btn-modern btn-modern-danger tw-w-full tw-justify-start"
+                onClick={doLogout}
+                title={t('register.logout')}
+              >
+                <FontAwesomeIcon icon={faSignOutAlt} />
+                <span>{t('register.logout')}</span>
+              </button>
+              <button
+                className="btn-modern btn-modern-ghost tw-w-full tw-justify-start"
+                onClick={() => setShowUserMenu(false)}
+                title={t('register.close')}
+              >
+                <span>{t('register.close')}</span>
+              </button>
+            </div>
+          </div>
         )}
       </div>
     );

@@ -1,0 +1,22 @@
+.V5HealthSection__container {
+  display: inline-block;
+}
+
+.V5HealthSection__toolbar {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.V5HealthSection__button {
+  min-width: 1.5rem;
+  padding: 0 0.3rem !important;
+  line-height: 1.1 !important;
+}
+
+.V5HealthSection__container:empty::before {
+  content: "";
+  display: block;
+  width: 1.2rem;
+  height: 1.5rem;
+}

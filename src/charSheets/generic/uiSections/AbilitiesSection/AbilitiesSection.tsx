@@ -5,6 +5,7 @@ import classnames from "classnames";
 import { Subheader } from "../../uiPrimitives/Subheader";
 import { RangeInput2 } from "../../uiPrimitives/RangeInput2";
 import { SpecializationPicker } from "../../uiPrimitives/SpecializationPicker/SpecializationPicker";
+import { usePreset } from "../../../root/services/storageAdapter";
 import {
   Abilities,
   AbilitiesConfig,
@@ -30,6 +31,7 @@ export const AbilitiesSection = memo(function AbilitiesSection(
   props: AbilitiesSectionProps
 ) {
   const { t } = useTranslation();
+  const { preset } = usePreset();
   const {
     className,
     abilities,
@@ -60,6 +62,20 @@ export const AbilitiesSection = memo(function AbilitiesSection(
     [setAbilityExtensionValue]
   );
 
+  const getLabel = useCallback(
+    function getLabel(key: string) {
+      const baseKey = `charsheet.abilities.${key}`;
+      if (preset !== "vampire_v5") {
+        return t(baseKey);
+      }
+
+      const v5Key = `charsheet.v5.abilities.${key}`;
+      const translated = t(v5Key);
+      return translated === v5Key ? t(baseKey) : translated;
+    },
+    [preset, t]
+  );
+
   return (
     <div
       className={classnames("AbilitiesSection tw-flex tw-gap-x-4", className)}
@@ -67,7 +83,7 @@ export const AbilitiesSection = memo(function AbilitiesSection(
       {abilitiesConfig.map(({ header, items, extension }) => (
         <div className="tw-flex-1" key={header}>
           <Subheader className="print:tw-hidden">
-            {t(`charsheet.abilities.${header}`)}
+            {getLabel(header)}
           </Subheader>
           {items.map((ability) => (
             <div
@@ -80,7 +96,7 @@ export const AbilitiesSection = memo(function AbilitiesSection(
                 className="stat-container-label"
                 id={`ability.label.${ability}`}
               >
-                {t(`charsheet.abilities.${ability}`)}
+                {getLabel(ability)}
               </label>
               <RangeInput2
                 max={limits.parameterLimit}

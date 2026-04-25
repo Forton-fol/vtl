@@ -5,6 +5,7 @@ import classnames from "classnames";
 import { Subheader } from "../../uiPrimitives/Subheader";
 import { RangeInput2 } from "../../uiPrimitives/RangeInput2";
 import { SpecializationPicker } from "../../uiPrimitives/SpecializationPicker/SpecializationPicker";
+import { usePreset } from "../../../root/services/storageAdapter";
 import { Attributes, AttributesConfig, Limits } from "../../../root/domain";
 import { AttributesService, SpecializationsService } from "../../application/ports";
 import "./AttributeSection.css";
@@ -19,6 +20,7 @@ export const AttributeSection = memo(function AttributeSection(
   props: AttributeSectionProps,
 ) {
   const { t } = useTranslation();
+  const { preset } = usePreset();
   const {
     className,
     attributes,
@@ -36,6 +38,20 @@ export const AttributeSection = memo(function AttributeSection(
     [setAttribute],
   );
 
+  const getLabel = useCallback(
+    function getLabel(key: string) {
+      const baseKey = `charsheet.attributes.${key}`;
+      if (preset !== "vampire_v5") {
+        return t(baseKey);
+      }
+
+      const v5Key = `charsheet.v5.attributes.${key}`;
+      const translated = t(v5Key);
+      return translated === v5Key ? t(baseKey) : translated;
+    },
+    [preset, t],
+  );
+
   return (
     <div
       className={classnames("AttributeSection tw-flex tw-gap-x-4", className)}
@@ -43,7 +59,7 @@ export const AttributeSection = memo(function AttributeSection(
       {attributesConfig.map(({ header, items }) => (
         <div className="tw-flex-1" key={header}>
           <Subheader className="print:tw-hidden">
-            {t(`charsheet.attributes.${header}`)}
+            {getLabel(header)}
           </Subheader>
           {items.map((attribute) => (
             <div
@@ -56,7 +72,7 @@ export const AttributeSection = memo(function AttributeSection(
                 className="stat-container-label"
                 id={`attribute.label.${attribute}`}
               >
-                {t(`charsheet.attributes.${attribute}`)}
+                {getLabel(attribute)}
               </label>
               <RangeInput2
                 max={limits.parameterLimit}

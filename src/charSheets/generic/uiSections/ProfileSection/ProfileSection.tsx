@@ -19,7 +19,12 @@ export const ProfileSection = memo(function ProfileSection(
   const { className, profileConfig, profile, setProfileItem, dropdownOptions } =
     props;
 
-  const itemCount = R.sum(profileConfig.map((el) => el.length));
+  const columnCount = profileConfig.length;
+  const rowCount = R.reduce(
+    (maxRows, column) => Math.max(maxRows, column.length),
+    0,
+    profileConfig
+  );
 
   const setValue = useCallback(
     function setValue(value: string, itemName: keyof Profile) {
@@ -33,10 +38,8 @@ export const ProfileSection = memo(function ProfileSection(
       className={classnames("ProfileSection tw-mb-4 tw-flex ", className)}
       style={{
         display: "grid",
-        gridTemplateRows: `repeat(${Math.ceil(itemCount / 2)}, 1fr)`,
-        gridTemplateColumns: `repeat(2, 1fr)`,
-        // gridTemplateRows: `repeat(${Math.ceil(itemCount/3)}, 1fr)`,
-        // gridTemplateColumns: `repeat(3, 1fr)`,
+        gridTemplateRows: `repeat(${rowCount}, 1fr)`,
+        gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
         gridAutoFlow: "column",
         columnGap: "1rem",
       }}

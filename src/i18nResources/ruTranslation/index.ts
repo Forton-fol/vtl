@@ -8,10 +8,12 @@ import { freebiePoints } from "./freebiePoints";
 import { experiencePoints } from "./experiencePoints";
 import { actionMenu } from "./actionMenu";
 import { about } from "./about";
+import { darkPack } from "./darkPack";
 import { instruction } from "./instruction";
 import { register } from "./register";
 import { library } from "./library";
 import { charsheet_htr } from "./charsheet_htr";
+import { v5 } from "./charsheet_v5";
 
 const randomizer = {
   header: "Рандомайзер",
@@ -38,6 +40,7 @@ const randomizer = {
 
 export const ruTranslation = {
   about,
+  darkPack,
   checklist,
   freebiePoints,
   experiencePoints,
@@ -101,6 +104,7 @@ export const ruTranslation = {
       changeling_v20: "Подменыши: Грёза. V20",
       hunter_v20: "Охота на охотников II. V20",
       vampire_v3_revised: "Вампиры: Маскарад. V3 Revised",
+      vampire_v5: "Вампиры: Маскарад. V5",
       mage_v20: "Маги: Восхождение. V20",
       hunter_reckoning: "Охотники: Расплата",
       demon_the_fallen: "Демон: Падшие",
@@ -109,6 +113,7 @@ export const ruTranslation = {
     profile,
     attributes,
     abilities,
+    v5,
     advantages,
     status,
     notes: "Заметки",

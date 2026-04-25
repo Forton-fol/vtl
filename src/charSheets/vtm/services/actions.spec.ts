@@ -52,6 +52,40 @@ describe("vtmActions", () => {
     });
     expect(charSheet2.disciplines).toEqual([{ name: "", value: 3 }]);
   });
+  it("setDisciplineSubtitle", () => {
+    const charSheet = reduce(initialCharSheet, {
+      type: "addDiscipline",
+      props: [],
+    });
+    const charSheet2 = reduce(charSheet, {
+      type: "setDisciplineSubtitle",
+      props: [0, 0, "power 1"],
+    });
+    expect(charSheet2.disciplines).toEqual([
+      { name: "", value: 0, subtitles: ["power 1"] },
+    ]);
+  });
+  it("setDisciplineValue trims subtitles", () => {
+    const charSheet = reduce(initialCharSheet, {
+      type: "addDiscipline",
+      props: [],
+    });
+    const withSubtitles = reduce(charSheet, {
+      type: "setDisciplineSubtitle",
+      props: [0, 0, "power 1"],
+    });
+    const withMoreSubtitles = reduce(withSubtitles, {
+      type: "setDisciplineSubtitle",
+      props: [0, 1, "power 2"],
+    });
+    const charSheet2 = reduce(withMoreSubtitles, {
+      type: "setDisciplineValue",
+      props: [0, 1],
+    });
+    expect(charSheet2.disciplines).toEqual([
+      { name: "", value: 1, subtitles: ["power 1"] },
+    ]);
+  });
 
   it("addDisciplinePath", () => {
     expect(initialCharSheet.disciplinePaths.length).toBe(0);

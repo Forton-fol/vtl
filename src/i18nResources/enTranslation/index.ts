@@ -10,15 +10,18 @@ import { freebiePoints } from "./freebiePoints";
 import { experiencePoints } from "./experiencePoints";
 import { actionMenu } from "./actionMenu";
 import { about } from "./about";
+import { darkPack } from "./darkPack";
 import { instruction } from "./instruction";
 import { register } from "./register";
 import { library } from "./library";
 import { charsheet_htr } from "./charsheet_htr";
+import { v5 } from "./charsheet_v5";
 
 type TranslationInfo = typeof ruTranslation;
 
 export const enTranslation: TranslationInfo = {
   about,
+  darkPack,
   checklist,
   freebiePoints,
   experiencePoints,
@@ -103,6 +106,7 @@ export const enTranslation: TranslationInfo = {
       changeling_v20: "Changeling: The Dreaming. V20",
       hunter_v20: "The Hunters Hunted II. V20",
       vampire_v3_revised: "Vampire: The Masquerade. V3 Revised",
+      vampire_v5: "Vampire: The Masquerade. V5",
       mage_v20: "Mage: The Ascension. V20",
       hunter_reckoning: "Hunter: The Reckoning",
       demon_the_fallen: "Demon: The Fallen",
@@ -111,6 +115,7 @@ export const enTranslation: TranslationInfo = {
     profile,
     attributes,
     abilities,
+    v5,
     advantages,
     status,
     notes: "Notes",

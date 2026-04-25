@@ -42,6 +42,8 @@ export const vtmActions: ServiceToActions<CombinedVtMService> = {
     [index, value]: [number, number]
   ): CharSheet {
     const limits = getLimits(state);
+    const nextValue = applyRange(0, limits.parameterLimit, value);
+    const previousSubtitles = state.disciplines[index]?.subtitles || [];
     return mutateObj(
       state,
       "disciplines",
@@ -49,7 +51,32 @@ export const vtmActions: ServiceToActions<CombinedVtMService> = {
         index,
         {
           ...state.disciplines[index],
-          value: applyRange(0, limits.parameterLimit, value),
+          value: nextValue,
+          subtitles:
+            previousSubtitles.length > 0
+              ? previousSubtitles.slice(0, nextValue)
+              : undefined,
+        },
+        state.disciplines
+      )
+    );
+  },
+  setDisciplineSubtitle(
+    state: CharSheet,
+    [index, subtitleIndex, value]: [number, number, string]
+  ): CharSheet {
+    const discipline = state.disciplines[index];
+    const subtitles = [...(discipline.subtitles || [])];
+    subtitles[subtitleIndex] = value;
+
+    return mutateObj(
+      state,
+      "disciplines",
+      R.update(
+        index,
+        {
+          ...discipline,
+          subtitles,
         },
         state.disciplines
       )

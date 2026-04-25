@@ -30,9 +30,12 @@ import { DisciplinePathsSection } from "./uiSections/DisciplinePathsSection";
 import { RitualsSection } from "./uiSections/RitualsSection";
 import { StatusSection } from "./uiSections/StatusSection";
 
-interface CharSheetProps {}
+interface CharSheetProps {
+  isV5?: boolean;
+}
 
 export function CharSheet(props: CharSheetProps): JSX.Element {
+  const { isV5 = false } = props;
   const { t } = useTranslation();
 
   const otherTraitsService = useOtherTraits();
@@ -65,11 +68,12 @@ export function CharSheet(props: CharSheetProps): JSX.Element {
           className="tw-mb-3"
           backgroundOptions={backgroundOptions}
           disciplineOptions={disciplineOptions}
+          isV5={isV5}
         />
         <SectionHeader className="tw-mb-3">
           {t("charsheet.status.header")}
         </SectionHeader>
-        <StatusSection className="tw-mb-3" />
+        <StatusSection className="tw-mb-3" isV5={isV5} />
       </CharSheetBody>
       <CharSheetBody>
         <div className="tw-flex tw-gap-x-4 tw-mb-6">

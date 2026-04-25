@@ -24,10 +24,11 @@ import { WeaknessSection } from "./WeaknessSection";
 
 interface StatusSectionProps {
   className?: string;
+  isV5?: boolean;
 }
 
 export function StatusSection(props: StatusSectionProps): JSX.Element {
-  const { className } = props;
+  const { className, isV5 = false } = props;
   const { t } = useTranslation();
 
   const meritsNFlawsService = useMeritsNFlaws();
@@ -61,10 +62,14 @@ export function StatusSection(props: StatusSectionProps): JSX.Element {
           {...statusService}
         />
 
-        <Subheader className="tw-mb-2 tw-mt-2">
-          {t("charsheet.status.willpower")}
-        </Subheader>
-        <WillSection className="tw-mb-4 print:tw-mb-2" {...statusService} />
+        {!isV5 && (
+          <>
+            <Subheader className="tw-mb-2 tw-mt-2">
+              {t("charsheet.status.willpower")}
+            </Subheader>
+            <WillSection className="tw-mb-4 print:tw-mb-2" {...statusService} />
+          </>
+        )}
 
         <Subheader id="bloodpool.header" className="tw-mb-2 tw-mt-2">
           {t("charsheet.status.bloodpool")}
@@ -72,10 +77,14 @@ export function StatusSection(props: StatusSectionProps): JSX.Element {
         <BloodpoolSection {...statusService} limits={limits} />
       </div>
       <div className="tw-flex-1">
-        <Subheader className="tw-mb-2">
-          {t("charsheet.status.health")}
-        </Subheader>
-        <HealthSection className="tw-mb-6 print:tw-mb-2" {...healthService} />
+        {!isV5 && (
+          <>
+            <Subheader className="tw-mb-2">
+              {t("charsheet.status.health")}
+            </Subheader>
+            <HealthSection className="tw-mb-6 print:tw-mb-2" {...healthService} />
+          </>
+        )}
 
         <Subheader className="tw-mb-2">
           {t("charsheet.status.weakness")}

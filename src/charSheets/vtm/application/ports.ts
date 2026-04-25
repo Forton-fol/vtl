@@ -10,6 +10,7 @@ export interface DisciplinesService {
   addDiscipline(): void;
   setDisciplineName(index: number, name: string): void;
   setDisciplineValue(index: number, value: number): void;
+  setDisciplineSubtitle(index: number, subtitleIndex: number, value: string): void;
   removeDiscipline(index: number): void;
 }
 

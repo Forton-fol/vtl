@@ -12,6 +12,7 @@ const presets: Record<PresetName, PresetName> = {
   hunter_v20: "hunter_v20",
   vampire_da_v20: "vampire_da_v20",
   vampire_v3_revised: "vampire_v3_revised",
+  vampire_v5: "vampire_v5",
   mage_v20: "mage_v20",
   hunter_reckoning: "hunter_reckoning",
   demon_the_fallen: "demon_the_fallen",
