@@ -66,6 +66,16 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
   }, [showForm, mode, turnstileSiteKey]);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tokenFromOAuth = params.get('token');
+    const authFromOAuth = params.get('auth');
+    if (tokenFromOAuth && authFromOAuth === 'google') {
+      saveToken(tokenFromOAuth);
+      setUser('user');
+      window.history.replaceState({}, '', window.location.pathname);
+      return;
+    }
+
     const token = getToken();
     if (token) {
       setUser('user');
