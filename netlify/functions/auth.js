@@ -33,7 +33,10 @@ function getBaseUrl(event) {
   if (event.headers.origin) {
     return event.headers.origin;
   }
-  return 'https://vtmcl.netlify.app';
+  if (event.headers['x-forwarded-proto'] && event.headers['x-forwarded-host']) {
+    return `${event.headers['x-forwarded-proto']}://${event.headers['x-forwarded-host']}`;
+  }
+  return 'https://vtmlist.netlify.app';
 }
 
 function maskClientId(value) {
