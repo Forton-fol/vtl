@@ -11,4 +11,13 @@ export const register = {
   success: "Registered successfully",
   error: "Registration error",
   "username-taken": "Username is already taken",
+  // Google OAuth
+  googleSignIn: "Sign in with Google",
+  googleDescription: "Sign in with Google for quick registration and automatic Patreon linking",
+  googleButton: "Sign in with Google",
+  // Patreon
+  patreon: "Connect Patreon",
+  patreonDescription: "Connect Patreon to get access to premium features",
+  patreonButton: "Connect Patreon",
+  patreonConnected: "Patreon connected",
 };

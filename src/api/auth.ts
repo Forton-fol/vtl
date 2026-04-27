@@ -16,6 +16,36 @@ export async function login(username: string, password: string) {
   return resp.json();
 }
 
+// Google OAuth login - redirects to Google auth page
+export function googleLogin() {
+  window.location.href = '/.netlify/functions/auth/google';
+}
+
+// Connect Patreon account
+export async function connectPatreon() {
+  const token = getToken();
+  if (!token) {
+    return { error: 'not_authenticated' };
+  }
+  window.location.href = `/.netlify/functions/auth/patreon?token=${token}`;
+}
+
+// Get subscription status
+export async function getSubscriptionStatus() {
+  const token = getToken();
+  if (!token) {
+    return { error: 'not_authenticated' };
+  }
+  
+  const resp = await fetch('/.netlify/functions/auth/subscription', {
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+  });
+  return resp.json();
+}
+
 export function saveToken(token: string) {
   if (typeof window !== 'undefined') {
     localStorage.setItem('vtm_token', token);

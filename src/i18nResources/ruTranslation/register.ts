@@ -11,4 +11,13 @@ export const register = {
   success: "Успешная регистрация",
   error: "Ошибка при регистрации",
   "username-taken": "Логин уже занят",
+  // Google OAuth
+  googleSignIn: "Вход через Google",
+  googleDescription: "Войдите через Google для быстрой регистрации и автоматической привязки к Patreon",
+  googleButton: "Войти через Google",
+  // Patreon
+  patreon: "Подключение Patreon",
+  patreonDescription: "Подключите Patreon для получения доступа к премиум функциям",
+  patreonButton: "Подключить Patreon",
+  patreonConnected: "Patreon подключен",
 };
