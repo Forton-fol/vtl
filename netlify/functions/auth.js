@@ -181,19 +181,20 @@ async function updatePatreonSubscription(userId, patreonData) {
 // Main auth handler
 exports.handler = async function(event) {
   const baseUrl = getBaseUrl(event);
-  const path = event.path;
+  const path = event.path || '';
+  const route = path.replace('/.netlify/functions/auth', '');
   const queryParams = event.queryStringParameters || {};
 
   try {
     // Google OAuth start
-    if (path === '/auth/google' || event.path === '/auth/google') {
+    if (route === '/google' || path === '/auth/google') {
       const state = jwt.sign({ purpose: 'google' }, JWT_SECRET, { expiresIn: '10m' });
       const authUrl = getGoogleAuthUrl(state);
       return { statusCode: 302, headers: { Location: authUrl } };
     }
 
     // Google OAuth callback
-    if (path === '/auth/callback' || event.path === '/auth/callback') {
+    if (route === '/callback' || path === '/auth/callback') {
       const { code, state } = queryParams;
 
       if (!code || !state) {
@@ -232,14 +233,18 @@ exports.handler = async function(event) {
     }
 
     // Patreon OAuth start
-    if (path === '/auth/patreon' || event.path === '/auth/patreon') {
-      const state = jwt.sign({ purpose: 'patreon' }, JWT_SECRET, { expiresIn: '10m' });
+    if (route === '/patreon' || path === '/auth/patreon') {
+      const { token } = queryParams;
+      if (!token) {
+        return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
+      }
+      const state = jwt.sign({ purpose: 'patreon', token }, JWT_SECRET, { expiresIn: '10m' });
       const authUrl = getPatreonAuthUrl(state);
       return { statusCode: 302, headers: { Location: authUrl } };
     }
 
     // Patreon OAuth callback
-    if (path === '/patreon/callback' || event.path === '/patreon/callback') {
+    if (route === '/patreon/callback' || path === '/patreon/callback') {
       const { code, state } = queryParams;
 
       if (!code || !state) {
@@ -254,16 +259,9 @@ exports.handler = async function(event) {
         return { statusCode: 400, body: JSON.stringify({ error: 'invalid_state' }) };
       }
 
-      // Get user from token
-      const authHeader = event.headers.authorization;
-      if (!authHeader) {
-        return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
-      }
-
-      const token = authHeader.replace('Bearer ', '');
       let userDecoded;
       try {
-        userDecoded = jwt.verify(token, JWT_SECRET);
+        userDecoded = jwt.verify(decoded.token, JWT_SECRET);
       } catch (e) {
         return { statusCode: 401, body: JSON.stringify({ error: 'invalid_token' }) };
       }
@@ -284,7 +282,7 @@ exports.handler = async function(event) {
     }
 
     // Get user subscription status
-    if (path === '/auth/subscription' || event.path === '/auth/subscription') {
+    if (route === '/subscription' || path === '/auth/subscription') {
       const authHeader = event.headers.authorization;
       if (!authHeader) {
         return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
