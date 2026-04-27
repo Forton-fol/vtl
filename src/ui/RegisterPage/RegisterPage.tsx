@@ -57,11 +57,11 @@ export function RegisterPage(): JSX.Element {
   }
 
   return (
-    <div className="tw-p-6">
+    <div className="tw-p-4 sm:tw-p-6 tw-w-full tw-overflow-x-hidden">
       <h2>{t('register.header')}</h2>
       
       {/* Google OAuth Section */}
-      <div className="tw-mb-6 tw-p-4 tw-bg-gray-100 tw-rounded-lg">
+      <div className="tw-mb-6 tw-p-4 tw-bg-gray-100 tw-rounded-lg tw-w-full">
         <h4 className="tw-mb-3">{t('register.googleSignIn') || 'Вход через Google'}</h4>
         <p className="tw-text-sm tw-text-gray-600 tw-mb-3">
           {t('register.googleDescription') || 'Войдите через Google для быстрой регистрации и автоматической привязки к Patreon'}
@@ -69,7 +69,7 @@ export function RegisterPage(): JSX.Element {
         <Button 
           variant="primary" 
           onClick={handleGoogleLogin}
-          className="tw-flex tw-items-center tw-gap-2"
+          className="tw-flex tw-items-center tw-gap-2 tw-w-full sm:tw-w-auto tw-justify-center"
         >
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -82,20 +82,20 @@ export function RegisterPage(): JSX.Element {
       </div>
 
       {/* Traditional Registration */}
-      <Form onSubmit={onSubmit} className="tw-max-w-md tw-mb-6">
+      <Form onSubmit={onSubmit} className="tw-max-w-md tw-w-full tw-mb-6">
         <Form.Group className="mb-2">
           <Form.Label>{t('register.username')}</Form.Label>
-          <Form.Control value={username} onChange={(e) => setUsername((e.target as HTMLInputElement).value)} />
+          <Form.Control className="tw-w-full tw-max-w-full" value={username} onChange={(e) => setUsername((e.target as HTMLInputElement).value)} />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>{t('register.password')}</Form.Label>
-          <Form.Control type="password" value={password} onChange={(e) => setPassword((e.target as HTMLInputElement).value)} />
+          <Form.Control className="tw-w-full tw-max-w-full" type="password" value={password} onChange={(e) => setPassword((e.target as HTMLInputElement).value)} />
         </Form.Group>
-        <Button type="submit" variant="primary">{t('register.submit')}</Button>
+        <Button type="submit" variant="primary" className="tw-w-full sm:tw-w-auto">{t('register.submit')}</Button>
       </Form>
 
       {/* Patreon Connection Section */}
-      <div className="tw-p-4 tw-bg-purple-50 tw-rounded-lg tw-border tw-border-purple-200">
+      <div className="tw-p-4 tw-bg-purple-50 tw-rounded-lg tw-border tw-border-purple-200 tw-w-full">
         <h4 className="tw-mb-3">{t('register.patreon') || 'Подключение Patreon'}</h4>
         <p className="tw-text-sm tw-text-gray-600 tw-mb-3">
           {t('register.patreonDescription') || 'Подключите Patreon для получения доступа к премиум функциям'}
@@ -112,7 +112,7 @@ export function RegisterPage(): JSX.Element {
           <Button 
             variant="outline-primary" 
             onClick={handleConnectPatreon}
-            className="tw-flex tw-items-center tw-gap-2"
+            className="tw-flex tw-items-center tw-gap-2 tw-w-full sm:tw-w-auto tw-justify-center"
           >
             <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
               <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 21.6c-5.304 0-9.6-4.296-9.6-9.6S6.696 2.4 12 2.4s9.6 4.296 9.6 9.6-4.296 9.6-9.6 9.6z"/>
