@@ -9,12 +9,12 @@ const JWT_SECRET = process.env.NETLIFY_JWT_SECRET || 'dev_secret';
 // Google OAuth credentials
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://vtmlist.netlify.app/.netlify/functions/auth/callback';
+const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://vtmlist.netlify.app/.netlify/functions/auth';
 
 // Patreon credentials
 const PATREON_CLIENT_ID = process.env.PATREON_CLIENT_ID;
 const PATREON_CLIENT_SECRET = process.env.PATREON_CLIENT_SECRET;
-const PATREON_REDIRECT_URI = process.env.PATREON_REDIRECT_URI || 'https://vtmlist.netlify.app/.netlify/functions/patreon/callback';
+const PATREON_REDIRECT_URI = process.env.PATREON_REDIRECT_URI || 'https://vtmlist.netlify.app/.netlify/functions/auth';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -226,17 +226,18 @@ exports.handler = async function(event) {
   const path = event.path || '';
   const route = path.replace('/.netlify/functions/auth', '');
   const queryParams = event.queryStringParameters || {};
+  const action = queryParams.action;
 
   try {
     // Google OAuth start
-    if (route === '/google' || path === '/auth/google') {
+    if (action === 'google' || route === '/google' || path === '/auth/google') {
       const state = jwt.sign({ purpose: 'google' }, JWT_SECRET, { expiresIn: '10m' });
       const authUrl = getGoogleAuthUrl(state);
       return { statusCode: 302, headers: { Location: authUrl } };
     }
 
-    // Google OAuth callback
-    if (route === '/callback' || path === '/auth/callback') {
+    // OAuth callback (Google and Patreon)
+    if (action === 'callback' || route === '/callback' || path === '/auth/callback' || (queryParams.code && queryParams.state)) {
       const { code, state } = queryParams;
 
       if (!code || !state) {
@@ -251,31 +252,58 @@ exports.handler = async function(event) {
         return { statusCode: 400, body: JSON.stringify({ error: 'invalid_state' }) };
       }
 
-      // Exchange code for tokens
-      const tokens = await exchangeGoogleCode(code);
-      const googleUser = await getGoogleUserInfo(tokens.access_token);
+      if (decoded.purpose === 'google') {
+        // Exchange code for tokens
+        const tokens = await exchangeGoogleCode(code);
+        const googleUser = await getGoogleUserInfo(tokens.access_token);
 
-      // Find or create user
-      const user = await findOrCreateGoogleUser(googleUser);
+        // Find or create user
+        const user = await findOrCreateGoogleUser(googleUser);
 
-      // Generate JWT
-      const token = jwt.sign(
-        { userId: user.id, username: user.username, email: user.email || null },
-        JWT_SECRET,
-        { expiresIn: '7d' }
-      );
+        // Generate JWT
+        const token = jwt.sign(
+          { userId: user.id, username: user.username, email: user.email || null },
+          JWT_SECRET,
+          { expiresIn: '7d' }
+        );
 
-      // Redirect to app with token
-      return {
-        statusCode: 302,
-        headers: {
-          Location: `${baseUrl}?token=${token}&auth=google`
+        // Redirect to app with token
+        return {
+          statusCode: 302,
+          headers: {
+            Location: `${baseUrl}?token=${token}&auth=google`
+          }
+        };
+      }
+
+      if (decoded.purpose === 'patreon') {
+        let userDecoded;
+        try {
+          userDecoded = jwt.verify(decoded.token, JWT_SECRET);
+        } catch (e) {
+          return { statusCode: 401, body: JSON.stringify({ error: 'invalid_token' }) };
         }
-      };
+
+        // Exchange code for tokens
+        const tokens = await exchangePatreonCode(code);
+        const patreonData = await getPatreonUserInfo(tokens.access_token);
+
+        // Update user's Patreon subscription
+        await updatePatreonSubscription(userDecoded.userId, patreonData);
+
+        return {
+          statusCode: 302,
+          headers: {
+            Location: `${baseUrl}?patreon=connected`
+          }
+        };
+      }
+
+      return { statusCode: 400, body: JSON.stringify({ error: 'invalid_state_purpose' }) };
     }
 
     // Patreon OAuth start
-    if (route === '/patreon' || path === '/auth/patreon') {
+    if (action === 'patreon' || route === '/patreon' || path === '/auth/patreon') {
       const { token } = queryParams;
       if (!token) {
         return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
@@ -286,7 +314,7 @@ exports.handler = async function(event) {
     }
 
     // Patreon OAuth callback
-    if (route === '/patreon/callback' || path === '/patreon/callback') {
+    if (action === 'patreon_callback' || route === '/patreon/callback' || path === '/patreon/callback') {
       const { code, state } = queryParams;
 
       if (!code || !state) {
@@ -299,6 +327,10 @@ exports.handler = async function(event) {
         decoded = jwt.verify(state, JWT_SECRET);
       } catch (e) {
         return { statusCode: 400, body: JSON.stringify({ error: 'invalid_state' }) };
+      }
+
+      if (decoded.purpose !== 'patreon') {
+        return { statusCode: 400, body: JSON.stringify({ error: 'invalid_state_purpose' }) };
       }
 
       let userDecoded;
@@ -324,7 +356,7 @@ exports.handler = async function(event) {
     }
 
     // Get user subscription status
-    if (route === '/subscription' || path === '/auth/subscription') {
+    if (action === 'subscription' || route === '/subscription' || path === '/auth/subscription') {
       const authHeader = event.headers.authorization;
       if (!authHeader) {
         return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };

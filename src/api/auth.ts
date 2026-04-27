@@ -18,7 +18,7 @@ export async function login(username: string, password: string) {
 
 // Google OAuth login - redirects to Google auth page
 export function googleLogin() {
-  window.location.href = '/.netlify/functions/auth/google';
+  window.location.href = '/.netlify/functions/auth?action=google';
 }
 
 // Connect Patreon account
@@ -27,7 +27,7 @@ export async function connectPatreon() {
   if (!token) {
     return { error: 'not_authenticated' };
   }
-  window.location.href = `/.netlify/functions/auth/patreon?token=${token}`;
+  window.location.href = `/.netlify/functions/auth?action=patreon&token=${token}`;
 }
 
 // Get subscription status
@@ -37,7 +37,7 @@ export async function getSubscriptionStatus() {
     return { error: 'not_authenticated' };
   }
   
-  const resp = await fetch('/.netlify/functions/auth/subscription', {
+  const resp = await fetch('/.netlify/functions/auth?action=subscription', {
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
