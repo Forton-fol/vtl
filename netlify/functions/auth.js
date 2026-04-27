@@ -18,6 +18,16 @@ const PATREON_REDIRECT_URI = process.env.PATREON_REDIRECT_URI || 'https://vtmlis
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+function isMissingColumnError(error) {
+  if (!error) {
+    return false;
+  }
+  return (
+    error.code === 'PGRST204' ||
+    (typeof error.message === 'string' && error.message.includes('Could not find the') && error.message.includes('column'))
+  );
+}
+
 // Helper to get base URL
 function getBaseUrl(event) {
   if (event.headers.origin) {
@@ -105,7 +115,7 @@ async function findOrCreateGoogleUser(googleUser) {
 
   if (existingUser && existingUser.length > 0) {
     // Update user with Google info if not already set
-    await supabase
+    const { error: updateError } = await supabase
       .from('users')
       .update({ 
         google_picture: picture,
@@ -113,23 +123,43 @@ async function findOrCreateGoogleUser(googleUser) {
         auth_provider: 'google'
       })
       .eq('id', existingUser[0].id);
+
+    if (updateError && !isMissingColumnError(updateError)) {
+      throw updateError;
+    }
     
     return existingUser[0];
   }
 
   // Create new user
-  const { data: newUser, error } = await supabase
+  const username = email.split('@')[0];
+  const googleInsertPayload = {
+    username,
+    email,
+    google_picture: picture,
+    google_name: name,
+    auth_provider: 'google',
+    password_hash: 'google_oauth', // Placeholder for OAuth users
+  };
+
+  let { data: newUser, error } = await supabase
     .from('users')
-    .insert([{
-      username: email.split('@')[0],
-      email: email,
-      google_picture: picture,
-      google_name: name,
-      auth_provider: 'google',
-      password_hash: 'google_oauth' // Placeholder for OAuth users
-    }])
+    .insert([googleInsertPayload])
     .select('*')
     .single();
+
+  // Fallback for schemas that don't yet have OAuth-specific columns.
+  if (error && isMissingColumnError(error)) {
+    ({ data: newUser, error } = await supabase
+      .from('users')
+      .insert([{
+        username,
+        email,
+        password_hash: 'google_oauth',
+      }])
+      .select('*')
+      .single());
+  }
 
   if (error) {
     console.error('Error creating user:', error);
