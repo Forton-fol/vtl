@@ -36,6 +36,16 @@ function getBaseUrl(event) {
   return 'https://vtmcl.netlify.app';
 }
 
+function maskClientId(value) {
+  if (!value || typeof value !== 'string') {
+    return 'missing';
+  }
+  if (value.length <= 10) {
+    return value;
+  }
+  return `${value.slice(0, 6)}...${value.slice(-4)}`;
+}
+
 // Generate OAuth URL for Google
 function getGoogleAuthUrl(state) {
   const params = new URLSearchParams({
@@ -231,6 +241,7 @@ exports.handler = async function(event) {
   try {
     // Google OAuth start
     if (action === 'google' || route === '/google' || path === '/auth/google') {
+      console.log('[auth/google] redirect_uri=%s client_id=%s host=%s path=%s', GOOGLE_REDIRECT_URI, maskClientId(GOOGLE_CLIENT_ID), event.headers.host, path);
       const state = jwt.sign({ purpose: 'google' }, JWT_SECRET, { expiresIn: '10m' });
       const authUrl = getGoogleAuthUrl(state);
       return { statusCode: 302, headers: { Location: authUrl } };
