@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
@@ -11,12 +11,59 @@ interface AuthSectionProps {
 export function AuthSection(props: AuthSectionProps): JSX.Element {
   const { mobile } = props;
   const { t } = useTranslation();
+  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
   const [mode, setMode] = useState<'login'|'register'>('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
+  const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
+  const turnstileWidgetRef = useRef<string | number | null>(null);
+
+  useEffect(() => {
+    if (!showForm || mode !== 'register' || !turnstileSiteKey || !turnstileContainerRef.current) {
+      return;
+    }
+
+    const windowWithTurnstile = window as Window & { turnstile?: any };
+    const renderTurnstile = () => {
+      if (!windowWithTurnstile.turnstile || !turnstileContainerRef.current) {
+        return;
+      }
+      if (turnstileWidgetRef.current !== null) {
+        windowWithTurnstile.turnstile.reset(turnstileWidgetRef.current);
+        return;
+      }
+      turnstileWidgetRef.current = windowWithTurnstile.turnstile.render(turnstileContainerRef.current, {
+        sitekey: turnstileSiteKey,
+        theme: 'dark',
+        callback: (token: string) => setCaptchaToken(token),
+        'expired-callback': () => setCaptchaToken(''),
+        'error-callback': () => setCaptchaToken(''),
+      });
+    };
+
+    if (windowWithTurnstile.turnstile) {
+      renderTurnstile();
+      return;
+    }
+
+    const existingScript = document.getElementById('cf-turnstile-script') as HTMLScriptElement | null;
+    if (existingScript) {
+      existingScript.addEventListener('load', renderTurnstile, { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.id = 'cf-turnstile-script';
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.onload = renderTurnstile;
+    document.head.appendChild(script);
+  }, [showForm, mode, turnstileSiteKey]);
 
   useEffect(() => {
     const token = getToken();
@@ -27,12 +74,15 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
 
   async function doRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const res = await register(username, password);
+    const res = await register(username, password, captchaToken);
     if (res && res.user) {
       alert('registered');
       setMode('login');
+      setCaptchaToken('');
     } else if (res && res.error === 'username_taken') {
       alert('username taken');
+    } else if (res && (res.error === 'captcha_required' || res.error === 'captcha_failed')) {
+      alert(t('register.captchaError') || 'Подтвердите, что вы не робот');
     } else {
       alert('error');
     }
@@ -160,8 +210,17 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            {mode === 'register' && turnstileSiteKey && (
+              <div className="tw-mb-3">
+                <div ref={turnstileContainerRef} />
+              </div>
+            )}
             <div className="tw-flex tw-gap-2 tw-flex-wrap">
-              <button type="submit" className="btn-modern btn-modern-primary tw-text-xs tw-flex-1">
+              <button
+                type="submit"
+                className="btn-modern btn-modern-primary tw-text-xs tw-flex-1"
+                disabled={mode === 'register' && !!turnstileSiteKey && !captchaToken}
+              >
                 {mode === 'login' ? t('register.login') : t('register.submit')}
               </button>
               <button

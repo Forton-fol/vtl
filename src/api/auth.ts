@@ -1,8 +1,8 @@
-export async function register(username: string, password: string) {
+export async function register(username: string, password: string, captchaToken?: string) {
   const resp = await fetch('/.netlify/functions/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password, captchaToken }),
   });
   return resp.json();
 }

@@ -20,4 +20,5 @@ export const register = {
   patreonDescription: "Подключите Patreon для получения доступа к премиум функциям",
   patreonButton: "Подключить Patreon",
   patreonConnected: "Patreon подключен",
+  captchaError: "Подтвердите капчу и попробуйте снова",
 };

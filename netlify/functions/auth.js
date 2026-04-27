@@ -105,13 +105,27 @@ async function getPatreonUserInfo(accessToken) {
 // Check or create user from Google
 async function findOrCreateGoogleUser(googleUser) {
   const { email, name, picture } = googleUser;
+  const username = (email && email.includes('@')) ? email.split('@')[0] : `google_${Date.now()}`;
   
-  // Check if user exists by email
-  let { data: existingUser } = await supabase
+  // Check if user exists by email when schema supports it.
+  let { data: existingUser, error: existingUserError } = await supabase
     .from('users')
     .select('*')
     .eq('email', email)
     .limit(1);
+
+  // Fallback for schemas without email column.
+  if (existingUserError && isMissingColumnError(existingUserError)) {
+    ({ data: existingUser, error: existingUserError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('username', username)
+      .limit(1));
+  }
+
+  if (existingUserError) {
+    throw existingUserError;
+  }
 
   if (existingUser && existingUser.length > 0) {
     // Update user with Google info if not already set
@@ -132,7 +146,6 @@ async function findOrCreateGoogleUser(googleUser) {
   }
 
   // Create new user
-  const username = email.split('@')[0];
   const googleInsertPayload = {
     username,
     email,
@@ -154,7 +167,6 @@ async function findOrCreateGoogleUser(googleUser) {
       .from('users')
       .insert([{
         username,
-        email,
         password_hash: 'google_oauth',
       }])
       .select('*')
@@ -248,7 +260,7 @@ exports.handler = async function(event) {
 
       // Generate JWT
       const token = jwt.sign(
-        { userId: user.id, username: user.username, email: user.email },
+        { userId: user.id, username: user.username, email: user.email || null },
         JWT_SECRET,
         { expiresIn: '7d' }
       );
@@ -328,7 +340,7 @@ exports.handler = async function(event) {
 
       const { data: user } = await supabase
         .from('users')
-        .select('patreon_tier, is_patron, email')
+        .select('patreon_tier, is_patron')
         .eq('id', userDecoded.userId)
         .single();
 
