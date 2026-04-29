@@ -21,4 +21,13 @@ export const register = {
   patreonButton: "Connect Patreon",
   patreonConnected: "Patreon connected",
   captchaError: "Please complete the captcha and try again",
+  // Personal Account
+  loadingSubscription: "Loading...",
+  patronStatus: "Active subscription",
+  noSubscription: "No subscription",
+  patreonSection: "Patreon",
+  connectPatreon: "Connect Patreon",
+  managePatreon: "Manage subscription",
+  tierSupporter: "Supporter",
+  tierBasic: "Patron",
 };

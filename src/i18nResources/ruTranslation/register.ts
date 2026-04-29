@@ -21,4 +21,13 @@ export const register = {
   patreonButton: "Подключить Patreon",
   patreonConnected: "Patreon подключен",
   captchaError: "Подтвердите капчу и попробуйте снова",
+  // Personal Account
+  loadingSubscription: "Загрузка...",
+  patronStatus: "Активная подписка",
+  noSubscription: "Нет подписки",
+  patreonSection: "Patreon",
+  connectPatreon: "Подключить Patreon",
+  managePatreon: "Управление подпиской",
+  tierSupporter: "Споддержник",
+  tierBasic: "Патрон",
 };

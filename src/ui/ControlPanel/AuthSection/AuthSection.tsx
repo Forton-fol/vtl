@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { register, login, googleLogin, connectPatreon, saveToken, getToken, removeToken } from '../../../api/auth';
+import { faUser, faSignOutAlt, faCrown, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { register, login, googleLogin, connectPatreon, saveToken, getToken, removeToken, getSubscriptionStatus } from '../../../api/auth';
 
 interface AuthSectionProps {
   mobile?: boolean;
+}
+
+interface SubscriptionStatus {
+  patreon_tier?: string | null;
+  is_patron?: boolean;
 }
 
 export function AuthSection(props: AuthSectionProps): JSX.Element {
@@ -21,6 +26,8 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
   const [captchaToken, setCaptchaToken] = useState('');
   const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
   const turnstileWidgetRef = useRef<string | number | null>(null);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus | null>(null);
+  const [loadingSubscription, setLoadingSubscription] = useState(false);
 
   useEffect(() => {
     if (!showForm || mode !== 'register' || !turnstileSiteKey || !turnstileContainerRef.current) {
@@ -69,6 +76,8 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
     const params = new URLSearchParams(window.location.search);
     const tokenFromOAuth = params.get('token');
     const authFromOAuth = params.get('auth');
+    const patreonConnected = params.get('patreon');
+    
     if (tokenFromOAuth && authFromOAuth === 'google') {
       saveToken(tokenFromOAuth);
       setUser('user');
@@ -79,6 +88,11 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
     const token = getToken();
     if (token) {
       setUser('user');
+    }
+    
+    if (patreonConnected === 'connected') {
+      alert(t('register.patreonConnected') || 'Patreon подключен');
+      window.history.replaceState({}, '', window.location.pathname);
     }
   }, []);
 
@@ -123,7 +137,46 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
     }
   }
 
+  // Fetch subscription status when user is logged in
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    
+    async function fetchSubscription() {
+      setLoadingSubscription(true);
+      try {
+        const status = await getSubscriptionStatus();
+        if (status && !('error' in status)) {
+          setSubscriptionStatus(status);
+        }
+      } catch (e) {
+        console.error('Failed to fetch subscription:', e);
+      } finally {
+        setLoadingSubscription(false);
+      }
+    }
+    
+    fetchSubscription();
+  }, [user]);
+
+  // Get tier display name
+  function getTierDisplay(tier: string | null | undefined): string {
+    if (!tier) return '';
+    switch (tier) {
+      case 'supporter':
+        return t('register.tierSupporter') || 'Supporter';
+      case 'basic':
+        return t('register.tierBasic') || 'Patron';
+      default:
+        return tier;
+    }
+  }
+
   if (user) {
+    const isPatron = subscriptionStatus?.is_patron;
+    const tier = subscriptionStatus?.patreon_tier;
+    
     return (
       <div className="tw-relative tw-flex tw-items-center tw-gap-1">
         <button
@@ -131,8 +184,9 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
           onClick={() => setShowUserMenu((prev) => !prev)}
           title={user}
         >
-          <FontAwesomeIcon icon={faUser} />
+          <FontAwesomeIcon icon={isPatron ? faCrown : faUser} />
           <span>{user}</span>
+          {isPatron && <FontAwesomeIcon icon={faHeart} className="tw-text-red-500 tw-ml-1" />}
         </button>
 
         {mobile && (
@@ -145,9 +199,68 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
         {!mobile && showUserMenu && (
           <div
             className="settings-dropdown-panel"
-            style={{ width: '14rem', right: 'auto', left: 0 }}
+            style={{ width: '18rem', right: 'auto', left: 0 }}
           >
-            <div className="tw-flex tw-flex-col tw-gap-2">
+            {/* User Info Section */}
+            <div className="tw-p-3 tw-border-b tw-border-gray-600">
+              <div className="tw-flex tw-items-center tw-gap-2 tw-mb-2">
+                <FontAwesomeIcon icon={faUser} className="tw-text-gray-400" />
+                <span className="tw-font-semibold tw-text-white">{user}</span>
+              </div>
+              
+              {/* Subscription Status */}
+              {loadingSubscription ? (
+                <div className="tw-text-sm tw-text-gray-400">{t('register.loadingSubscription') || 'Загрузка...'}</div>
+              ) : isPatron ? (
+                <div className="tw-flex tw-items-center tw-gap-2 tw-bg-green-900/30 tw-rounded-lg tw-p-2">
+                  <FontAwesomeIcon icon={faCrown} className="tw-text-yellow-400" />
+                  <div className="tw-flex tw-flex-col">
+                    <span className="tw-text-sm tw-font-semibold tw-text-green-400">
+                      {getTierDisplay(tier)}
+                    </span>
+                    <span className="tw-text-xs tw-text-gray-400">
+                      {t('register.patronStatus') || 'Активная подписка'}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="tw-flex tw-items-center tw-gap-2 tw-bg-gray-800/50 tw-rounded-lg tw-p-2">
+                  <FontAwesomeIcon icon={faHeart} className="tw-text-gray-500" />
+                  <div className="tw-flex tw-flex-col">
+                    <span className="tw-text-sm tw-text-gray-400">
+                      {t('register.noSubscription') || 'Нет подписки'}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Patreon Connection */}
+            <div className="tw-p-3 tw-border-b tw-border-gray-600">
+              <div className="tw-text-xs tw-text-gray-400 tw-mb-2">
+                {t('register.patreonSection') || 'Patreon'}
+              </div>
+              {!isPatron ? (
+                <button
+                  className="btn-modern btn-modern-primary tw-w-full tw-justify-center"
+                  onClick={doPatreonConnect}
+                >
+                  <FontAwesomeIcon icon={faHeart} className="tw-mr-2" />
+                  {t('register.connectPatreon') || 'Подключить Patreon'}
+                </button>
+              ) : (
+                <button
+                  className="btn-modern btn-modern-ghost tw-w-full tw-justify-center"
+                  onClick={doPatreonConnect}
+                >
+                  <FontAwesomeIcon icon={faCrown} className="tw-mr-2" />
+                  {t('register.managePatreon') || 'Управление подпиской'}
+                </button>
+              )}
+            </div>
+            
+            {/* Logout Section */}
+            <div className="tw-flex tw-flex-col tw-gap-2 tw-p-3">
               <button
                 className="btn-modern btn-modern-danger tw-w-full tw-justify-start"
                 onClick={doLogout}
