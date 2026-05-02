@@ -422,7 +422,7 @@ exports.handler = async function(event) {
 
       const { data: user } = await supabase
         .from('users')
-        .select('patreon_tier, is_patron')
+        .select('patreon_id, patreon_tier, is_patron')
         .eq('id', userDecoded.userId)
         .single();
 

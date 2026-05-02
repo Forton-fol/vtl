@@ -22,6 +22,7 @@ export const register = {
   patreonDescription: "Connect Patreon to get access to premium features",
   patreonButton: "Connect Patreon",
   patreonConnected: "Patreon connected",
+  patreonAccountLinked: "Account linked",
   captchaError: "Please complete the captcha and try again",
   // Personal Account
   loadingSubscription: "Loading...",

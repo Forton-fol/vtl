@@ -9,6 +9,7 @@ interface AuthSectionProps {
 }
 
 interface SubscriptionStatus {
+  patreon_id?: string | null;
   patreon_tier?: string | null;
   is_patron?: boolean;
 }
@@ -211,6 +212,7 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
   if (user) {
     const isPatron = subscriptionStatus?.is_patron;
     const tier = subscriptionStatus?.patreon_tier;
+    const isPatreonConnected = Boolean(subscriptionStatus?.patreon_id || isPatron || tier);
     
     return (
       <div className="tw-relative tw-flex tw-items-center tw-gap-1">
@@ -234,7 +236,12 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
         {!mobile && showUserMenu && (
           <div
             className="settings-dropdown-panel"
-            style={{ width: '18rem', right: 'auto', left: 0 }}
+            style={{
+              width: '18rem',
+              maxWidth: 'calc(100vw - 1rem)',
+              right: 0,
+              left: 'auto',
+            }}
           >
             {/* User Info Section */}
             <div className="tw-p-3 tw-border-b tw-border-gray-600">
@@ -283,6 +290,18 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
                     </span>
                   </div>
                 </div>
+              ) : isPatreonConnected ? (
+                <div className="tw-flex tw-items-center tw-gap-2 tw-bg-purple-900/30 tw-rounded-lg tw-p-2">
+                  <FontAwesomeIcon icon={faHeart} className="tw-text-pink-400" />
+                  <div className="tw-flex tw-flex-col">
+                    <span className="tw-text-sm tw-font-semibold tw-text-pink-300">
+                      {t('register.patreonConnected') || 'Patreon connected'}
+                    </span>
+                    <span className="tw-text-xs tw-text-gray-400">
+                      {t('register.patreonAccountLinked') || 'Account linked'}
+                    </span>
+                  </div>
+                </div>
               ) : (
                 <div className="tw-flex tw-items-center tw-gap-2 tw-bg-gray-800/50 tw-rounded-lg tw-p-2">
                   <FontAwesomeIcon icon={faHeart} className="tw-text-gray-500" />
@@ -300,7 +319,7 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
               <div className="tw-text-xs tw-text-gray-400 tw-mb-2">
                 {t('register.patreonSection') || 'Patreon'}
               </div>
-              {!isPatron ? (
+              {!isPatreonConnected ? (
                 <button
                   className="btn-modern btn-modern-primary tw-w-full tw-justify-center"
                   onClick={doPatreonConnect}
