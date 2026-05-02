@@ -2,6 +2,7 @@ const {
   supabase,
   json,
   getUserFromEvent,
+  getCharacterLimit,
 } = require('./_shared/characters');
 
 function parsePositiveInt(value, fallback, max) {
@@ -37,21 +38,25 @@ exports.handler = async function(event) {
     const from = offset;
     const to = offset + limit - 1;
 
-    const { data, count, error } = await supabase
-      .from('sheets')
-      .select('id, name, preset, created_at, updated_at', { count: 'exact' })
-      .eq('user_id', user.userId)
-      .order('updated_at', { ascending: false })
-      .range(from, to);
+    const [characterLimit, sheetResult] = await Promise.all([
+      getCharacterLimit(user.userId),
+      supabase
+        .from('sheets')
+        .select('id, name, preset, created_at, updated_at', { count: 'exact' })
+        .eq('user_id', user.userId)
+        .order('updated_at', { ascending: false })
+        .range(from, to),
+    ]);
 
-    if (error) {
-      console.error(error);
+    if (sheetResult.error) {
+      console.error(sheetResult.error);
       return json(500, { error: 'db_error' });
     }
 
     return json(200, {
-      characters: data || [],
-      total: count || 0,
+      characters: sheetResult.data || [],
+      total: sheetResult.count || 0,
+      characterLimit,
       limit,
       offset,
     });

@@ -18,6 +18,8 @@ export function CharacterLibraryPage(): JSX.Element {
   const [serverMode, setServerMode] = useState<boolean>(() => !!getToken());
   const [nextOffset, setNextOffset] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(false);
+  const [totalCount, setTotalCount] = useState<number>(() => listLibrary().length);
+  const [characterLimit, setCharacterLimit] = useState<number | null>(null);
   const pageSize = 20;
 
   useEffect(() => {
@@ -33,10 +35,13 @@ export function CharacterLibraryPage(): JSX.Element {
           })));
           setNextOffset(res.offset + res.characters.length);
           setHasMore(res.offset + res.characters.length < res.total);
+          setTotalCount(res.total);
+          setCharacterLimit(res.characterLimit ?? null);
         }
       }).catch(() => setEntries([]));
     } else {
       setEntries(listLibrary());
+      setTotalCount(listLibrary().length);
     }
   }, []);
 
@@ -51,13 +56,18 @@ export function CharacterLibraryPage(): JSX.Element {
             createdAt: res.character.created_at,
             updatedAt: res.character.updated_at || res.character.created_at,
           };
-          setEntries((prev) => [entry, ...prev.filter((item) => item.id !== entry.id)]);
+          setEntries((prev) => {
+            const existed = prev.some((item) => item.id === entry.id);
+            setTotalCount((count) => count + (existed ? 0 : 1));
+            return [entry, ...prev.filter((item) => item.id !== entry.id)];
+          });
         }
       });
     } else {
       saveToLibrary(charSheet);
       saveCharSheetInLS(charSheet);
       setEntries(listLibrary());
+      setTotalCount(listLibrary().length);
     }
   }
 
@@ -80,11 +90,15 @@ export function CharacterLibraryPage(): JSX.Element {
 
   function onDelete(id: string) {
     if (serverMode) {
-      deleteCharacter(id).then(() => setEntries((prev) => prev.filter((p) => p.id !== id)));
+      deleteCharacter(id).then(() => {
+        setEntries((prev) => prev.filter((p) => p.id !== id));
+        setTotalCount((prev) => Math.max(0, prev - 1));
+      });
     } else {
       removeFromLibrary(id);
       removeCharSheetFromLS(id);
       setEntries(listLibrary());
+      setTotalCount(listLibrary().length);
     }
   }
 
@@ -103,22 +117,29 @@ export function CharacterLibraryPage(): JSX.Element {
         setEntries((prev) => [...prev, ...nextEntries]);
         setNextOffset(res.offset + res.characters.length);
         setHasMore(res.offset + res.characters.length < res.total);
+        setTotalCount(res.total);
+        setCharacterLimit(res.characterLimit ?? null);
       }
     });
   }
 
   const activeSheetId = charSheet.sheetId;
+  const limitText = characterLimit === null ? t("library.unlimited") : characterLimit;
+  const isAtLimit = characterLimit !== null && totalCount >= characterLimit;
 
   return (
     <div className="library-page">
       <h2 className="library-header">{t("library.header")}</h2>
       <p className="library-desc">{t("library.description")}</p>
 
-      <div className="tw-mb-6">
-        <button className="btn-modern btn-modern-primary" onClick={onSaveCurrent}>
+      <div className="tw-mb-6 tw-flex tw-flex-wrap tw-items-center tw-gap-3">
+        <button className="btn-modern btn-modern-primary" onClick={onSaveCurrent} disabled={serverMode && isAtLimit}>
           <FontAwesomeIcon icon={faSave} />
           <span>{t("library.save-current")}</span>
         </button>
+        <div className={`tw-text-sm ${isAtLimit ? "tw-text-red-400" : "tw-text-gray-400"}`}>
+          {t("library.character-count", { count: totalCount, limit: limitText })}
+        </div>
       </div>
 
       {entries.length === 0 ? (
