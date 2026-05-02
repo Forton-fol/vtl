@@ -19,6 +19,10 @@ type ValueDiff = {
   en: string;
 };
 
+const allowedIdenticalValues = new Set([
+  "register.patreonSection",
+]);
+
 function translationComparator(
   enObj: any,
   ruObj: any,
@@ -26,9 +30,10 @@ function translationComparator(
   differences: ValueDiff[] = [],
 ): void {
   if (typeof enObj === "string") {
-    if (enObj === ruObj) {
+    const key = path.join(".");
+    if (enObj === ruObj && !allowedIdenticalValues.has(key)) {
       differences.push({
-        key: path.join("."),
+        key,
         ru: ruObj,
         en: enObj,
       });
