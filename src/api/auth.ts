@@ -46,6 +46,38 @@ export async function getSubscriptionStatus() {
   return resp.json();
 }
 
+export async function getProfile() {
+  const token = getToken();
+  if (!token) {
+    return { error: 'not_authenticated' };
+  }
+
+  const resp = await fetch('/.netlify/functions/auth?action=profile', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  return resp.json();
+}
+
+export async function updateProfile(username: string) {
+  const token = getToken();
+  if (!token) {
+    return { error: 'not_authenticated' };
+  }
+
+  const resp = await fetch('/.netlify/functions/auth?action=profile', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ username }),
+  });
+  return resp.json();
+}
+
 export function saveToken(token: string) {
   if (typeof window !== 'undefined') {
     localStorage.setItem('vtm_token', token);

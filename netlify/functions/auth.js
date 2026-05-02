@@ -255,6 +255,27 @@ async function updatePatreonSubscription(userId, patreonData) {
     .eq('id', userId);
 }
 
+function getUserFromAuthHeader(event) {
+  const authHeader = event.headers.authorization || event.headers.Authorization;
+  if (!authHeader) {
+    return null;
+  }
+
+  const token = authHeader.replace('Bearer ', '');
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch (e) {
+    return null;
+  }
+}
+
+function normalizeUsername(value) {
+  if (typeof value !== 'string') {
+    return '';
+  }
+  return value.trim();
+}
+
 // Main auth handler
 exports.handler = async function(event) {
   const baseUrl = getBaseUrl(event);
@@ -394,17 +415,9 @@ exports.handler = async function(event) {
 
     // Get user subscription status
     if (action === 'subscription' || route === '/subscription' || path === '/auth/subscription') {
-      const authHeader = event.headers.authorization;
-      if (!authHeader) {
+      const userDecoded = getUserFromAuthHeader(event);
+      if (!userDecoded) {
         return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
-      }
-
-      const token = authHeader.replace('Bearer ', '');
-      let userDecoded;
-      try {
-        userDecoded = jwt.verify(token, JWT_SECRET);
-      } catch (e) {
-        return { statusCode: 401, body: JSON.stringify({ error: 'invalid_token' }) };
       }
 
       const { data: user } = await supabase
@@ -414,6 +427,76 @@ exports.handler = async function(event) {
         .single();
 
       return { statusCode: 200, body: JSON.stringify(user || {}) };
+    }
+
+    // User profile: read and update display nickname.
+    if (action === 'profile' || route === '/profile' || path === '/auth/profile') {
+      const userDecoded = getUserFromAuthHeader(event);
+      if (!userDecoded) {
+        return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
+      }
+
+      if (event.httpMethod === 'GET') {
+        const { data: user, error } = await supabase
+          .from('users')
+          .select('id, username, email')
+          .eq('id', userDecoded.userId)
+          .single();
+
+        if (error) {
+          console.error(error);
+          return { statusCode: 500, body: JSON.stringify({ error: 'db_error' }) };
+        }
+
+        return { statusCode: 200, body: JSON.stringify({ user }) };
+      }
+
+      if (event.httpMethod === 'PATCH') {
+        const body = JSON.parse(event.body || '{}');
+        const username = normalizeUsername(body.username);
+
+        if (username.length < 2 || username.length > 32) {
+          return { statusCode: 400, body: JSON.stringify({ error: 'invalid_username' }) };
+        }
+
+        const { data: existing, error: existingError } = await supabase
+          .from('users')
+          .select('id')
+          .eq('username', username)
+          .neq('id', userDecoded.userId)
+          .limit(1);
+
+        if (existingError) {
+          console.error(existingError);
+          return { statusCode: 500, body: JSON.stringify({ error: 'db_error' }) };
+        }
+
+        if (existing && existing.length > 0) {
+          return { statusCode: 409, body: JSON.stringify({ error: 'username_taken' }) };
+        }
+
+        const { data: updatedUser, error } = await supabase
+          .from('users')
+          .update({ username })
+          .eq('id', userDecoded.userId)
+          .select('id, username, email')
+          .single();
+
+        if (error) {
+          console.error(error);
+          return { statusCode: 500, body: JSON.stringify({ error: 'db_error' }) };
+        }
+
+        const token = jwt.sign(
+          { userId: updatedUser.id, username: updatedUser.username, email: updatedUser.email || null },
+          JWT_SECRET,
+          { expiresIn: '7d' },
+        );
+
+        return { statusCode: 200, body: JSON.stringify({ token, user: updatedUser }) };
+      }
+
+      return { statusCode: 405, body: JSON.stringify({ error: 'method_not_allowed' }) };
     }
 
     return { statusCode: 404, body: JSON.stringify({ error: 'not_found' }) };

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSignOutAlt, faCrown, faHeart } from "@fortawesome/free-solid-svg-icons";
-import { register, login, googleLogin, connectPatreon, saveToken, getToken, removeToken, getSubscriptionStatus } from '../../../api/auth';
+import { register, login, googleLogin, connectPatreon, saveToken, getToken, removeToken, getSubscriptionStatus, getProfile, updateProfile } from '../../../api/auth';
 
 interface AuthSectionProps {
   mobile?: boolean;
@@ -23,6 +23,8 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
   const [user, setUser] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState('');
   const [captchaToken, setCaptchaToken] = useState('');
   const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
   const turnstileWidgetRef = useRef<string | number | null>(null);
@@ -80,14 +82,14 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
     
     if (tokenFromOAuth && authFromOAuth === 'google') {
       saveToken(tokenFromOAuth);
-      setUser('user');
+      loadProfile();
       window.history.replaceState({}, '', window.location.pathname);
       return;
     }
 
     const token = getToken();
     if (token) {
-      setUser('user');
+      loadProfile();
     }
     
     if (patreonConnected === 'connected') {
@@ -95,6 +97,16 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
       window.history.replaceState({}, '', window.location.pathname);
     }
   }, []);
+
+  async function loadProfile() {
+    const res = await getProfile();
+    if (res?.user?.username) {
+      setUser(res.user.username);
+      setNewUsername(res.user.username);
+    } else {
+      setUser('');
+    }
+  }
 
   async function doRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -118,6 +130,7 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
     if (res && res.token) {
       saveToken(res.token);
       setUser(res.user.username || 'user');
+      setNewUsername(res.user.username || '');
       setShowForm(false);
     } else {
       alert('invalid credentials');
@@ -127,7 +140,29 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
   function doLogout() {
     removeToken();
     setUser(null);
+    setNewUsername('');
+    setIsEditingUsername(false);
     setShowUserMenu(false);
+  }
+
+  async function doUpdateUsername(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const res = await updateProfile(newUsername);
+
+    if (res?.token && res?.user?.username) {
+      saveToken(res.token);
+      setUser(res.user.username);
+      setNewUsername(res.user.username);
+      setIsEditingUsername(false);
+      return;
+    }
+
+    if (res?.error === 'username_taken') {
+      alert(t('register.username-taken'));
+      return;
+    }
+
+    alert(t('register.error'));
   }
 
   async function doPatreonConnect() {
@@ -207,6 +242,31 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
                 <FontAwesomeIcon icon={faUser} className="tw-text-gray-400" />
                 <span className="tw-font-semibold tw-text-white">{user}</span>
               </div>
+
+              {isEditingUsername ? (
+                <form onSubmit={doUpdateUsername} className="tw-flex tw-gap-2 tw-mb-3">
+                  <input
+                    className="tw-min-w-0 tw-flex-1 tw-px-2 tw-py-1 tw-rounded tw-border tw-border-gray-600 tw-bg-gray-800 tw-text-white tw-text-sm"
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                    minLength={2}
+                    maxLength={32}
+                  />
+                  <button type="submit" className="btn-modern btn-modern-primary tw-text-xs">
+                    {t('register.save') || 'Save'}
+                  </button>
+                </form>
+              ) : (
+                <button
+                  className="btn-modern btn-modern-ghost tw-w-full tw-justify-start tw-mb-3"
+                  onClick={() => {
+                    setNewUsername(user);
+                    setIsEditingUsername(true);
+                  }}
+                >
+                  {t('register.changeUsername') || 'Change name'}
+                </button>
+              )}
               
               {/* Subscription Status */}
               {loadingSubscription ? (
