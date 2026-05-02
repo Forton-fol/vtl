@@ -49,6 +49,14 @@ function maskClientId(value) {
   return `${value.slice(0, 6)}...${value.slice(-4)}`;
 }
 
+function getAxiosErrorPayload(error) {
+  return {
+    status: error.response?.status || null,
+    data: error.response?.data || null,
+    message: error.message,
+  };
+}
+
 // Generate OAuth URL for Google
 function getGoogleAuthUrl(state) {
   const params = new URLSearchParams({
@@ -69,7 +77,7 @@ function getPatreonAuthUrl(state) {
     client_id: PATREON_CLIENT_ID,
     redirect_uri: PATREON_REDIRECT_URI,
     response_type: 'code',
-    scope: 'identity identity[email]',
+    scope: 'identity identity[email] identity.memberships',
     state: state,
   });
   return `https://www.patreon.com/oauth2/authorize?${params.toString()}`;
@@ -97,21 +105,38 @@ async function getGoogleUserInfo(accessToken) {
 
 // Exchange Patreon code for tokens
 async function exchangePatreonCode(code) {
-  const response = await axios.post('https://www.patreon.com/api/oauth2/token', {
+  const params = new URLSearchParams({
     code,
+    grant_type: 'authorization_code',
     client_id: PATREON_CLIENT_ID,
     client_secret: PATREON_CLIENT_SECRET,
     redirect_uri: PATREON_REDIRECT_URI,
-    grant_type: 'authorization_code',
   });
+
+  const response = await axios.post(
+    'https://www.patreon.com/api/oauth2/token',
+    params.toString(),
+    {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+  );
   return response.data;
 }
 
 // Get Patreon user info and subscription
 async function getPatreonUserInfo(accessToken) {
-  const response = await axios.get('https://api.patreon.com/v2/identity?include=pledges', {
-    headers: { Authorization: `Bearer ${accessToken}` },
+  const params = new URLSearchParams({
+    include: 'memberships',
+    'fields[user]': 'full_name,email',
+    'fields[member]': 'patron_status,last_charge_status,currently_entitled_amount_cents',
   });
+
+  const response = await axios.get(
+    `https://www.patreon.com/api/oauth2/v2/identity?${params.toString()}`,
+    {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    },
+  );
   return response.data;
 }
 
@@ -197,29 +222,26 @@ async function findOrCreateGoogleUser(googleUser) {
 // Update user's Patreon subscription
 async function updatePatreonSubscription(userId, patreonData) {
   let tier = null;
-  let patreonId = null;
+  let patreonId = patreonData.data?.id || null;
   let isPatron = false;
 
-  if (patreonData.included && patreonData.included.length > 0) {
-    const pledges = patreonData.included.filter(i => i.type === 'pledge');
-    if (pledges.length > 0) {
-      isPatron = true;
-      // Get highest tier
-      const highestPledge = pledges.reduce((max, p) => {
-        return (p.attributes && p.attributes.amount_cents > (max?.attributes?.amount_cents || 0)) ? p : max;
-      }, null);
-      
-      if (highestPledge) {
-        tier = highestPledge.attributes.amount_cents >= 500 ? 'supporter' : 'basic';
-      }
-    }
-  }
+  if (Array.isArray(patreonData.included) && patreonData.included.length > 0) {
+    const memberships = patreonData.included.filter(i => i.type === 'member');
+    const activeMemberships = memberships.filter((member) => {
+      const attrs = member.attributes || {};
+      return attrs.patron_status === 'active_patron' || attrs.last_charge_status === 'Paid';
+    });
 
-  // Get Patreon user ID from relationship
-  if (patreonData.data && patreonData.data.relationships) {
-    const patreonRel = patreonData.data.relationships.find(r => r.id);
-    if (patreonRel) {
-      patreonId = patreonRel.id;
+    if (activeMemberships.length > 0) {
+      isPatron = true;
+      const highestMembership = activeMemberships.reduce((max, member) => {
+        const amount = member.attributes?.currently_entitled_amount_cents || 0;
+        const maxAmount = max?.attributes?.currently_entitled_amount_cents || 0;
+        return amount > maxAmount ? member : max;
+      }, null);
+
+      const amount = highestMembership?.attributes?.currently_entitled_amount_cents || 0;
+      tier = amount >= 500 ? 'supporter' : 'basic';
     }
   }
 
@@ -397,7 +419,16 @@ exports.handler = async function(event) {
     return { statusCode: 404, body: JSON.stringify({ error: 'not_found' }) };
 
   } catch (err) {
-    console.error('Auth error:', err);
-    return { statusCode: 500, body: JSON.stringify({ error: 'server_error', message: err.message }) };
+    const axiosPayload = err.response ? getAxiosErrorPayload(err) : null;
+    console.error('Auth error:', axiosPayload || err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'server_error',
+        message: err.message,
+        providerStatus: axiosPayload?.status || undefined,
+        providerError: axiosPayload?.data || undefined,
+      }),
+    };
   }
 };
