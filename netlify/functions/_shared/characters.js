@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const JWT_SECRET = process.env.NETLIFY_JWT_SECRET || 'dev_secret';
-const DEFAULT_CHARACTER_LIMIT = Number(process.env.DEFAULT_CHARACTER_LIMIT || 100);
+const FREE_CHARACTER_LIMIT = Number(process.env.FREE_CHARACTER_LIMIT || 10);
+const PATRON_TIER_1_CHARACTER_LIMIT = Number(process.env.PATRON_TIER_1_CHARACTER_LIMIT || 20);
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -56,10 +57,30 @@ function normalizeCharacterPayload(body) {
   };
 }
 
+function matchesEnvList(value, envValue) {
+  if (!value || !envValue) {
+    return false;
+  }
+
+  return envValue
+    .split(',')
+    .map((item) => item.trim().toLowerCase())
+    .filter(Boolean)
+    .includes(String(value).toLowerCase());
+}
+
+function isCreator(user) {
+  return (
+    matchesEnvList(user?.id, process.env.CREATOR_USER_ID) ||
+    matchesEnvList(user?.username, process.env.CREATOR_USERNAME) ||
+    matchesEnvList(user?.email, process.env.CREATOR_EMAIL)
+  );
+}
+
 async function getCharacterLimit(userId) {
   const { data, error } = await supabase
     .from('users')
-    .select('character_limit, is_patron, patreon_tier')
+    .select('id, username, email, is_patron, patreon_tier')
     .eq('id', userId)
     .single();
 
@@ -67,15 +88,15 @@ async function getCharacterLimit(userId) {
     throw error;
   }
 
-  if (typeof data?.character_limit === 'number') {
-    return data.character_limit;
+  if (isCreator(data)) {
+    return null;
   }
 
   if (data?.is_patron || data?.patreon_tier) {
-    return Number(process.env.PATRON_CHARACTER_LIMIT || 500);
+    return PATRON_TIER_1_CHARACTER_LIMIT;
   }
 
-  return DEFAULT_CHARACTER_LIMIT;
+  return FREE_CHARACTER_LIMIT;
 }
 
 async function countCharacters(userId) {

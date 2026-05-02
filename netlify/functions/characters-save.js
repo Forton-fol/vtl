@@ -59,7 +59,7 @@ exports.handler = async function(event) {
       countCharacters(userId),
     ]);
 
-    if (characterCount >= characterLimit) {
+    if (characterLimit !== null && characterCount >= characterLimit) {
       return json(403, {
         error: 'character_limit_reached',
         limit: characterLimit,

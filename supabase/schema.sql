@@ -11,7 +11,7 @@ create table if not exists public.users (
   patreon_id text,
   patreon_tier text,
   is_patron boolean not null default false,
-  character_limit integer not null default 100,
+  character_limit integer not null default 10,
   created_at timestamptz not null default now()
 );
 
@@ -24,8 +24,12 @@ alter table public.users add column if not exists google_picture text;
 alter table public.users add column if not exists patreon_id text;
 alter table public.users add column if not exists patreon_tier text;
 alter table public.users add column if not exists is_patron boolean not null default false;
-alter table public.users add column if not exists character_limit integer not null default 100;
+alter table public.users add column if not exists character_limit integer not null default 10;
 alter table public.users add column if not exists created_at timestamptz not null default now();
+alter table public.users alter column character_limit set default 10;
+update public.users
+set character_limit = 10
+where character_limit = 100;
 
 create unique index if not exists users_username_unique_idx
   on public.users(username)
