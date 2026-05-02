@@ -1,5 +1,5 @@
 import { getToken } from "./auth";
-import { saveCharacter, listCharacters } from "./characters";
+import { saveCharacter, listCharacters, getCharacter } from "./characters";
 import { CharSheet } from "../charSheets/root/domain";
 
 const SYNC_DEBOUNCE_MS = 3000; // 3 seconds after last change
@@ -104,10 +104,12 @@ export async function loadFromServer(
   if (!token) return false;
 
   try {
-    const res = await listCharacters();
+    const res = await listCharacters({ limit: 1 });
     if (res && res.characters && res.characters.length > 0) {
-      const latest = res.characters[0]; // sorted by created_at DESC
-      if (latest.data) {
+      const latestMeta = res.characters[0]; // sorted by updated_at DESC
+      const detail = await getCharacter(latestMeta.id);
+      const latest = detail?.character;
+      if (latest?.data) {
         // Map server ID to sheetId if available
         const sheetId = latest.data.sheetId;
         if (sheetId && latest.id) {

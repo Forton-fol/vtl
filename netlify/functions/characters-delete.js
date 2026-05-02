@@ -1,48 +1,41 @@
-const { createClient } = require('@supabase/supabase-js');
-const jwt = require('jsonwebtoken');
-
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const JWT_SECRET = process.env.NETLIFY_JWT_SECRET || 'dev_secret';
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
-function getUserIdFromEvent(event) {
-  const auth = event.headers && (event.headers.authorization || event.headers.Authorization);
-  if (!auth) return null;
-  const parts = auth.split(' ');
-  if (parts.length !== 2) return null;
-  const token = parts[1];
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return decoded.userId;
-  } catch (err) {
-    return null;
-  }
-}
+const {
+  supabase,
+  json,
+  getUserFromEvent,
+} = require('./_shared/characters');
 
 exports.handler = async function(event) {
   try {
-    const userId = getUserIdFromEvent(event);
-    if (!userId) return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
+    if (event.httpMethod !== 'DELETE') {
+      return json(405, { error: 'method_not_allowed' });
+    }
+
+    const user = getUserFromEvent(event);
+    if (!user?.userId) {
+      return json(401, { error: 'unauthorized' });
+    }
 
     const { id } = event.queryStringParameters || {};
-    if (!id) return { statusCode: 400, body: JSON.stringify({ error: 'id required' }) };
+    if (!id) {
+      return json(400, { error: 'id_required' });
+    }
 
-    const { error } = await supabase
-      .from('characters')
+    const { data, error } = await supabase
+      .from('sheets')
       .delete()
       .eq('id', id)
-      .eq('user_id', userId);
+      .eq('user_id', user.userId)
+      .select('id')
+      .single();
 
     if (error) {
       console.error(error);
-      return { statusCode: 500, body: JSON.stringify({ error: 'db_error' }) };
+      return json(error.code === 'PGRST116' ? 404 : 500, { error: error.code === 'PGRST116' ? 'not_found' : 'db_error' });
     }
 
-    return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+    return json(200, { ok: true, id: data.id });
   } catch (err) {
     console.error(err);
-    return { statusCode: 500, body: JSON.stringify({ error: 'server_error' }) };
+    return json(500, { error: 'server_error' });
   }
 };

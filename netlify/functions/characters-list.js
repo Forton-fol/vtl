@@ -1,45 +1,62 @@
-const { createClient } = require('@supabase/supabase-js');
-const jwt = require('jsonwebtoken');
+const {
+  supabase,
+  json,
+  getUserFromEvent,
+} = require('./_shared/characters');
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const JWT_SECRET = process.env.NETLIFY_JWT_SECRET || 'dev_secret';
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
-function getUserIdFromEvent(event) {
-  const auth = event.headers && (event.headers.authorization || event.headers.Authorization);
-  if (!auth) return null;
-  const parts = auth.split(' ');
-  if (parts.length !== 2) return null;
-  const token = parts[1];
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return decoded.userId;
-  } catch (err) {
-    return null;
+function parsePositiveInt(value, fallback, max) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    return fallback;
   }
+  return Math.min(Math.floor(parsed), max);
+}
+
+function parseOffset(value) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return 0;
+  }
+  return Math.floor(parsed);
 }
 
 exports.handler = async function(event) {
   try {
-    const userId = getUserIdFromEvent(event);
-    if (!userId) return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
+    if (event.httpMethod !== 'GET') {
+      return json(405, { error: 'method_not_allowed' });
+    }
 
-    const { data, error } = await supabase
-      .from('characters')
-      .select('id, name, preset, data, created_at')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false });
+    const user = getUserFromEvent(event);
+    if (!user?.userId) {
+      return json(401, { error: 'unauthorized' });
+    }
+
+    const params = event.queryStringParameters || {};
+    const limit = parsePositiveInt(params.limit, 50, 100);
+    const offset = parseOffset(params.offset);
+    const from = offset;
+    const to = offset + limit - 1;
+
+    const { data, count, error } = await supabase
+      .from('sheets')
+      .select('id, name, preset, created_at, updated_at', { count: 'exact' })
+      .eq('user_id', user.userId)
+      .order('updated_at', { ascending: false })
+      .range(from, to);
 
     if (error) {
       console.error(error);
-      return { statusCode: 500, body: JSON.stringify({ error: 'db_error' }) };
+      return json(500, { error: 'db_error' });
     }
 
-    return { statusCode: 200, body: JSON.stringify({ characters: data }) };
+    return json(200, {
+      characters: data || [],
+      total: count || 0,
+      limit,
+      offset,
+    });
   } catch (err) {
     console.error(err);
-    return { statusCode: 500, body: JSON.stringify({ error: 'server_error' }) };
+    return json(500, { error: 'server_error' });
   }
 };

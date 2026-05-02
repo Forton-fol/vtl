@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faFolderOpen, faTrash, faStar } from "@fortawesome/free-solid-svg-icons";
 import { listLibrary, saveToLibrary, removeFromLibrary, LibraryEntry } from "../../lib/libraryStorage";
 import { getToken } from "../../api/auth";
-import { listCharacters, saveCharacter, deleteCharacter } from "../../api/characters";
+import { listCharacters, saveCharacter, deleteCharacter, getCharacter } from "../../api/characters";
 import { useCharSheetStorage } from "../../charSheets/root/services/storageAdapter";
 import { getCharSheetFromLS, removeCharSheetFromLS, saveCharSheetInLS } from "../../charSheets/root/infrastructure/lsDbService";
 
@@ -16,10 +16,13 @@ export function CharacterLibraryPage(): JSX.Element {
 
   const [entries, setEntries] = useState<LibraryEntry[]>(() => listLibrary());
   const [serverMode, setServerMode] = useState<boolean>(() => !!getToken());
+  const [nextOffset, setNextOffset] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const pageSize = 20;
 
   useEffect(() => {
     if (serverMode) {
-      listCharacters().then((res) => {
+      listCharacters({ limit: pageSize, offset: 0 }).then((res) => {
         if (res && res.characters) {
           setEntries(res.characters.map((c: any) => ({
             id: c.id,
@@ -28,6 +31,8 @@ export function CharacterLibraryPage(): JSX.Element {
             createdAt: c.created_at,
             updatedAt: c.updated_at || c.created_at,
           })));
+          setNextOffset(res.offset + res.characters.length);
+          setHasMore(res.offset + res.characters.length < res.total);
         }
       }).catch(() => setEntries([]));
     } else {
@@ -39,13 +44,14 @@ export function CharacterLibraryPage(): JSX.Element {
     if (serverMode) {
       saveCharacter({ name: charSheet.profile.name, preset: charSheet.preset, data: charSheet }).then((res) => {
         if (res && res.character) {
-          setEntries((prev) => [{
+          const entry = {
             id: res.character.id,
             name: res.character.name,
             preset: res.character.preset,
             createdAt: res.character.created_at,
             updatedAt: res.character.updated_at || res.character.created_at,
-          }, ...prev]);
+          };
+          setEntries((prev) => [entry, ...prev.filter((item) => item.id !== entry.id)]);
         }
       });
     } else {
@@ -57,13 +63,10 @@ export function CharacterLibraryPage(): JSX.Element {
 
   function onLoad(id: string) {
     if (serverMode) {
-      listCharacters().then((res) => {
-        if (res && res.characters) {
-          const c = res.characters.find((el: any) => el.id === id);
-          if (c && c.data) {
-            setCharSheet(c.data);
-            navigate("/charsheet");
-          }
+      getCharacter(id).then((res) => {
+        if (res?.character?.data) {
+          setCharSheet(res.character.data);
+          navigate("/charsheet");
         }
       });
     } else {
@@ -83,6 +86,25 @@ export function CharacterLibraryPage(): JSX.Element {
       removeCharSheetFromLS(id);
       setEntries(listLibrary());
     }
+  }
+
+  function onLoadMore() {
+    if (!serverMode || !hasMore) return;
+
+    listCharacters({ limit: pageSize, offset: nextOffset }).then((res) => {
+      if (res && res.characters) {
+        const nextEntries = res.characters.map((c: any) => ({
+          id: c.id,
+          name: c.name,
+          preset: c.preset,
+          createdAt: c.created_at,
+          updatedAt: c.updated_at || c.created_at,
+        }));
+        setEntries((prev) => [...prev, ...nextEntries]);
+        setNextOffset(res.offset + res.characters.length);
+        setHasMore(res.offset + res.characters.length < res.total);
+      }
+    });
   }
 
   const activeSheetId = charSheet.sheetId;
@@ -134,6 +156,14 @@ export function CharacterLibraryPage(): JSX.Element {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {serverMode && hasMore && (
+        <div className="tw-mt-6">
+          <button className="btn-modern" onClick={onLoadMore}>
+            <span>Load more</span>
+          </button>
         </div>
       )}
     </div>
