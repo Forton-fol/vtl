@@ -14,7 +14,7 @@ const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://vtmlist.
 // Patreon credentials
 const PATREON_CLIENT_ID = process.env.PATREON_CLIENT_ID;
 const PATREON_CLIENT_SECRET = process.env.PATREON_CLIENT_SECRET;
-const PATREON_REDIRECT_URI = process.env.PATREON_REDIRECT_URI || 'https://vtmlist.netlify.app/.netlify/functions/auth';
+const PATREON_REDIRECT_URI = process.env.PATREON_REDIRECT_URI || 'https://vtmlist.netlify.app/.netlify/functions/auth/patreon/callback';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -322,6 +322,7 @@ exports.handler = async function(event) {
       if (!token) {
         return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
       }
+      console.log('[auth/patreon] redirect_uri=%s client_id=%s host=%s path=%s', PATREON_REDIRECT_URI, maskClientId(PATREON_CLIENT_ID), event.headers.host, path);
       const state = jwt.sign({ purpose: 'patreon', token }, JWT_SECRET, { expiresIn: '10m' });
       const authUrl = getPatreonAuthUrl(state);
       return { statusCode: 302, headers: { Location: authUrl } };
