@@ -36,18 +36,16 @@ export function SupportedFeaturesTable(
             <tr key={el.displayName}>
               <td>{el.displayName}</td>
               <td className="tw-text-center">
-                <CheckListBadge checked={el.CharSheet !== undefined} />
+                <CheckListBadge checked={el.hasCharSheet} />
               </td>
               <td className="tw-text-center">
-                <CheckListBadge checked={el.getDropdownOptions !== undefined} />
+                <CheckListBadge checked={el.hasDropdownOptions} />
               </td>
               <td className="tw-text-center">
-                <CheckListBadge checked={el.CheckList !== undefined} />
+                <CheckListBadge checked={el.hasCheckList} />
               </td>
               <td className="tw-text-center">
-                <CheckListBadge
-                  checked={el.freebiePointsConfig !== undefined}
-                />
+                <CheckListBadge checked={el.hasFreebiePoints} />
               </td>
             </tr>
           ))}

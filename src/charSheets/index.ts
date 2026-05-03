@@ -5,36 +5,158 @@ import * as R from "ramda";
 import { usePreset } from "../charSheets/root/services/storageAdapter";
 import { useStore } from "../charSheets/root/services/store";
 
-import { VtM } from "./vtm";
-import { VtDA } from "./vtda";
-import { CtD } from "./ctd";
-import { HH2 } from "./hh2";
-import { VtM_v3 } from "./vtm_v3";
-import { VtM_v5 } from "./vtm_v5";
-import { MtA } from "./mta";
-import { HTR } from "./htr";
-import { Demon } from "./demon";
 import { PresetName, InternalPresetProps, presetList } from "./root/domain";
 import { ExternalPresetProps, Preset } from "./types";
 
-const presetIndex: Record<PresetName, Preset> = {
-  vampire_v20: VtM,
-  changeling_v20: CtD,
-  hunter_v20: HH2,
-  vampire_da_v20: VtDA,
-  vampire_v3_revised: VtM_v3,
-  vampire_v5: VtM_v5,
-  mage_v20: MtA,
-  hunter_reckoning: HTR,
-  demon_the_fallen: Demon,
+type PresetSupportInfo = {
+  displayName: string;
+  hasCharSheet: boolean;
+  hasDropdownOptions: boolean;
+  hasCheckList: boolean;
+  hasFreebiePoints: boolean;
 };
+
+const presetSupportInfo: Record<PresetName, PresetSupportInfo> = {
+  vampire_v20: {
+    displayName: "VtM V20",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+  changeling_v20: {
+    displayName: "Changeling the Dreaming",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+  hunter_v20: {
+    displayName: "Hunter the Reckoning",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+  vampire_da_v20: {
+    displayName: "VTM Dark Ages",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+  vampire_v3_revised: {
+    displayName: "VTM V3 Revised",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+  vampire_v5: {
+    displayName: "VTM V5",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+  mage_v20: {
+    displayName: "Mage the Ascension",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+  hunter_reckoning: {
+    displayName: "Hunter Reckoning",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+  demon_the_fallen: {
+    displayName: "Demon the Fallen",
+    hasCharSheet: true,
+    hasDropdownOptions: true,
+    hasCheckList: true,
+    hasFreebiePoints: true,
+  },
+};
+
+const presetCache: Partial<Record<PresetName, Preset>> = {};
+
+const presetLoaders: Record<PresetName, () => Promise<Preset>> = {
+  vampire_v20: () => import("./vtm").then((mod) => mod.VtM),
+  changeling_v20: () => import("./ctd").then((mod) => mod.CtD),
+  hunter_v20: () => import("./hh2").then((mod) => mod.HH2),
+  vampire_da_v20: () => import("./vtda").then((mod) => mod.VtDA),
+  vampire_v3_revised: () => import("./vtm_v3").then((mod) => mod.VtM_v3),
+  vampire_v5: () => import("./vtm_v5").then((mod) => mod.VtM_v5),
+  mage_v20: () => import("./mta").then((mod) => mod.MtA),
+  hunter_reckoning: () => import("./htr").then((mod) => mod.HTR),
+  demon_the_fallen: () => import("./demon").then((mod) => mod.Demon),
+};
+
+function getPresetSync(preset: PresetName): Preset | undefined {
+  return presetCache[preset];
+}
+
+function preloadPreset(preset: PresetName): Promise<Preset> {
+  const cached = getPresetSync(preset);
+  if (cached) {
+    return Promise.resolve(cached);
+  }
+
+  const loader = presetLoaders[preset];
+  if (!loader) {
+    return Promise.reject(new Error(`Unsupported preset: ${preset}`));
+  }
+
+  return loader().then((presetData) => {
+    presetCache[preset] = presetData;
+    return presetData;
+  });
+}
+
+export function usePresetLoader(): boolean {
+  const { preset } = usePreset();
+  const [loaded, setLoaded] = useState(() => getPresetSync(preset) !== undefined);
+
+  useEffect(() => {
+    let active = true;
+
+    const cached = getPresetSync(preset);
+    if (cached) {
+      if (!loaded) {
+        setLoaded(true);
+      }
+      return;
+    }
+
+    preloadPreset(preset).then(() => {
+      if (active) {
+        setLoaded(true);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [loaded, preset]);
+
+  return loaded;
+}
 
 export function useExternalPresetProps(): ExternalPresetProps {
   const { preset } = usePreset();
+  const presetData = getPresetSync(preset);
+
+  if (!presetData) {
+    throw new Error(`Preset ${preset} is not loaded yet`);
+  }
 
   return R.pick(
     ["CharSheet", "CheckList", "freebiePointsConfig", "experiencePointsConfig"],
-    presetIndex[preset],
+    presetData,
   );
 }
 
@@ -44,6 +166,11 @@ export function useInternalPresetProps(): InternalPresetProps {
     i18n: { language },
   } = useTranslation();
 
+  const presetData = getPresetSync(preset);
+  if (!presetData) {
+    throw new Error(`Preset ${preset} is not loaded yet`);
+  }
+
   return useMemo(() => {
     const {
       displayName,
@@ -51,7 +178,7 @@ export function useInternalPresetProps(): InternalPresetProps {
       attributesConfig,
       abilitiesConfig,
       getDropdownOptions,
-    } = presetIndex[preset];
+    } = presetData;
 
     return {
       displayName,
@@ -60,7 +187,7 @@ export function useInternalPresetProps(): InternalPresetProps {
       abilitiesConfig,
       dropdownOptions: getDropdownOptions?.(language),
     };
-  }, [preset, language]);
+  }, [language, presetData]);
 }
 
 export function useTranslateDropdownOptions(): void {
@@ -68,22 +195,16 @@ export function useTranslateDropdownOptions(): void {
   const store = useStore();
   const { preset } = usePreset();
 
-  const [prevLanguage, setPrevLanguage] = useState(i18n.language);
-
   useEffect(() => {
     const cb = (lng: string): void => {
-      setPrevLanguage(lng);
-
-      if (prevLanguage === lng) {
+      const presetData = getPresetSync(preset);
+      if (!presetData) {
         return;
       }
 
-      const { translateDropdownOptions } = presetIndex[preset];
-
+      const { translateDropdownOptions } = presetData;
       if (translateDropdownOptions !== undefined) {
-        translateDropdownOptions(store, prevLanguage, lng);
-      } else {
-        console.warn(`TODO implement translation for ${preset}`);
+        translateDropdownOptions(store, i18n.language, lng);
       }
     };
 
@@ -91,9 +212,12 @@ export function useTranslateDropdownOptions(): void {
     return () => {
       i18n.off("languageChanged", cb);
     };
-  }, [i18n, preset, prevLanguage, store]);
+  }, [i18n, preset, store]);
 }
 
-export function usePresetList(): Preset[] {
-  return useMemo(() => presetList.map((el) => presetIndex[el]), []);
+export function usePresetList(): PresetSupportInfo[] {
+  return useMemo(
+    () => presetList.map((preset) => presetSupportInfo[preset]),
+    [],
+  );
 }

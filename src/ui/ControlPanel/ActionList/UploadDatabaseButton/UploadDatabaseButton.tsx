@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, ChangeEvent } from "react";
+import React, { ChangeEvent, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -11,9 +11,8 @@ import {
 } from "../../../../charSheets/root/application/ports";
 import { generateSheetId } from "../../../../lib/miscUtils";
 
-// @ts-ignore
-function uploadDatabaseFile(evt): void {
-  const input = evt.target.querySelector("input");
+function uploadDatabaseFile(inputRef: React.RefObject<HTMLInputElement>): void {
+  const input = inputRef.current;
   if (input) {
     input.value = "";
     input.click();
@@ -30,6 +29,7 @@ export function UploadDatabaseButton(
   props: UploadDatabaseButtonProps,
 ): JSX.Element {
   const { t } = useTranslation();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { setErrorDescription, setCharSheet, className } = props;
 
@@ -64,12 +64,13 @@ export function UploadDatabaseButton(
   return (
     <button
       type="button"
-      onClick={uploadDatabaseFile}
+      onClick={() => uploadDatabaseFile(inputRef)}
       className="nav-item-btn"
       id="uploadDatabaseButton"
       title={t("actionMenu.open-database")}
     >
       <input
+        ref={inputRef}
         type="file"
         className="tw-hidden"
         tabIndex={-1}
