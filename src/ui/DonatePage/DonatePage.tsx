@@ -27,3 +27,5 @@ export function DonatePage(): JSX.Element {
     </div>
   );
 }
+
+export default DonatePage;

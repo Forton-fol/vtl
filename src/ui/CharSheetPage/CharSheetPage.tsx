@@ -23,3 +23,5 @@ export function CharSheetPage(props: CharSheetPageProps): JSX.Element {
     </main>
   );
 }
+
+export default CharSheetPage;

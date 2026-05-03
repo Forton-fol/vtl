@@ -578,3 +578,5 @@ export function EncyclopediaPage({ sidebarCollapsed }: EncyclopediaPageProps): J
     </div>
   );
 }
+
+export default EncyclopediaPage;
