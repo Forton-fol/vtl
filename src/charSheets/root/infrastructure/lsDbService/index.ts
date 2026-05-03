@@ -67,6 +67,26 @@ function getCharSheetFromLSLegacy(): CharSheet | null {
   return null;
 }
 
+export function getSavedCharSheetString(): string | null {
+  if (typeof window === 'undefined') return null;
+  const activeId = getActiveSheetId();
+  if (activeId) {
+    const str = localStorage.getItem(sheetLsKey(activeId));
+    if (str !== null) return str;
+  }
+  return localStorage.getItem(LS_KEY);
+}
+
+export function clearSavedCharSheetStorage(): void {
+  if (typeof window === 'undefined') return;
+  const activeId = getActiveSheetId();
+  if (activeId) {
+    localStorage.removeItem(sheetLsKey(activeId));
+    localStorage.removeItem(ACTIVE_SHEET_KEY);
+  }
+  localStorage.removeItem(LS_KEY);
+}
+
 export function removeCharSheetFromLS(sheetId: string): void {
   if (typeof window === 'undefined') return;
   localStorage.removeItem(sheetLsKey(sheetId));

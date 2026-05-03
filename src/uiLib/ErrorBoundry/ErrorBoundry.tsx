@@ -3,6 +3,10 @@ import Button from "react-bootstrap/cjs/Button";
 
 import { LS_KEY } from "../../constants";
 import { str2File, makeFileName } from "../../lib/fileUtils";
+import {
+  clearSavedCharSheetStorage,
+  getSavedCharSheetString,
+} from "../../charSheets/root/infrastructure/lsDbService";
 
 interface ErrorBoundryProps {
   children: React.ReactNode;
@@ -76,7 +80,7 @@ export class ErrorBoundry extends Component<
           <Button
             className="tw-mr-8 custom-btn-bg-color"
             onClick={() => {
-              localStorage.removeItem(LS_KEY);
+              clearSavedCharSheetStorage();
               window.location.reload();
             }}
           >
@@ -86,7 +90,7 @@ export class ErrorBoundry extends Component<
             className="custom-btn-bg-color"
             onClick={() =>
               str2File(
-                localStorage.getItem(LS_KEY),
+                getSavedCharSheetString(),
                 makeFileName("vtm_broken_charsheet", "txt", new Date()),
               )
             }
