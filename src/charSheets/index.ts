@@ -120,36 +120,26 @@ function preloadPreset(preset: PresetName): Promise<Preset> {
 export function usePresetLoader(): boolean {
   const { preset } = usePreset();
   const cached = getPresetSync(preset);
-  const [loaded, setLoaded] = useState(() => cached !== undefined);
+  const [, setRefresh] = useState(0);
 
   useEffect(() => {
-    let active = true;
-
     if (cached) {
-      if (!loaded) {
-        setLoaded(true);
-      }
-      return () => {
-        active = false;
-      };
+      return;
     }
 
-    if (loaded) {
-      setLoaded(false);
-    }
-
+    let active = true;
     preloadPreset(preset).then(() => {
       if (active) {
-        setLoaded(true);
+        setRefresh((value) => value + 1);
       }
     });
 
     return () => {
       active = false;
     };
-  }, [cached, loaded, preset]);
+  }, [cached, preset]);
 
-  return cached !== undefined || loaded;
+  return cached !== undefined;
 }
 
 export function useExternalPresetProps(): ExternalPresetProps {
