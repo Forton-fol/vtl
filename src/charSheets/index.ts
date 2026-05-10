@@ -126,12 +126,11 @@ export function usePresetLoader(): boolean {
 
     const cached = getPresetSync(preset);
     if (cached) {
-      if (!loaded) {
-        setLoaded(true);
-      }
+      setLoaded(true);
       return;
     }
 
+    setLoaded(false);
     preloadPreset(preset).then(() => {
       if (active) {
         setLoaded(true);
@@ -141,7 +140,7 @@ export function usePresetLoader(): boolean {
     return () => {
       active = false;
     };
-  }, [loaded, preset]);
+  }, [preset]);
 
   return loaded;
 }
