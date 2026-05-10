@@ -70,7 +70,14 @@ function renderBlock(block: ArticleBlock, idx: number): JSX.Element {
 
 /** Very small markdown → HTML: **bold**, \n → <br> */
 function mdToHtml(text: string): string {
-  return text
+  const escaped = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+  return escaped
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\n/g, "<br />");
 }

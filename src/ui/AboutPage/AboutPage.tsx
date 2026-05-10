@@ -76,7 +76,7 @@ export function AboutPage(props: AboutPageProps): JSX.Element {
                   </li>
 
                   <li>
-                    <ExternalLink href="http://studio101.ru">
+                    <ExternalLink href="https://studio101.ru">
                       {t("about.studio-101")}
                     </ExternalLink>
                   </li>
@@ -86,7 +86,7 @@ export function AboutPage(props: AboutPageProps): JSX.Element {
                     </ExternalLink>
                   </li>
                   <li>
-                    <ExternalLink href="http://theonyxpath.com/">
+                    <ExternalLink href="https://theonyxpath.com/">
                       {t("about.onyxpath")}
                     </ExternalLink>
                   </li>

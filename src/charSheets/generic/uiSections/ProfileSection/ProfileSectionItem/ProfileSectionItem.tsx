@@ -18,6 +18,14 @@ export const ProfileSectionItem = memo(function ProfileSectionItem<DataContext>(
 ) {
   const { itemName, options, value, dataContext, setValue } = props;
   const { t } = useTranslation();
+  const tr = useCallback(
+    (key: string, options?: Record<string, unknown>) =>
+      (t as (key: string, options?: Record<string, unknown>) => string)(
+        key,
+        options,
+      ),
+    [t],
+  );
   const { preset } = usePreset();
 
   const labelKey = `charsheet.profile.${itemName}`;
@@ -25,10 +33,10 @@ export const ProfileSectionItem = memo(function ProfileSectionItem<DataContext>(
   const label =
     preset === "vampire_v5"
       ? (() => {
-          const translated = t(v5LabelKey);
-          return translated === v5LabelKey ? t(labelKey) : translated;
+          const translated = tr(v5LabelKey);
+          return translated === v5LabelKey ? tr(labelKey) : translated;
         })()
-      : t(labelKey);
+      : tr(labelKey);
 
   const onProfileChange = useCallback(
     function onProfileChange(e: ChangeEvent<HTMLInputElement>) {
@@ -74,7 +82,7 @@ export const ProfileSectionItem = memo(function ProfileSectionItem<DataContext>(
           className="print:tw-hidden"
           options={options}
           onChange={onSelectChange}
-          selectOptionMsg={t("charsheet.profile.select-label", {
+          selectOptionMsg={tr("charsheet.profile.select-label", {
             title: label,
           })}
         />

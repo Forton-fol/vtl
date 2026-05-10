@@ -76,13 +76,17 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
   }, [showForm, mode, turnstileSiteKey]);
 
   useEffect(() => {
+    const hashParams = window.location.hash.startsWith('#')
+      ? new URLSearchParams(window.location.hash.slice(1))
+      : new URLSearchParams();
     const params = new URLSearchParams(window.location.search);
     const tokenFromOAuth = params.get('token');
-    const authFromOAuth = params.get('auth');
+    const authFromOAuth = params.get('auth') || hashParams.get('auth');
+    const tokenFromHash = hashParams.get('token');
     const patreonConnected = params.get('patreon');
     
-    if (tokenFromOAuth && authFromOAuth === 'google') {
-      saveToken(tokenFromOAuth);
+    if ((tokenFromOAuth || tokenFromHash) && authFromOAuth === 'google') {
+      saveToken(tokenFromOAuth || tokenFromHash || '');
       loadProfile();
       window.history.replaceState({}, '', window.location.pathname);
       return;

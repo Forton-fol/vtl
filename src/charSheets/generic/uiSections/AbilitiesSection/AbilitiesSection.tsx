@@ -31,6 +31,14 @@ export const AbilitiesSection = memo(function AbilitiesSection(
   props: AbilitiesSectionProps
 ) {
   const { t } = useTranslation();
+  const tr = useCallback(
+    (key: string, options?: Record<string, unknown>) =>
+      (t as (key: string, options?: Record<string, unknown>) => string)(
+        key,
+        options,
+      ),
+    [t],
+  );
   const { preset } = usePreset();
   const {
     className,
@@ -66,14 +74,14 @@ export const AbilitiesSection = memo(function AbilitiesSection(
     function getLabel(key: string) {
       const baseKey = `charsheet.abilities.${key}`;
       if (preset !== "vampire_v5") {
-        return t(baseKey);
+        return tr(baseKey);
       }
 
       const v5Key = `charsheet.v5.abilities.${key}`;
-      const translated = t(v5Key);
-      return translated === v5Key ? t(baseKey) : translated;
+      const translated = tr(v5Key);
+      return translated === v5Key ? tr(baseKey) : translated;
     },
-    [preset, t]
+    [preset, tr]
   );
 
   return (
@@ -116,7 +124,7 @@ export const AbilitiesSection = memo(function AbilitiesSection(
           ))}
           <div role="group" className="stat-container">
             <input
-              aria-label={t(`charsheet.abilities.extension-${extension}`, {
+              aria-label={tr(`charsheet.abilities.extension-${extension}`, {
                 id: 1,
               })}
               style={{ boxShadow: "0 1px 0 #333333" }}
@@ -140,7 +148,7 @@ export const AbilitiesSection = memo(function AbilitiesSection(
           </div>
           <div role="group" className="stat-container">
             <input
-              aria-label={t(`charsheet.abilities.extension-${extension}`, {
+              aria-label={tr(`charsheet.abilities.extension-${extension}`, {
                 id: 2,
               })}
               style={{ boxShadow: "0 1px 0 #333333" }}

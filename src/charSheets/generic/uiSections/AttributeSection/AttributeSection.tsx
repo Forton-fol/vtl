@@ -20,6 +20,10 @@ export const AttributeSection = memo(function AttributeSection(
   props: AttributeSectionProps,
 ) {
   const { t } = useTranslation();
+  const tr = useCallback(
+    (key: string) => (t as (key: string) => string)(key),
+    [t],
+  );
   const { preset } = usePreset();
   const {
     className,
@@ -42,14 +46,14 @@ export const AttributeSection = memo(function AttributeSection(
     function getLabel(key: string) {
       const baseKey = `charsheet.attributes.${key}`;
       if (preset !== "vampire_v5") {
-        return t(baseKey);
+        return tr(baseKey);
       }
 
       const v5Key = `charsheet.v5.attributes.${key}`;
-      const translated = t(v5Key);
-      return translated === v5Key ? t(baseKey) : translated;
+      const translated = tr(v5Key);
+      return translated === v5Key ? tr(baseKey) : translated;
     },
-    [preset, t],
+    [preset, tr],
   );
 
   return (

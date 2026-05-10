@@ -5,6 +5,13 @@ export const library = {
   "character-count": "Characters: {{count}} / {{limit}}",
   unlimited: "unlimited",
   "no-entries": "No saved characters",
+  fetchError: "Unable to load library.",
+  saveSuccess: "Saved",
+  saveSuccessMessage: "Character saved to server library.",
+  savedLocal: "Saved locally",
+  savedLocalMessage: "Character saved to local library.",
+  deleted: "Deleted",
+  deletedMessage: "Character deleted from server library.",
   load: "Load",
   delete: "Delete",
 };

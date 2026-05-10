@@ -1,4 +1,3 @@
-import { attributesConfig } from "../generic/presetSettings";
 import { Preset } from "../types";
 
 import { CheckList } from "../vtm/checkListUi";

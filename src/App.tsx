@@ -30,6 +30,21 @@ function AppContent(): JSX.Element {
   const { displayName } = useInternalPresetProps();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [darkPackFooterCollapsed, setDarkPackFooterCollapsed] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      localStorage.getItem("dark-pack-footer-collapsed") === "1",
+  );
+
+  function toggleDarkPackFooter() {
+    setDarkPackFooterCollapsed((collapsed) => {
+      const next = !collapsed;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("dark-pack-footer-collapsed", next ? "1" : "0");
+      }
+      return next;
+    });
+  }
 
   useEffect(() => {
     document.title = t("about.defaultPageTitle", {
@@ -100,7 +115,11 @@ function AppContent(): JSX.Element {
         </Suspense>
       </main>
 
-      <footer className="dark-pack-footer print:tw-hidden">
+      <footer
+        className={`dark-pack-footer print:tw-hidden ${
+          darkPackFooterCollapsed ? "dark-pack-footer--collapsed" : ""
+        }`}
+      >
         <div className="dark-pack-footer__content">
           <img
             className="dark-pack-footer__logo"
@@ -108,24 +127,50 @@ function AppContent(): JSX.Element {
             alt="Dark Pack logo"
           />
           <div className="dark-pack-footer__text">
-            <p className="dark-pack-footer__title">{t("darkPack.footerTitle")}</p>
-            <p>{t("darkPack.legalNotice")}</p>
-            <p>{t("darkPack.unofficialNotice")}</p>
-            <p>
-              <Link className="dark-pack-footer__link" to="/dark-pack">
-                {t("darkPack.footerLink")}
-              </Link>
-              {" · "}
-              <a
-                className="dark-pack-footer__link"
-                href="https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t("darkPack.footerOfficialLink")}
-              </a>
+            <p className="dark-pack-footer__title">
+              {t("darkPack.footerTitle")}
             </p>
+            {!darkPackFooterCollapsed && (
+              <>
+                <p>{t("darkPack.legalNotice")}</p>
+                <p>{t("darkPack.unofficialNotice")}</p>
+                <p>
+                  <Link className="dark-pack-footer__link" to="/dark-pack">
+                    {t("darkPack.footerLink")}
+                  </Link>
+                  {" · "}
+                  <a
+                    className="dark-pack-footer__link"
+                    href="https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {t("darkPack.footerOfficialLink")}
+                  </a>
+                </p>
+              </>
+            )}
           </div>
+          <button
+            className="dark-pack-footer__toggle"
+            type="button"
+            onClick={toggleDarkPackFooter}
+            aria-expanded={!darkPackFooterCollapsed}
+            aria-label={
+              darkPackFooterCollapsed
+                ? t("darkPack.footerExpand")
+                : t("darkPack.footerCollapse")
+            }
+            title={
+              darkPackFooterCollapsed
+                ? t("darkPack.footerExpand")
+                : t("darkPack.footerCollapse")
+            }
+          >
+            <span aria-hidden="true">
+              {darkPackFooterCollapsed ? "^" : "v"}
+            </span>
+          </button>
         </div>
       </footer>
 

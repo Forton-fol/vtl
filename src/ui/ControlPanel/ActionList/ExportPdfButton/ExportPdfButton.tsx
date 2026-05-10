@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { useCharSheetStorage } from "../../../../charSheets/root/services/storageAdapter";
+import { useToast } from "../../../../uiLib/ToastNotification";
 
 interface ExportPdfButtonProps {
   className?: string;
@@ -14,6 +13,7 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
   const { t } = useTranslation();
   const { className } = props;
   const { charSheet } = useCharSheetStorage();
+  const toast = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleExportPdf = async () => {
@@ -22,28 +22,33 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
     setIsGenerating(true);
     
     try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+
       // Находим все страницы листа персонажа
       const pages = document.querySelectorAll('.charsheet-page');
-      console.log('Found pages:', pages.length);
       
       // Если не найдены специфичные страницы, ищем основной контент
       let pageElements: Element[] = [];
       if (pages.length === 0) {
-        console.log('No .charsheet-page found, trying fallback');
         // Ищем контейнер с листом персонажа
         const mainContent = document.querySelector('.tw-flex-grow-1') as HTMLElement;
         if (mainContent) {
           pageElements = [mainContent];
-          console.log('Using fallback element');
         }
       } else {
         pageElements = Array.from(pages);
-        console.log('Using charsheet-page elements:', pageElements.length);
       }
 
       if (pageElements.length === 0) {
         console.error('No pages found for PDF export');
-        alert('Не удалось найти страницы для экспорта');
+        toast.notify({
+          title: t("buttons.export-pdf", "PDF export failed"),
+          message: t("buttons.generating-pdf", "Unable to find printable pages."),
+          type: "error",
+        });
         setIsGenerating(false);
         return;
       }
@@ -69,6 +74,8 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
         el.style.backgroundImage = 'none';
       });
 
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
       // Размеры A4 в мм
       const a4Width = 210;
       const a4Height = 297;
@@ -82,7 +89,6 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
 
       // Обрабатываем каждую страницу
       for (let i = 0; i < pageElements.length; i++) {
-        console.log(`Processing page ${i + 1} of ${pageElements.length}`);
         const pageElement = pageElements[i] as HTMLElement;
         
         // Создаем canvas из страницы с меньшим scale для уменьшения размера
@@ -94,7 +100,6 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
           windowWidth: 1200, // Фиксированная ширина для консистентности
         });
         
-        console.log(`Canvas created for page ${i + 1}: ${canvas.width}x${canvas.height}`);
 
         // Получаем размеры canvas
         const imgWidth = canvas.width;
@@ -128,7 +133,6 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
         const xOffset = (a4Width - finalWidth) / 2;
         const yOffset = (a4Height - finalHeight) / 2;
         
-        console.log(`Page ${i + 1} dimensions: ${finalWidth.toFixed(2)}x${finalHeight.toFixed(2)} at (${xOffset.toFixed(2)}, ${yOffset.toFixed(2)})`);
 
         // Конвертируем canvas в изображение с меньшим качеством для уменьшения размера
         const imgData = canvas.toDataURL('image/jpeg', 0.85);
@@ -160,23 +164,27 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
       // Имя файла из имени персонажа или дефолтное
       const characterName = charSheet.profile.name || 'character';
       const fileName = `${characterName.replace(/[^a-zA-Zа-яА-Я0-9]/g, '_')}.pdf`;
-      
-      console.log(`Saving PDF as: ${fileName}`);
-      
+
       // Скачиваем PDF
       pdf.save(fileName);
-      
-      console.log('PDF saved successfully');
+      toast.notify({
+        title: t("buttons.export-pdf", "PDF saved"),
+        message: t("buttons.export-pdf", "PDF successfully generated."),
+        type: "success",
+      });
     } catch (error) {
       console.error('Error generating PDF:', error);
-      // Убираем класс PDF режима
+      toast.notify({
+        title: t("buttons.export-pdf", "PDF export failed"),
+        message: String(error || t("buttons.generating-pdf", "Unknown error occurred during PDF generation.")),
+        type: "error",
+      });
+    } finally {
       document.body.classList.remove('pdf-export-mode');
-      // Восстанавливаем панель и фон в случае ошибки
-      const controlPanel = document.querySelector('.top-navbar') as HTMLElement;
+      const controlPanel = document.querySelector('.top-navbar') as HTMLElement | null;
       if (controlPanel) {
         controlPanel.style.display = '';
       }
-      // Восстанавливаем фон
       const pages = document.querySelectorAll('.charsheet-page');
       if (pages.length > 0) {
         Array.from(pages).forEach((element) => {
@@ -185,21 +193,20 @@ export function ExportPdfButton(props: ExportPdfButtonProps): JSX.Element {
           el.style.backgroundImage = '';
         });
       }
-    } finally {
       setIsGenerating(false);
     }
   };
 
   return (
     <button
-      className="nav-item-btn"
+      className={`nav-item-btn ${className || ""}`}
       type="button"
       onClick={handleExportPdf}
       disabled={isGenerating}
       title={t("buttons.export-pdf", "Скачать PDF")}
     >
       <FontAwesomeIcon icon={faFilePdf} />
-      <span>{isGenerating ? "..." : t("buttons.export-pdf", "PDF")}</span>
+      <span>{isGenerating ? t("buttons.generating-pdf", "Генерация PDF...") : t("buttons.export-pdf", "PDF")}</span>
     </button>
   );
 }

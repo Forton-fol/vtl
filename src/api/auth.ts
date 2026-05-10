@@ -27,7 +27,20 @@ export async function connectPatreon() {
   if (!token) {
     return { error: 'not_authenticated' };
   }
-  window.location.href = `/.netlify/functions/auth?action=patreon&token=${token}`;
+
+  const resp = await fetch('/.netlify/functions/auth?action=patreon-start', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  const result = await resp.json();
+
+  if (result?.authUrl) {
+    window.location.href = result.authUrl;
+  }
+
+  return result;
 }
 
 // Get subscription status

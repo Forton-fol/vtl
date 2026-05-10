@@ -34,6 +34,14 @@ export function ExperiencePointsPanel(
 ): JSX.Element {
   const { className, experiencePointsConfig } = props;
   const { t } = useTranslation();
+  const tr = React.useCallback(
+    (key: string, options?: Record<string, unknown>) =>
+      (t as (key: string, options?: Record<string, unknown>) => string)(
+        key,
+        options,
+      ),
+    [t],
+  );
 
   const { charSheet, setCharSheet } = useCharSheetStorage();
 
@@ -134,7 +142,7 @@ export function ExperiencePointsPanel(
                   className="tw-border-b tw-border-gray-200"
                 >
                   <td className="tw-py-1 tw-pr-4">
-                    {t(`experiencePoints.${item.name}`)}
+                    {tr(`experiencePoints.${item.name}`)}
                   </td>
                   <td className="tw-py-1 tw-text-right tw-whitespace-nowrap">
                     {item.isNew && item.flatCost !== undefined
@@ -170,7 +178,7 @@ export function ExperiencePointsPanel(
                 .map((el) => (
                   <li key={el.name}>
                     <span>
-                      {t(`experiencePoints.${el.name}`)}
+                      {tr(`experiencePoints.${el.name}`)}
                     </span>
                     <span className="tw-float-right">
                       -{el.cost}

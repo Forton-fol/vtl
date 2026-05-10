@@ -5,16 +5,19 @@ import { HashRouter as Router } from "react-router-dom";
 import App from "./App";
 import { Provider } from "./charSheets/root/services/store";
 import { ErrorBoundry } from "./uiLib/ErrorBoundry";
+import { ToastProvider } from "./uiLib/ToastNotification";
 
 ReactDOM.hydrateRoot(
   document.getElementById("root") as HTMLElement,
   <Provider>
-    <React.StrictMode>
-      <ErrorBoundry>
-        <Router>
-          <App />
-        </Router>
-      </ErrorBoundry>
-    </React.StrictMode>
+    <ToastProvider>
+      <React.StrictMode>
+        <ErrorBoundry>
+          <Router>
+            <App />
+          </Router>
+        </ErrorBoundry>
+      </React.StrictMode>
+    </ToastProvider>
   </Provider>,
 );

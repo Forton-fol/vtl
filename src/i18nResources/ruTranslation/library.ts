@@ -5,6 +5,13 @@ export const library = {
   "character-count": "Персонажи: {{count}} / {{limit}}",
   unlimited: "безлимит",
   "no-entries": "Нет сохранённых персонажей",
+  fetchError: "Не удалось загрузить библиотеку.",
+  saveSuccess: "Сохранено",
+  saveSuccessMessage: "Персонаж сохранён в серверной библиотеке.",
+  savedLocal: "Сохранено локально",
+  savedLocalMessage: "Персонаж сохранён в локальную библиотеку.",
+  deleted: "Удалено",
+  deletedMessage: "Персонаж удалён из серверной библиотеки.",
   load: "Загрузить",
   delete: "Удалить",
 };

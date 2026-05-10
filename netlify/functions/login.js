@@ -4,7 +4,11 @@ const jwt = require('jsonwebtoken');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const JWT_SECRET = process.env.NETLIFY_JWT_SECRET || 'dev_secret';
+const JWT_SECRET = process.env.NETLIFY_JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('NETLIFY_JWT_SECRET is required');
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 

@@ -24,4 +24,6 @@ export const darkPack = {
   footerTitle: "Уведомление Dark Pack",
   footerLink: "Страница Dark Pack",
   footerOfficialLink: "Оригинал соглашения",
+  footerCollapse: "Свернуть уведомление Dark Pack",
+  footerExpand: "Развернуть уведомление Dark Pack",
 };

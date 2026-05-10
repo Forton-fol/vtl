@@ -138,7 +138,7 @@
 
 .enc-sb-section-btn:hover {
   background: rgba(255,255,255,0.04);
-  color: var(----enc-text-head);
+  color: var(--enc-text-head);
 }
 
 .enc-sb-section-btn.active {

@@ -4,7 +4,11 @@ const axios = require('axios');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const JWT_SECRET = process.env.NETLIFY_JWT_SECRET || 'dev_secret';
+const JWT_SECRET = process.env.NETLIFY_JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('NETLIFY_JWT_SECRET is required');
+}
 
 // Google OAuth credentials
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -287,7 +291,6 @@ exports.handler = async function(event) {
   try {
     // Google OAuth start
     if (action === 'google' || route === '/google' || path === '/auth/google') {
-      console.log('[auth/google] redirect_uri=%s client_id=%s host=%s path=%s', GOOGLE_REDIRECT_URI, maskClientId(GOOGLE_CLIENT_ID), event.headers.host, path);
       const state = jwt.sign({ purpose: 'google' }, JWT_SECRET, { expiresIn: '10m' });
       const authUrl = getGoogleAuthUrl(state);
       return { statusCode: 302, headers: { Location: authUrl } };
@@ -328,17 +331,15 @@ exports.handler = async function(event) {
         return {
           statusCode: 302,
           headers: {
-            Location: `${baseUrl}?token=${token}&auth=google`
+            Location: `${baseUrl}#token=${token}&auth=google`
           }
         };
       }
 
       if (decoded.purpose === 'patreon') {
-        let userDecoded;
-        try {
-          userDecoded = jwt.verify(decoded.token, JWT_SECRET);
-        } catch (e) {
-          return { statusCode: 401, body: JSON.stringify({ error: 'invalid_token' }) };
+        const userId = decoded.userId;
+        if (!userId) {
+          return { statusCode: 401, body: JSON.stringify({ error: 'invalid_state' }) };
         }
 
         // Exchange code for tokens
@@ -346,7 +347,7 @@ exports.handler = async function(event) {
         const patreonData = await getPatreonUserInfo(tokens.access_token);
 
         // Update user's Patreon subscription
-        await updatePatreonSubscription(userDecoded.userId, patreonData);
+        await updatePatreonSubscription(userId, patreonData);
 
         return {
           statusCode: 302,
@@ -360,13 +361,37 @@ exports.handler = async function(event) {
     }
 
     // Patreon OAuth start
+    if (action === 'patreon-start') {
+      const userDecoded = getUserFromAuthHeader(event);
+      if (!userDecoded?.userId) {
+        return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
+      }
+
+      const state = jwt.sign(
+        { purpose: 'patreon', userId: userDecoded.userId },
+        JWT_SECRET,
+        { expiresIn: '10m' }
+      );
+      const authUrl = getPatreonAuthUrl(state);
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authUrl })
+      };
+    }
+
     if (action === 'patreon' || route === '/patreon' || path === '/auth/patreon') {
       const { token } = queryParams;
       if (!token) {
         return { statusCode: 401, body: JSON.stringify({ error: 'unauthorized' }) };
       }
-      console.log('[auth/patreon] redirect_uri=%s client_id=%s host=%s path=%s', PATREON_REDIRECT_URI, maskClientId(PATREON_CLIENT_ID), event.headers.host, path);
-      const state = jwt.sign({ purpose: 'patreon', token }, JWT_SECRET, { expiresIn: '10m' });
+      let userDecoded;
+      try {
+        userDecoded = jwt.verify(token, JWT_SECRET);
+      } catch (e) {
+        return { statusCode: 401, body: JSON.stringify({ error: 'invalid_token' }) };
+      }
+      const state = jwt.sign({ purpose: 'patreon', userId: userDecoded.userId }, JWT_SECRET, { expiresIn: '10m' });
       const authUrl = getPatreonAuthUrl(state);
       return { statusCode: 302, headers: { Location: authUrl } };
     }
@@ -391,11 +416,9 @@ exports.handler = async function(event) {
         return { statusCode: 400, body: JSON.stringify({ error: 'invalid_state_purpose' }) };
       }
 
-      let userDecoded;
-      try {
-        userDecoded = jwt.verify(decoded.token, JWT_SECRET);
-      } catch (e) {
-        return { statusCode: 401, body: JSON.stringify({ error: 'invalid_token' }) };
+      const userId = decoded.userId;
+      if (!userId) {
+        return { statusCode: 401, body: JSON.stringify({ error: 'invalid_state' }) };
       }
 
       // Exchange code for tokens
@@ -403,7 +426,7 @@ exports.handler = async function(event) {
       const patreonData = await getPatreonUserInfo(tokens.access_token);
 
       // Update user's Patreon subscription
-      await updatePatreonSubscription(userDecoded.userId, patreonData);
+      await updatePatreonSubscription(userId, patreonData);
 
       return {
         statusCode: 302,
