@@ -168,7 +168,7 @@ export function RandomizerPanel(props: RandomizerPanelProps): JSX.Element {
       <div className="tw-mb-4">
         <button
           type="button"
-          className="tw-text-sm tw-font-semibold tw-text-blue-600 hover:tw-underline tw-bg-transparent tw-border-0 tw-cursor-pointer tw-p-0"
+          className="text-action-button tw-text-sm tw-font-semibold tw-bg-transparent tw-border-0 tw-cursor-pointer tw-p-0"
           onClick={() => setShowSettings((v) => !v)}
         >
           {t("randomizer.settings")} {showSettings ? "▲" : "▼"}
@@ -244,7 +244,7 @@ export function RandomizerPanel(props: RandomizerPanelProps): JSX.Element {
             </span>
             <button
               type="button"
-              className="tw-text-xs tw-text-blue-600 hover:tw-underline tw-bg-transparent tw-border-0 tw-cursor-pointer tw-p-0"
+              className="text-action-button tw-text-xs tw-bg-transparent tw-border-0 tw-cursor-pointer tw-p-0"
               onClick={toggleAllClanGroups}
             >
               {allClanGroupsSelected

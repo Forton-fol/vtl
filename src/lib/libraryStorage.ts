@@ -27,7 +27,11 @@ function readLibrary(): LibraryEntry[] {
 
 function writeLibrary(entries: LibraryEntry[]) {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(LIB_KEY, JSON.stringify(entries));
+  try {
+    localStorage.setItem(LIB_KEY, JSON.stringify(entries));
+  } catch (e) {
+    console.error("Failed to write library", e);
+  }
 }
 
 export function listLibrary(): LibraryEntry[] {
@@ -106,12 +110,21 @@ const AUTOSAVE_KEY = `${LS_KEY}_autosave`;
 
 export function getAutoSaveEnabled(): boolean {
   if (typeof window === 'undefined') return true;
-  const val = localStorage.getItem(AUTOSAVE_KEY);
-  // enabled by default
-  return val === null ? true : val === "1";
+  try {
+    const val = localStorage.getItem(AUTOSAVE_KEY);
+    // enabled by default
+    return val === null ? true : val === "1";
+  } catch (e) {
+    console.error("Failed to read autosave setting", e);
+    return false;
+  }
 }
 
 export function setAutoSaveEnabled(enabled: boolean): void {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(AUTOSAVE_KEY, enabled ? "1" : "0");
+  try {
+    localStorage.setItem(AUTOSAVE_KEY, enabled ? "1" : "0");
+  } catch (e) {
+    console.error("Failed to write autosave setting", e);
+  }
 }

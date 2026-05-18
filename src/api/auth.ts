@@ -93,19 +93,32 @@ export async function updateProfile(username: string) {
 
 export function saveToken(token: string) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('vtm_token', token);
+    try {
+      localStorage.setItem('vtm_token', token);
+    } catch (error) {
+      console.error('Failed to save auth token', error);
+    }
   }
 }
 
 export function getToken() {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('vtm_token');
+    try {
+      return localStorage.getItem('vtm_token');
+    } catch (error) {
+      console.error('Failed to read auth token', error);
+      return null;
+    }
   }
   return null;
 }
 
 export function removeToken() {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem('vtm_token');
+    try {
+      localStorage.removeItem('vtm_token');
+    } catch (error) {
+      console.error('Failed to remove auth token', error);
+    }
   }
 }

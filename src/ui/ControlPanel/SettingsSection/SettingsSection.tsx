@@ -14,6 +14,7 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
   const { t } = useTranslation();
   const {
     settings,
+    setSiteTheme,
     setBackgroundColor,
     setCharsheetBackMode,
     setCharsheetBackColor,
@@ -30,6 +31,11 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
   } = useSettings();
 
   const [autoSave, setAutoSave] = useState(() => getAutoSaveEnabled());
+  const themes = [
+    { value: "light", label: "Светлая" },
+    { value: "neutral", label: "Нейтрал" },
+    { value: "dark", label: "Темная" },
+  ] as const;
 
   function handleAutoSaveToggle(checked: boolean) {
     setAutoSave(checked);
@@ -80,6 +86,25 @@ export function SettingsSection(props: SettingsSectionProps): JSX.Element {
 
   return (
     <div className="SettingsSection" style={{ color: '#c8d6e5' }}>
+      <div className="tw-m-4">
+        <h3 className="tw-text-lg tw-mb-3">Тема сайта</h3>
+        <div className="theme-settings-grid">
+          {themes.map((theme) => (
+            <button
+              key={theme.value}
+              type="button"
+              className={`theme-card-button ${
+                settings.siteTheme === theme.value ? "active" : ""
+              }`}
+              onClick={() => setSiteTheme(theme.value)}
+            >
+              <span className={`theme-card-button__sample theme-card-button__sample--${theme.value}`} />
+              <span>{theme.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Auto-save toggle */}
       <div className="tw-m-4">
         <Form.Check

@@ -9,15 +9,15 @@ import { ToastProvider } from "./uiLib/ToastNotification";
 
 ReactDOM.hydrateRoot(
   document.getElementById("root") as HTMLElement,
-  <Provider>
-    <ToastProvider>
-      <React.StrictMode>
-        <ErrorBoundry>
+  <ErrorBoundry>
+    <Provider>
+      <ToastProvider>
+        <React.StrictMode>
           <Router>
             <App />
           </Router>
-        </ErrorBoundry>
-      </React.StrictMode>
-    </ToastProvider>
-  </Provider>,
+        </React.StrictMode>
+      </ToastProvider>
+    </Provider>
+  </ErrorBoundry>,
 );

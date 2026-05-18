@@ -1,10 +1,30 @@
-import { CharsheetBackMode } from "../../misc/domain";
+import { CharsheetBackMode, SiteTheme } from "../../misc/domain";
 import { mutateObj } from "../../../lib/miscUtils";
 import { CombinedMiscService } from "../application/ports";
 import { ServiceToActions } from "../../root/services/public";
 import { CharSheet } from "../../root/domain";
+import { getThemeVisualSettings } from "./themes";
 
 export const miscActions: ServiceToActions<CombinedMiscService> = {
+  setSiteTheme(state: CharSheet, [siteTheme]: [SiteTheme]): CharSheet {
+    const theme = getThemeVisualSettings(siteTheme);
+
+    return mutateObj(
+      state,
+      "settings",
+      {
+        ...state.settings,
+        siteTheme,
+        backgroundColor: theme.backgroundColor,
+        charsheetBackMode: "charsheet-color",
+        charsheetBackColor: theme.charsheetBackColor,
+        charsheetTextColor: theme.charsheetTextColor,
+        sidebarColor: theme.sidebarColor,
+        sidebarTextColor: theme.sidebarTextColor,
+        charsheetBorderVisible: true,
+      }
+    );
+  },
   setBackgroundColor(state: CharSheet, [backgroundColor]: [string]): CharSheet {
     return mutateObj(
       state,

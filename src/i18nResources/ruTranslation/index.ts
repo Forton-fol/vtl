@@ -50,7 +50,18 @@ export const ruTranslation = {
   register,
   library,
   donate: {
-    header: "Донат",
+    header: "Связь",
+    eyebrow: "Новости и обратная связь",
+    title: "Связь с проектом",
+    description:
+      "Следите за обновлениями, новыми функциями и заметками по World of Darkness. Если проект полезен, его можно поддержать на Patreon.",
+    telegramLabel: "Канал в Telegram",
+    telegramTitle: "Канал WOD List",
+    telegramText: "Новости проекта, обновления листов и важные объявления.",
+    patreonLabel: "Поддержка",
+    patreonTitle: "Страница Patreon",
+    patreonText: "Помогает оплачивать разработку и поддерживать проект живым.",
+    note: "Спасибо всем, кто пользуется листами, присылает идеи и помогает проекту расти.",
   },
   buttons: {
     "hide-panel": "Спрятать панель",

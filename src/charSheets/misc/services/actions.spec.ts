@@ -10,7 +10,7 @@ const { reduce } = new CompositeReducer<CharSheet>().assign(miscActions);
 
 describe("miscActions", () => {
   it("setBackgroundColor", () => {
-    expect(initialCharSheet.settings.backgroundColor).toBe("#ababab");
+    expect(initialCharSheet.settings.backgroundColor).toBe("#efede8");
     const charSheet = reduce(initialCharSheet, {
       type: "setBackgroundColor",
       props: ["#ffabab"],
@@ -19,7 +19,7 @@ describe("miscActions", () => {
   });
 
   it("setCharsheetBackColor", () => {
-    expect(initialCharSheet.settings.charsheetBackColor).toBe("#ffffff");
+    expect(initialCharSheet.settings.charsheetBackColor).toBe("#fbfaf7");
     const charSheet = reduce(initialCharSheet, {
       type: "setCharsheetBackColor",
       props: ["#00ff00"],
@@ -39,7 +39,7 @@ describe("miscActions", () => {
   });
 
   it("setCharsheetBackMode", () => {
-    expect(initialCharSheet.settings.charsheetBackMode).toBe("charsheet-image");
+    expect(initialCharSheet.settings.charsheetBackMode).toBe("charsheet-color");
     const charSheet = reduce(initialCharSheet, {
       type: "setCharsheetBackMode",
       props: ["charsheet-none"],

@@ -3,6 +3,8 @@
   background: url("../../../../../images/radio-on-button.svg") no-repeat 50% 50%;
   background-size: 100% auto;
   print-color-adjust: exact;
+  filter: var(--sheet-filter, none);
+  cursor: pointer;
 }
 
 .RangeInput2 .range-input-checkbox[data-variant="circle"] {

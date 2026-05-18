@@ -37,9 +37,9 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
         className,
       )}
     >
-      <Accordion className="tw-sticky tw-top-0">
+      <Accordion className="tw-sticky tw-top-0 GameUtilsPanel__accordion">
         {CheckList && (
-          <Card className="tw-bg-gray-200">
+          <Card className="GameUtilsPanel__card">
             <AccordionToggle
               ariaId="checklist-toggle"
               eventKey="0"
@@ -49,7 +49,7 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
             <Accordion.Collapse
               id="checklist-panel"
               eventKey="0"
-              className="tw-bg-white"
+              className="GameUtilsPanel__collapse"
               role="region"
               aria-labelledby="checklist-toggle"
             >
@@ -60,7 +60,7 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
           </Card>
         )}
         {freebiePointsConfig && (
-          <Card className="tw-bg-gray-200">
+          <Card className="GameUtilsPanel__card">
             <AccordionToggle
               ariaId="freebie-points-toggle"
               eventKey="1"
@@ -70,7 +70,7 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
             <Accordion.Collapse
               id="freebie-points-panel"
               eventKey="1"
-              className="tw-bg-white"
+              className="GameUtilsPanel__collapse"
               role="region"
               aria-labelledby="freebie-points-toggle"
             >
@@ -79,7 +79,7 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
           </Card>
         )}
         {experiencePointsConfig && (
-          <Card className="tw-bg-gray-200">
+          <Card className="GameUtilsPanel__card">
             <AccordionToggle
               ariaId="experience-points-toggle"
               eventKey="2"
@@ -89,7 +89,7 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
             <Accordion.Collapse
               id="experience-points-panel"
               eventKey="2"
-              className="tw-bg-white"
+              className="GameUtilsPanel__collapse"
               role="region"
               aria-labelledby="experience-points-toggle"
             >
@@ -98,7 +98,7 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
           </Card>
         )}
         {randomizerConfig && (
-          <Card className="tw-bg-gray-200">
+          <Card className="GameUtilsPanel__card">
             <AccordionToggle
               ariaId="randomizer-toggle"
               eventKey="3"
@@ -108,7 +108,7 @@ export function GameUtilsPanel(props: GameUtilsPanelProps): JSX.Element | null {
             <Accordion.Collapse
               id="randomizer-panel"
               eventKey="3"
-              className="tw-bg-white"
+              className="GameUtilsPanel__collapse"
               role="region"
               aria-labelledby="randomizer-toggle"
             >

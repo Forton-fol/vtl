@@ -247,6 +247,7 @@ export const m: CharSheetInJson = {
     specializations: {},
   },
   Settings: {
+    siteTheme: "neutral",
     backgroundColor: "#ababab",
     charsheetBackColor: "#ffffff",
     charsheetBackImage_v2: defaultBackgroundUrl,

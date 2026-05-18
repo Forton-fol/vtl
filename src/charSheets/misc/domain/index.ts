@@ -5,7 +5,10 @@ export type CharsheetBackMode =
   | "charsheet-none"
   | "charsheet-color";
 
+export type SiteTheme = "dark" | "light" | "neutral";
+
 export interface Settings {
+  siteTheme?: SiteTheme;
   backgroundColor: string;
   charsheetBackColor: string;
   charsheetBackImage_v2: string;

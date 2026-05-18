@@ -51,7 +51,18 @@ export const enTranslation: TranslationInfo = {
   instruction,
   library,
   donate: {
-    header: "Donate",
+    header: "Contact",
+    eyebrow: "News and feedback",
+    title: "Contact the project",
+    description:
+      "Follow updates, new features, and World of Darkness notes. If the project is useful to you, Patreon support is always welcome.",
+    telegramLabel: "Telegram",
+    telegramTitle: "WOD List channel",
+    telegramText: "Project news, sheet updates, and important announcements.",
+    patreonLabel: "Support",
+    patreonTitle: "Patreon",
+    patreonText: "Helps fund development and keep the project alive.",
+    note: "Thanks to everyone who uses the sheets, sends ideas, and helps the project grow.",
   },
   register,
   buttons: {

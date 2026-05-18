@@ -1,13 +1,29 @@
 import { CharSheet, PresetName } from "../domain";
 import { mutateObj } from "../../../lib/miscUtils";
 import { CombinedRootService } from "../application/ports";
+import { SiteTheme } from "../../misc/domain";
+import { getThemeVisualSettings } from "../../misc/services/themes";
 
 import { ServiceToActions } from "./types";
 
 export const rootActions: ServiceToActions<CombinedRootService> = {
   setCharSheet(state: CharSheet, [newState]: [CharSheet]): CharSheet {
+    const siteTheme: SiteTheme =
+      newState.settings.siteTheme || state.settings.siteTheme || "neutral";
+    const theme = getThemeVisualSettings(siteTheme);
+
     return {
       ...newState,
+      settings: {
+        ...newState.settings,
+        siteTheme,
+        backgroundColor: theme.backgroundColor,
+        charsheetBackMode: "charsheet-color",
+        charsheetBackColor: theme.charsheetBackColor,
+        charsheetTextColor: theme.charsheetTextColor,
+        sidebarColor: theme.sidebarColor,
+        sidebarTextColor: theme.sidebarTextColor,
+      },
     };
   },
 

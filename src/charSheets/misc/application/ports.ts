@@ -1,9 +1,10 @@
-import { CharsheetBackMode, Settings } from "../domain";
+import { CharsheetBackMode, Settings, SiteTheme } from "../domain";
 
 export interface CombinedMiscService extends SettingsService {}
 
 export interface SettingsService {
   settings: Settings;
+  setSiteTheme(theme: SiteTheme): void;
   setBackgroundColor(backgroundColor: string): void;
   setCharsheetBackColor(charsheetBackColor: string): void;
   setCharsheetBackImage(charsheetBackImage: string): void;

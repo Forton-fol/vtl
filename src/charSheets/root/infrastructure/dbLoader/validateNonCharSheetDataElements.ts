@@ -27,6 +27,7 @@ export const versionSchema: JSONSchemaType<Version> = {
 export const settingsSchema: JSONSchemaType<Settings> = {
   type: "object",
   properties: {
+    siteTheme: { type: "string", nullable: true },
     backgroundColor: { type: "string" },
     charsheetBackColor: { type: "string" },
     charsheetBackImage_v2: { type: "string" },

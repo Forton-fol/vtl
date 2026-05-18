@@ -74,6 +74,106 @@
 .CharSheetBody [class*="tw-text-2xl"] { font-size: 1.5em !important; }
 .CharSheetBody [class*="tw-text-3xl"] { font-size: 1.875em !important; }
 
+.CharSheetBody {
+  position: relative;
+  overflow: hidden;
+  font-family: "CentSchbkCyrill", Georgia, serif;
+  box-sizing: border-box;
+  border-image-source: none;
+  border: 1px solid var(--app-strong-line, rgba(76, 65, 50, 0.42));
+  border-radius: 0.65rem;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--app-surface) 42%, transparent),
+    inset 0 0 0 6px color-mix(in srgb, var(--app-line) 22%, transparent);
+}
+
+.CharSheetBody::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 15% 12%, rgba(255, 255, 255, 0.18), transparent 18rem),
+    radial-gradient(circle at 90% 80%, rgba(0, 0, 0, 0.035), transparent 20rem),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.018) 0 1px, transparent 1px 8px);
+  mix-blend-mode: multiply;
+}
+
+body[data-theme="dark"] .CharSheetBody::before {
+  background:
+    radial-gradient(circle at 24% 18%, rgba(227, 47, 50, 0.08), transparent 18rem),
+    radial-gradient(circle at 80% 78%, rgba(255, 255, 255, 0.04), transparent 20rem),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.016) 0 1px, transparent 1px 8px);
+  mix-blend-mode: screen;
+}
+
+.CharSheetBody > * {
+  position: relative;
+  z-index: 1;
+}
+
+.CharSheetBody input,
+.CharSheetBody textarea,
+.CharSheetBody select {
+  color: inherit;
+  border-color: var(--app-line, rgba(76, 65, 50, 0.22)) !important;
+  border-radius: 0.32rem;
+  background-color: var(--app-input-bg, rgba(255, 255, 255, 0.34)) !important;
+}
+
+.CharSheetBody input::placeholder,
+.CharSheetBody textarea::placeholder {
+  color: color-mix(in srgb, currentColor 48%, transparent);
+}
+
+.CharSheetBody .panel-header {
+  color: var(--app-accent, #9f8767);
+  align-items: center;
+  margin: 1.1rem 0 1rem;
+  letter-spacing: 0;
+}
+
+.CharSheetBody img.left-arrow,
+.CharSheetBody img.right-arrow,
+.CharSheetBody img.line-separator,
+.CharSheetBody .Subheader img,
+.CharSheetBody .SelectButton {
+  filter: var(--sheet-filter, none);
+}
+
+.CharSheetBody .stat-container {
+  min-height: 1.9rem;
+  align-items: center;
+}
+
+.CharSheetBody .stat-container-label {
+  color: inherit;
+}
+
+body[data-theme="dark"] .CharSheetBody {
+  border-image-source: none;
+  border-color: rgba(216, 208, 197, 0.2);
+  box-shadow:
+    inset 0 0 0 1px rgba(216, 208, 197, 0.045),
+    inset 0 0 0 6px rgba(216, 208, 197, 0.03);
+}
+
+body[data-theme="light"] .CharSheetBody {
+  border-image-source: none;
+  border-color: rgba(99, 72, 36, 0.52);
+  border-radius: 0.25rem;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 244, 214, 0.34),
+    inset 0 0 0 6px rgba(99, 72, 36, 0.11);
+}
+
+body[data-theme="neutral"] .CharSheetBody {
+  border-image-source: none;
+  border-color: rgba(37, 36, 34, 0.22);
+  border-radius: 0.75rem;
+}
+
 @media print {
   html {
     font-size: 22px;

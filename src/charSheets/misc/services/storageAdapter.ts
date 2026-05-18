@@ -6,6 +6,7 @@ export function useSettings(): SettingsService {
   return R.pick(
     [
       "settings",
+      "setSiteTheme",
       "setBackgroundColor",
       "setCharsheetBackColor",
       "setCharsheetBackImage",

@@ -31,16 +31,25 @@ function AppContent(): JSX.Element {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [darkPackFooterCollapsed, setDarkPackFooterCollapsed] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      localStorage.getItem("dark-pack-footer-collapsed") === "1",
+    () => {
+      try {
+        return (
+          typeof window !== "undefined" &&
+          localStorage.getItem("dark-pack-footer-collapsed") === "1"
+        );
+      } catch {
+        return false;
+      }
+    },
   );
 
   function toggleDarkPackFooter() {
     setDarkPackFooterCollapsed((collapsed) => {
       const next = !collapsed;
       if (typeof window !== "undefined") {
-        localStorage.setItem("dark-pack-footer-collapsed", next ? "1" : "0");
+        try {
+          localStorage.setItem("dark-pack-footer-collapsed", next ? "1" : "0");
+        } catch {}
       }
       return next;
     });
@@ -60,7 +69,7 @@ function AppContent(): JSX.Element {
         <div className="navbar-inner">
           {/* Logo / Brand */}
           <div className="navbar-brand">
-            <span className="brand-icon">⚔</span>
+            <span className="brand-icon" aria-hidden="true">✦</span>
             <span className="brand-text">VTM CharSheet</span>
             <span className="brand-version">v{CURRENT_VERSION}</span>
           </div>
@@ -188,10 +197,17 @@ function AppContent(): JSX.Element {
 }
 
 function App(): JSX.Element {
-  const { settings } = useSettings();
+  const { settings, setSiteTheme } = useSettings();
   const presetLoaded = usePresetLoader();
 
   useEffect(() => {
+    if (!settings.siteTheme) {
+      setSiteTheme("neutral");
+    }
+  }, [settings.siteTheme, setSiteTheme]);
+
+  useEffect(() => {
+    document.body.dataset.theme = settings.siteTheme || "neutral";
     document.body.style.backgroundColor = settings.backgroundColor;
 
     function applyBg(url: string) {
@@ -220,6 +236,7 @@ function App(): JSX.Element {
     }
 
     return () => {
+      delete document.body.dataset.theme;
       document.body.style.backgroundColor = "white";
       clearBg();
     };

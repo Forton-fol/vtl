@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faScroll,
   faBookOpen,
-  faDollarSign,
+  faComments,
   faBook,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -49,7 +49,7 @@ export function PageNav(props: PageNavProps): JSX.Element {
         }
         onClick={onNavigate}
       >
-        <FontAwesomeIcon icon={faDollarSign} />
+        <FontAwesomeIcon icon={faComments} />
         <span>{t("donate.header")}</span>
       </NavLink>
       <NavLink

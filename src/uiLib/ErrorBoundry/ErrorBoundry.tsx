@@ -15,6 +15,7 @@ interface ErrorBoundryState {
   hasError: boolean;
   seconds: number;
   startTimeMillis: number;
+  errorText: string;
 }
 
 export class ErrorBoundry extends Component<
@@ -30,13 +31,24 @@ export class ErrorBoundry extends Component<
       hasError: false,
       seconds: 0,
       startTimeMillis: 0,
+      errorText: "",
     };
   }
 
-  componentDidCatch(): void {
+  static getDerivedStateFromError(error: unknown): Partial<ErrorBoundryState> {
+    return {
+      hasError: true,
+      startTimeMillis: Date.now(),
+      errorText: error instanceof Error ? error.message : String(error),
+    };
+  }
+
+  componentDidCatch(error: unknown): void {
+    console.error("Unhandled render error", error);
     this.setState({
       hasError: true,
       startTimeMillis: Date.now(),
+      errorText: error instanceof Error ? error.message : String(error),
     });
     this.reloadTimeoutId = setTimeout(() => window.location.reload(), 30000);
     this.secondsIntevalId = setInterval(() => {
@@ -70,6 +82,11 @@ export class ErrorBoundry extends Component<
               его исправить вручную.
             </p>
           </div>
+          {this.state.errorText && (
+            <pre className="tw-whitespace-pre-wrap tw-bg-slate-100 tw-p-3 tw-rounded">
+              {this.state.errorText}
+            </pre>
+          )}
           <br />
           <Button
             className="tw-mr-8 custom-btn-bg-color"
