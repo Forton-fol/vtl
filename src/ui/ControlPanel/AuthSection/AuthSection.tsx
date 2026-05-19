@@ -429,13 +429,21 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
               >
                 {mode === 'login' ? t('register.login') : t('register.submit')}
               </button>
-              <button
+              {/* Registration via username/password disabled - keeping code for future use */}
+
+              {/* <button
+
                 type="button"
+
                 className="btn-modern btn-modern-ghost tw-text-xs tw-flex-1"
+
                 onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
+
               >
+
                 {mode === 'login' ? t('register.switch-to-register') : t('register.switch-to-login')}
-              </button>
+
+              </button> */}
             </div>
           </form>
         </div>
@@ -445,3 +453,4 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
 }
 
 export default AuthSection;
+
