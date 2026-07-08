@@ -283,7 +283,7 @@ module.exports = async (req, res) => {
           JWT_SECRET,
           { expiresIn: '7d' },
         );
-        sendRedirect(res, `${baseUrl}#token=${token}&auth=google`);
+        sendRedirect(res, `${baseUrl}/register#token=${token}&auth=google`);
         return;
       }
 

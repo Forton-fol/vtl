@@ -24,6 +24,7 @@ const CharacterLibraryPage = lazy(
 const DonatePage = lazy(() => import("./ui/DonatePage/DonatePage"));
 const EncyclopediaPage = lazy(() => import("./ui/EncyclopediaPage/EncyclopediaPage"));
 const DarkPackPage = lazy(() => import("./ui/DarkPackPage"));
+const RegisterPage = lazy(() => import("./ui/RegisterPage/RegisterPage"));
 
 function AppContent(): JSX.Element {
   const { t } = useTranslation();
@@ -119,6 +120,7 @@ function AppContent(): JSX.Element {
             <Route path="/donate" element={<DonatePage />} />
             <Route path="/encyclopedia" element={<EncyclopediaPage />} />
             <Route path="/dark-pack" element={<DarkPackPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/" element={<CharSheetPage />} />
           </Routes>
         </Suspense>
