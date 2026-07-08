@@ -398,24 +398,25 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
               >
                 {t('register.patreonButton') || 'Подключить Patreon'}
               </button>
-            </div>
-            <div className="tw-mb-3">
-              <input
-                className="tw-w-full tw-px-3 tw-py-2 tw-rounded-lg tw-border tw-border-gray-600 tw-bg-gray-800 tw-text-white tw-text-sm"
-                placeholder={t('register.username')}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div className="tw-mb-3">
-              <input
-                type="password"
-                className="tw-w-full tw-px-3 tw-py-2 tw-rounded-lg tw-border tw-border-gray-600 tw-bg-gray-800 tw-text-white tw-text-sm"
-                placeholder={t('register.password')}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            </div>`
+            {/* Username/password inputs disabled */}`n`
+            {/* <div className="tw-mb-3">`n`
+              <input`n`
+                className="tw-w-full tw-px-3 tw-py-2 tw-rounded-lg tw-border tw-border-gray-600 tw-bg-gray-800 tw-text-white tw-text-sm"`n`
+                placeholder={t('register.username')}`n`
+                value={username}`n`
+                onChange={(e) => setUsername(e.target.value)}`n`
+              />`n`
+            </div>`n`
+            <div className="tw-mb-3">`n`
+              <input`n`
+                type="password"`n`
+                className="tw-w-full tw-px-3 tw-py-2 tw-rounded-lg tw-border tw-border-gray-600 tw-bg-gray-800 tw-text-white tw-text-sm"`n`
+                placeholder={t('register.password')}`n`
+                value={password}`n`
+                onChange={(e) => setPassword(e.target.value)}`n`
+              />`n`
+            </div> */}
             {mode === 'register' && turnstileSiteKey && (
               <div className="tw-mb-3">
                 <div ref={turnstileContainerRef} />
