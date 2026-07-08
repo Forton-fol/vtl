@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import Form from 'react-bootstrap/cjs/Form';
 import Button from 'react-bootstrap/cjs/Button';
@@ -6,10 +6,14 @@ import { register, login, googleLogin, connectPatreon, getSubscriptionStatus, sa
 
 export function RegisterPage(): JSX.Element {
   const { t } = useTranslation();
+  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [subscription, setSubscription] = useState<{patreon_tier?: string; is_patron?: boolean} | null>(null);
+  const [captchaToken, setCaptchaToken] = useState('');
+  const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
+  const turnstileWidgetRef = useRef<string | number | null>(null);
 
   useEffect(() => {
     // Check URL for token from Google OAuth
@@ -42,13 +46,58 @@ export function RegisterPage(): JSX.Element {
     }
   }, []);
 
+  useEffect(() => {
+    if (!turnstileSiteKey || !turnstileContainerRef.current) {
+      return;
+    }
+
+    const windowWithTurnstile = window as Window & { turnstile?: any };
+    const renderTurnstile = () => {
+      if (!windowWithTurnstile.turnstile || !turnstileContainerRef.current) {
+        return;
+      }
+      if (turnstileWidgetRef.current !== null) {
+        windowWithTurnstile.turnstile.reset(turnstileWidgetRef.current);
+        return;
+      }
+      turnstileWidgetRef.current = windowWithTurnstile.turnstile.render(turnstileContainerRef.current, {
+        sitekey: turnstileSiteKey,
+        callback: (token: string) => setCaptchaToken(token),
+        'expired-callback': () => setCaptchaToken(''),
+        'error-callback': () => setCaptchaToken(''),
+      });
+    };
+
+    if (windowWithTurnstile.turnstile) {
+      renderTurnstile();
+      return;
+    }
+
+    const existingScript = document.getElementById('cf-turnstile-script') as HTMLScriptElement | null;
+    if (existingScript) {
+      existingScript.addEventListener('load', renderTurnstile, { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.id = 'cf-turnstile-script';
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.onload = renderTurnstile;
+    document.head.appendChild(script);
+  }, [turnstileSiteKey]);
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const res = await register(username, password);
+    const res = await register(username, password, captchaToken);
     if (res && res.user) {
       setMessage(t('register.success'));
+      setCaptchaToken('');
     } else if (res && res.error === 'username_taken') {
       setMessage(t('register.username-taken'));
+    } else if (res && (res.error === 'captcha_required' || res.error === 'captcha_failed')) {
+      setMessage(t('register.captchaError'));
     } else {
       setMessage(t('register.error'));
     }
@@ -97,7 +146,12 @@ export function RegisterPage(): JSX.Element {
           <Form.Label>{t('register.password')}</Form.Label>
           <Form.Control className="tw-w-full tw-max-w-full" type="password" value={password} onChange={(e) => setPassword((e.target as HTMLInputElement).value)} />
         </Form.Group>
-        <Button type="submit" variant="primary" className="tw-w-full sm:tw-w-auto">{t('register.submit')}</Button>
+        {turnstileSiteKey && (
+          <div className="tw-mb-3">
+            <div ref={turnstileContainerRef} />
+          </div>
+        )}
+        <Button type="submit" variant="primary" className="tw-w-full sm:tw-w-auto" disabled={!!turnstileSiteKey && !captchaToken}>{t('register.submit')}</Button>
       </Form>
 
       {/* Patreon Connection Section */}
