@@ -3,9 +3,7 @@ export const register = {
   login: "Войти",
   logout: "Выйти",
   close: "Закрыть",
-  save: "Сохранить",
   username: "Логин",
-  changeUsername: "Сменить имя",
   password: "Пароль",
   submit: "Зарегистрироваться",
   "switch-to-register": "Регистрация",
@@ -22,7 +20,6 @@ export const register = {
   patreonDescription: "Подключите Patreon для получения доступа к премиум функциям",
   patreonButton: "Подключить Patreon",
   patreonConnected: "Patreon подключен",
-  patreonAccountLinked: "Аккаунт привязан",
   captchaError: "Подтвердите капчу и попробуйте снова",
   // Personal Account
   loadingSubscription: "Загрузка...",

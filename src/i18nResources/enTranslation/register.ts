@@ -3,9 +3,7 @@ export const register = {
   login: "Login",
   logout: "Logout",
   close: "Close",
-  save: "Save",
   username: "Username",
-  changeUsername: "Change name",
   password: "Password",
   submit: "Register",
   "switch-to-register": "Register",
@@ -22,7 +20,6 @@ export const register = {
   patreonDescription: "Connect Patreon to get access to premium features",
   patreonButton: "Connect Patreon",
   patreonConnected: "Patreon connected",
-  patreonAccountLinked: "Account linked",
   captchaError: "Please complete the captcha and try again",
   // Personal Account
   loadingSubscription: "Loading...",
