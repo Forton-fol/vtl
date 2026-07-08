@@ -62,10 +62,11 @@ function getAxiosErrorPayload(error) {
 }
 
 // Generate OAuth URL for Google
-function getGoogleAuthUrl(state) {
+function getGoogleAuthUrl(state, baseUrl) {
+  const redirectUri = GOOGLE_REDIRECT_URI || `${baseUrl}/.netlify/functions/auth`;
   const params = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: GOOGLE_REDIRECT_URI,
+    redirect_uri: redirectUri,
     response_type: 'code',
     scope: 'email profile',
     access_type: 'offline',
@@ -76,10 +77,11 @@ function getGoogleAuthUrl(state) {
 }
 
 // Generate OAuth URL for Patreon
-function getPatreonAuthUrl(state) {
+function getPatreonAuthUrl(state, baseUrl) {
+  const redirectUri = PATREON_REDIRECT_URI || `${baseUrl}/.netlify/functions/auth/patreon/callback`;
   const params = new URLSearchParams({
     client_id: PATREON_CLIENT_ID,
-    redirect_uri: PATREON_REDIRECT_URI,
+    redirect_uri: redirectUri,
     response_type: 'code',
     scope: 'identity identity[email] identity.memberships',
     state: state,
@@ -88,12 +90,12 @@ function getPatreonAuthUrl(state) {
 }
 
 // Exchange Google code for tokens
-async function exchangeGoogleCode(code) {
+async function exchangeGoogleCode(code, baseUrl) {
   const response = await axios.post('https://oauth2.googleapis.com/token', {
     code,
     client_id: GOOGLE_CLIENT_ID,
     client_secret: GOOGLE_CLIENT_SECRET,
-    redirect_uri: GOOGLE_REDIRECT_URI,
+    redirect_uri: GOOGLE_REDIRECT_URI || `${baseUrl}/.netlify/functions/auth`,
     grant_type: 'authorization_code',
   });
   return response.data;
@@ -292,7 +294,7 @@ exports.handler = async function(event) {
     // Google OAuth start
     if (action === 'google' || route === '/google' || path === '/auth/google') {
       const state = jwt.sign({ purpose: 'google' }, JWT_SECRET, { expiresIn: '10m' });
-      const authUrl = getGoogleAuthUrl(state);
+      const authUrl = getGoogleAuthUrl(state, baseUrl);
       return { statusCode: 302, headers: { Location: authUrl } };
     }
 
@@ -314,7 +316,7 @@ exports.handler = async function(event) {
 
       if (decoded.purpose === 'google') {
         // Exchange code for tokens
-        const tokens = await exchangeGoogleCode(code);
+        const tokens = await exchangeGoogleCode(code, baseUrl);
         const googleUser = await getGoogleUserInfo(tokens.access_token);
 
         // Find or create user
@@ -372,7 +374,7 @@ exports.handler = async function(event) {
         JWT_SECRET,
         { expiresIn: '10m' }
       );
-      const authUrl = getPatreonAuthUrl(state);
+      const authUrl = getPatreonAuthUrl(state, baseUrl);
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json' },
@@ -392,7 +394,7 @@ exports.handler = async function(event) {
         return { statusCode: 401, body: JSON.stringify({ error: 'invalid_token' }) };
       }
       const state = jwt.sign({ purpose: 'patreon', userId: userDecoded.userId }, JWT_SECRET, { expiresIn: '10m' });
-      const authUrl = getPatreonAuthUrl(state);
+      const authUrl = getPatreonAuthUrl(state, baseUrl);
       return { statusCode: 302, headers: { Location: authUrl } };
     }
 

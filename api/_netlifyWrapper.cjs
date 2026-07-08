@@ -41,8 +41,11 @@ function buildEvent(req) {
   };
 }
 
-async function handle(req, res, handler) {
+async function handle(req, res, handler, pathOverride) {
   const event = buildEvent(req);
+  if (pathOverride) {
+    event.path = pathOverride;
+  }
   event.body = await getRawBody(req);
 
   const result = await handler(event);

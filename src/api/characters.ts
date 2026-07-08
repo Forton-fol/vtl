@@ -15,7 +15,7 @@ export async function listCharacters(params: { limit?: number; offset?: number }
   if (params.offset) query.set('offset', String(params.offset));
   const suffix = query.toString() ? `?${query.toString()}` : '';
 
-  const resp = await fetch(`/.netlify/functions/characters-list${suffix}`, {
+  const resp = await fetch(`/api/characters-list${suffix}`, {
     method: 'GET',
     headers: authHeaders(),
   });
@@ -28,7 +28,7 @@ export async function getCharacter(id: string) {
     return { character: cached, cached: true };
   }
 
-  const resp = await fetch(`/.netlify/functions/characters-get?id=${encodeURIComponent(id)}`, {
+  const resp = await fetch(`/api/characters-get?id=${encodeURIComponent(id)}`, {
     method: 'GET',
     headers: authHeaders(),
   });
@@ -42,7 +42,7 @@ export async function getCharacter(id: string) {
 }
 
 export async function saveCharacter(payload: any) {
-  const resp = await fetch('/.netlify/functions/characters-save', {
+  const resp = await fetch('/api/characters-save', {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify(payload),
@@ -57,7 +57,7 @@ export async function saveCharacter(payload: any) {
 }
 
 export async function deleteCharacter(id: string) {
-  const resp = await fetch(`/.netlify/functions/characters-delete?id=${encodeURIComponent(id)}`, {
+  const resp = await fetch(`/api/characters-delete?id=${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: authHeaders(),
   });

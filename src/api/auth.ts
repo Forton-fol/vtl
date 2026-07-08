@@ -1,5 +1,5 @@
 export async function register(username: string, password: string, captchaToken?: string) {
-  const resp = await fetch('/.netlify/functions/register', {
+  const resp = await fetch('/api/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, captchaToken }),
@@ -8,7 +8,7 @@ export async function register(username: string, password: string, captchaToken?
 }
 
 export async function login(username: string, password: string) {
-  const resp = await fetch('/.netlify/functions/login', {
+  const resp = await fetch('/api/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
@@ -18,7 +18,7 @@ export async function login(username: string, password: string) {
 
 // Google OAuth login - redirects to Google auth page
 export function googleLogin() {
-  window.location.href = '/.netlify/functions/auth?action=google';
+  window.location.href = '/api/auth?action=google';
 }
 
 // Connect Patreon account
@@ -28,7 +28,7 @@ export async function connectPatreon() {
     return { error: 'not_authenticated' };
   }
 
-  const resp = await fetch('/.netlify/functions/auth?action=patreon-start', {
+  const resp = await fetch('/api/auth?action=patreon-start', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -50,7 +50,7 @@ export async function getSubscriptionStatus() {
     return { error: 'not_authenticated' };
   }
   
-  const resp = await fetch('/.netlify/functions/auth?action=subscription', {
+  const resp = await fetch('/api/auth?action=subscription', {
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -65,7 +65,7 @@ export async function getProfile() {
     return { error: 'not_authenticated' };
   }
 
-  const resp = await fetch('/.netlify/functions/auth?action=profile', {
+  const resp = await fetch('/api/auth?action=profile', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -80,7 +80,7 @@ export async function updateProfile(username: string) {
     return { error: 'not_authenticated' };
   }
 
-  const resp = await fetch('/.netlify/functions/auth?action=profile', {
+  const resp = await fetch('/api/auth?action=profile', {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

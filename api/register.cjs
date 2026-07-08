@@ -1,4 +1,4 @@
 const { handle } = require('./_netlifyWrapper');
 const register = require('../netlify/functions/register');
 
-module.exports = (req, res) => handle(req, res, register.handler);
+module.exports = (req, res) => handle(req, res, register.handler, '/.netlify/functions/register');
