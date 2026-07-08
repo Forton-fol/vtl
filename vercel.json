@@ -8,7 +8,7 @@
   ],
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/\.netlify/functions/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "^/\\.netlify/functions/(.*)$", "dest": "/api/$1" },
+    { "src": "^/(.*)$", "dest": "/index.html" }
   ]
 }
