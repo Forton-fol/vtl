@@ -25,8 +25,8 @@ export function RegisterPage(): JSX.Element {
     
     if (token && auth === 'google') {
       saveToken(token);
-      // Clear URL params
-      window.history.replaceState({}, '', '/');
+      // Clear URL params without breaking HashRouter base path
+      window.history.replaceState({}, '', window.location.pathname + window.location.search);
       window.location.reload();
     }
 

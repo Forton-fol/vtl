@@ -75,15 +75,20 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
   }, [showForm, mode, turnstileSiteKey]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const tokenFromOAuth = params.get('token');
-    const authFromOAuth = params.get('auth');
-    const patreonConnected = params.get('patreon');
+    const searchParams = new URLSearchParams(window.location.search);
+    const hash = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : '';
+    const hashParams = hash.includes('?')
+      ? new URLSearchParams(hash.substring(hash.indexOf('?') + 1))
+      : new URLSearchParams();
+
+    const tokenFromOAuth = searchParams.get('token') || hashParams.get('token');
+    const authFromOAuth = searchParams.get('auth') || hashParams.get('auth');
+    const patreonConnected = searchParams.get('patreon') || hashParams.get('patreon');
     
     if (tokenFromOAuth && authFromOAuth === 'google') {
       saveToken(tokenFromOAuth);
       setUser('user');
-      window.history.replaceState({}, '', window.location.pathname);
+      window.history.replaceState({}, '', window.location.pathname + window.location.search);
       return;
     }
 
