@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSignOutAlt, faCrown, faHeart } from "@fortawesome/free-solid-svg-icons";
-import { register, login, connectPatreon, saveToken, getToken, removeToken, getSubscriptionStatus } from '../../../api/auth';
+import { register, login, googleLogin, connectPatreon, saveToken, getToken, removeToken, getSubscriptionStatus } from '../../../api/auth';
 import { useToast } from '../../../uiLib/ToastNotification';
 
 interface AuthSectionProps {
@@ -341,6 +341,13 @@ export function AuthSection(props: AuthSectionProps): JSX.Element {
         >
           <form onSubmit={mode === 'login' ? doLogin : doRegister}>
             <div className="tw-mb-3 tw-flex tw-flex-col tw-gap-2">
+              <button
+                type="button"
+                className="btn-modern btn-modern-primary tw-w-full tw-justify-center"
+                onClick={googleLogin}
+              >
+                {t('register.googleButton') || 'Войти через Google'}
+              </button>
               <button
                 type="button"
                 className="btn-modern btn-modern-ghost tw-w-full tw-justify-center"
