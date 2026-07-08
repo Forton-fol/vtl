@@ -1,5 +1,5 @@
 ﻿const { getUserFromRequest, supabase } = require('./_shared/characters');
-const { getQuery, sendJSON } = require('./_vercelHelpers');
+const { getQuery, sendJSON } = require('../lib/vercelHelpers');
 
 module.exports = async (req, res) => {
   try {

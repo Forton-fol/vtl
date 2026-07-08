@@ -6,7 +6,7 @@
   toCharacterResponse,
   supabase,
 } = require('./_shared/characters');
-const { parseJSONBody, sendJSON } = require('./_vercelHelpers');
+const { parseJSONBody, sendJSON } = require('../lib/vercelHelpers');
 
 module.exports = async (req, res) => {
   try {

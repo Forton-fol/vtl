@@ -7,7 +7,7 @@ const {
   getBaseUrl,
   sendJSON,
   sendRedirect,
-} = require('./_vercelHelpers');
+} = require('../lib/vercelHelpers');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
