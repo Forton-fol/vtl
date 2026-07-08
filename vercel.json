@@ -7,7 +7,7 @@
       "config": { "distDir": "dist/static" }
     },
     {
-      "src": "api/**/*.cjs",
+      "src": "api/*.cjs",
       "use": "@vercel/node"
     }
   ],
