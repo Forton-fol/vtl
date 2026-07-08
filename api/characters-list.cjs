@@ -3,7 +3,7 @@
   getCharacterLimit,
   supabase,
 } = require('./_shared/characters');
-const { getQuery, sendJSON } = require('../lib/vercelHelpers');
+const { getQuery, sendJSON } = require('../lib/vercelHelpers.cjs');
 
 function parsePositiveInt(value, fallback, max) {
   const parsed = Number(value);

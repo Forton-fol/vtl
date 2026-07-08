@@ -1,6 +1,6 @@
 ﻿const { createClient } = require('@supabase/supabase-js');
 const bcrypt = require('bcryptjs');
-const { parseJSONBody, sendJSON } = require('../lib/vercelHelpers');
+const { parseJSONBody, sendJSON } = require('../lib/vercelHelpers.cjs');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;

@@ -3,7 +3,7 @@
   toCharacterResponse,
   supabase,
 } = require('./_shared/characters');
-const { getQuery, sendJSON } = require('../lib/vercelHelpers');
+const { getQuery, sendJSON } = require('../lib/vercelHelpers.cjs');
 
 module.exports = async (req, res) => {
   try {
