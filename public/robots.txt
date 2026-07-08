@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vtmlist.netlify.app/sitemap.xml
+Sitemap: https://vtmcl.vercel.app/sitemap.xml

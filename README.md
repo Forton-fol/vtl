@@ -51,57 +51,20 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Deploying online
 
-You can publish this app so others can open it in a browser. Two simple options:
+This app is configured for deployment on Vercel.
 
-- GitHub Pages (recommended for static hosting):
-	1. Push this repository to GitHub (branch `main`).
-	2. The repository already contains a GitHub Actions workflow at `.github/workflows/deploy-gh-pages.yml` which builds the app and deploys the `dist/static` output to GitHub Pages on push to `main`.
-	3. In the repository Settings → Pages, ensure the Pages source is set to the GitHub Pages built deployment (the action will publish and configure the site).
+1. Connect the repository to Vercel or install the Vercel CLI with `npm i -g vercel`.
+2. Build command: `npm run build`.
+3. Output directory: `dist/static`.
+4. Add the following environment variables in Vercel:
+	- SUPABASE_URL = your Supabase project URL (example: https://xxxx.supabase.co)
+	- SUPABASE_SERVICE_ROLE_KEY = service_role key from Supabase Settings → API
+	- JWT_SECRET = random secret string used for signing JWT tokens
+	- GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI
+	- PATREON_CLIENT_ID, PATREON_CLIENT_SECRET, PATREON_REDIRECT_URI
+	- TURNSTILE_SECRET_KEY (optional, for registration captcha)
 
-- Netlify (drag & drop or connect to repo):
-	1. Create a new site on Netlify and connect your Git repository, or upload the `dist/static` folder after running `npm run build`.
-	2. Build command: `npm run build`. Publish directory: `dist/static`.
-
-	Note: this repository includes `netlify.toml` with recommended settings (build command and publish directory). Netlify will pick it up automatically when you connect the repo.
-
-	If you use Netlify UI manually:
-	- Build command: `npm run build`
-	- Publish directory: `dist/static`
-	- (Optional) If you want local dev with Netlify CLI, install `netlify-cli` and run `netlify dev`.
-
-	Supabase + Netlify Functions (server-backed accounts)
-
-	1. Create a free project on Supabase (https://app.supabase.com).
-	2. Open SQL editor and run the following to create tables:
-
-	```sql
-	create table public.users (
-		id uuid primary key default gen_random_uuid(),
-		username text unique not null,
-		password_hash text not null,
-		created_at timestamptz default now()
-	);
-
-	create table public.characters (
-		id uuid primary key default gen_random_uuid(),
-		user_id uuid references public.users(id) on delete cascade,
-		name text,
-		preset text,
-		data jsonb not null,
-		created_at timestamptz default now()
-	);
-
-	create index on public.characters(user_id);
-	```
-
-	3. In your Netlify site settings add environment variables:
-		 - SUPABASE_URL = your supabase project url (example: https://xxxx.supabase.co)
-		 - SUPABASE_SERVICE_ROLE_KEY = service_role key (from Supabase Settings → API)
-		 - NETLIFY_JWT_SECRET = random secret string used for signing JWT
-
-	4. Push this repository to GitHub and connect to Netlify (or deploy from GitHub); Netlify Functions are in `netlify/functions/` and will be deployed automatically.
-
-	Note: using `SUPABASE_SERVICE_ROLE_KEY` in serverless functions provides write access to your DB; keep it secret and only in Netlify env variables.
+The app now uses native Vercel serverless functions under `api/` for authentication and character storage.
 
 Support for shared links
 

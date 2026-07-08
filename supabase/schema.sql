@@ -132,5 +132,5 @@ alter table public.characters enable row level security;
 alter table public.sheets enable row level security;
 alter table public.sheet_data enable row level security;
 
--- The app writes through Netlify Functions with SUPABASE_SERVICE_ROLE_KEY.
+-- The app writes through serverless Vercel API routes with SUPABASE_SERVICE_ROLE_KEY.
 -- Keep direct anonymous/client access closed unless you later add Supabase Auth policies.

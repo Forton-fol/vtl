@@ -1,28 +1,20 @@
-const { createClient } = require('@supabase/supabase-js');
+﻿const { createClient } = require('@supabase/supabase-js');
 const jwt = require('jsonwebtoken');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const JWT_SECRET = process.env.NETLIFY_JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!JWT_SECRET) {
-  throw new Error('NETLIFY_JWT_SECRET is required');
+  throw new Error('JWT_SECRET is required');
 }
+
 const FREE_CHARACTER_LIMIT = Number(process.env.FREE_CHARACTER_LIMIT || 10);
 const PATRON_TIER_1_CHARACTER_LIMIT = Number(process.env.PATRON_TIER_1_CHARACTER_LIMIT || 20);
-
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-function json(statusCode, body) {
-  return {
-    statusCode,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  };
-}
-
-function getBearerToken(event) {
-  const auth = event.headers && (event.headers.authorization || event.headers.Authorization);
+function getBearerToken(req) {
+  const auth = req.headers && (req.headers.authorization || req.headers.Authorization);
   if (!auth) {
     return null;
   }
@@ -35,8 +27,8 @@ function getBearerToken(event) {
   return token;
 }
 
-function getUserFromEvent(event) {
-  const token = getBearerToken(event);
+function getUserFromRequest(req) {
+  const token = getBearerToken(req);
   if (!token) {
     return null;
   }
@@ -129,8 +121,7 @@ function toCharacterResponse(sheet, sheetData) {
 
 module.exports = {
   supabase,
-  json,
-  getUserFromEvent,
+  getUserFromRequest,
   normalizeCharacterPayload,
   getCharacterLimit,
   countCharacters,
