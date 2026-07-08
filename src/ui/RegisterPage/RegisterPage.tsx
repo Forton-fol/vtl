@@ -13,8 +13,11 @@ export function RegisterPage(): JSX.Element {
 
   useEffect(() => {
     // Check URL for token from Google OAuth
-    const hashParams = window.location.hash.startsWith('#')
-      ? new URLSearchParams(window.location.hash.slice(1))
+    const hash = window.location.hash.startsWith('#')
+      ? window.location.hash.slice(1)
+      : '';
+    const hashParams = hash.includes('?')
+      ? new URLSearchParams(hash.substring(hash.indexOf('?') + 1))
       : new URLSearchParams();
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token') || hashParams.get('token');
